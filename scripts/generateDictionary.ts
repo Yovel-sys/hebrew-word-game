@@ -17,6 +17,26 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+/**
+ * PRNG עם seed קבוע (mulberry32) - כדי שהרצה חוזרת של הסקריפט תמיד
+ * תפיק בדיוק את אותן 60 החידות, גם אם ההרצה קרתה בגלל שינוי לא-קשור
+ * (כמו סגנון קוד או תיקון קטן). Math.random() רגיל היה משנה את כל
+ * בנק החידות מחדש בכל הרצה - זה בדיוק מה שרצינו למנוע.
+ * לייצר סט חידות *שונה* בכוונה: פשוט משנים את SEED למספר אחר.
+ */
+const SEED = 42;
+function createRng(seed: number) {
+  let state = seed;
+  return function rng() {
+    state |= 0;
+    state = (state + 0x6d2b79f5) | 0;
+    let t = Math.imul(state ^ (state >>> 15), 1 | state);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const rng = createRng(SEED);
+
 const RAW_PATH = path.join(__dirname, 'hspell_simple.txt');
 const FREQ_PATH = path.join(__dirname, 'he_freq.txt');
 const OUT_WORDS_PATH = path.join(__dirname, '..', 'src', 'data', 'words.json');
@@ -110,6 +130,20 @@ function computeLetterFrequencies(words: string[]): Record<string, number> {
 }
 
 /**
+ * מערבבת את סדר האותיות שיוצג במעגל/בכרטיס השלב, כדי שהסדר לא יחשוף
+ * במקרה את המילה הכי ארוכה (הפנגרם) שממנה נלקח סט האותיות - כי בלי
+ * ערבוב, סדר האותיות תמיד זהה לסדר האותיות במילת הפנגרם המקורית.
+ */
+function shuffle<T>(arr: T[]): T[] {
+  const result = [...arr];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+/**
  * ציון קושי לחידה: משלב שני גורמים -
  *  1. נדירות האותיות (סכום 1/תדירות לכל אות בחידה) - אותיות נדירות = קשה יותר
  *  2. כמות המילים האפשריות בפועל (wordCount) - פחות מילים = קשה יותר
@@ -140,7 +174,7 @@ function generatePuzzles(
   console.log(`מועמדי פנגרם (${letterCount} אותיות ייחודיות): ${pangramCandidates.length}`);
 
   const puzzles: PuzzleCandidate[] = [];
-  const shuffled = [...pangramCandidates].sort(() => Math.random() - 0.5);
+  const shuffled = [...pangramCandidates].sort(() => rng() - 0.5);
 
   for (const candidate of shuffled) {
     if (puzzles.length >= targetCount) break;
@@ -159,7 +193,7 @@ function generatePuzzles(
     const key = [...letterSet].sort().join('');
     if (puzzles.some((p) => [...p.letters].sort().join('') === key)) continue;
 
-    const letters = [...letterSet];
+    const letters = shuffle([...letterSet]);
     const achievableScore = matchingWords.reduce(
       (sum, w) => sum + scoreForWord(w.word, letterCount),
       0

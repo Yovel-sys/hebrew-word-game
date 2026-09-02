@@ -60,15 +60,38 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
   // אות" (הכוונה להוסיף אות כפולה ברצף, כמו ב"עורר")
   const awayFromLastRef = useRef(true);
 
+  // סדר האותיות כפי שמוצג במעגל - נפרד מ-puzzle.letters כי אפשר לערבב
+  // אותו (כפתור הערבוב) בלי לשנות שום דבר בלוגיקת המשחק עצמה, שמתייחסת
+  // לאותיות כקבוצה (סדר לא משנה לבדיקת תקינות/ניקוד).
+  const [letterOrder, setLetterOrder] = useState<string[]>(() => level.letters);
+
+  function shuffleLetters() {
+    resetSelection();
+    setLetterOrder((prev) => {
+      const arr = [...prev];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    });
+  }
+
   const positions = useMemo(
     () => computeCirclePositions(puzzle.letters.length, RADIUS, CENTER),
     [puzzle.letters.length]
   );
 
   const tiles: SelectedTile[] = useMemo(
-    () => puzzle.letters.map((char, i) => ({ index: i, char, point: positions[i] })),
-    [puzzle.letters, positions]
+    () => letterOrder.map((char, i) => ({ index: i, char, point: positions[i] })),
+    [letterOrder, positions]
   );
+  // ה-PanResponder נוצר פעם אחת בלבד (ראו useRef למטה) - ה-handlers שלו
+  // "קפואים" על הקלוז'ר מהרינדור הראשון. tiles משתנה כשמערבבים אותיות
+  // (letterOrder), אז צריך גישה דרך ref כדי שההנדלרים תמיד יראו את
+  // הגרסה העדכנית, לא את זו שהייתה קיימת כשה-PanResponder נוצר.
+  const tilesRef = useRef(tiles);
+  tilesRef.current = tiles;
 
   // ערך אנימציה (scale) לכל אות במעגל - "פועם" רגע כשהאצבע נוגעת בה
   const tileScales = useRef<Animated.Value[]>([]).current;
@@ -87,27 +110,28 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
     ]).start();
   }
 
-  // אנימציית ה-X שמופיעה כשמילה לא זוהתה - "פועמת" (גדל-קטן כמו לב) ואז נעלמת
-  const invalidScale = useRef(new Animated.Value(0)).current;
-  const invalidOpacity = useRef(new Animated.Value(0)).current;
-  const [showInvalid, setShowInvalid] = useState(false);
+  // אנימציית סמל הפידבק (X למילה לא מזוהה, ↺ למילה שכבר נמצאה) - "פועם"
+  // (גדל-קטן) ואז נעלם. שני המקרים חולקים את אותה אנימציה, רק הסמל/הצבע משתנה.
+  const feedbackScale = useRef(new Animated.Value(0)).current;
+  const feedbackOpacity = useRef(new Animated.Value(0)).current;
+  const [symbolFeedback, setSymbolFeedback] = useState<'invalid' | 'duplicate' | null>(null);
 
-  function triggerInvalidFeedback() {
-    setShowInvalid(true);
-    invalidScale.setValue(1);
-    invalidOpacity.setValue(1);
+  function triggerSymbolFeedback(kind: 'invalid' | 'duplicate') {
+    setSymbolFeedback(kind);
+    feedbackScale.setValue(1);
+    feedbackOpacity.setValue(1);
     Animated.sequence([
-      Animated.timing(invalidScale, { toValue: 1.3, duration: 100, useNativeDriver: true }),
-      Animated.timing(invalidScale, { toValue: 1, duration: 100, useNativeDriver: true }),
+      Animated.timing(feedbackScale, { toValue: 1.3, duration: 100, useNativeDriver: true }),
+      Animated.timing(feedbackScale, { toValue: 1, duration: 100, useNativeDriver: true }),
       Animated.delay(120),
-      Animated.timing(invalidOpacity, { toValue: 0, duration: 150, useNativeDriver: true }),
-    ]).start(() => setShowInvalid(false));
+      Animated.timing(feedbackOpacity, { toValue: 0, duration: 150, useNativeDriver: true }),
+    ]).start(() => setSymbolFeedback(null));
   }
 
   function findTileAt(point: Point): SelectedTile | null {
     let closest: SelectedTile | null = null;
     let closestDist = HIT_RADIUS;
-    for (const tile of tiles) {
+    for (const tile of tilesRef.current) {
       const d = distance(point, tile.point);
       if (d < closestDist) {
         closest = tile;
@@ -140,7 +164,7 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
       onWordFound(newFoundWord.word, newFoundWord.score);
     } else {
       setFeedback(null);
-      triggerInvalidFeedback();
+      triggerSymbolFeedback(result.reason === 'already_found' ? 'duplicate' : 'invalid');
     }
   }
 
@@ -152,11 +176,11 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
         const point = { x: evt.nativeEvent.locationX, y: evt.nativeEvent.locationY };
         const tile = findTileAt(point);
         setFeedback(null);
-        // מתחילים מילה חדשה - מבטלים מיד את אנימציית ה-X אם היא עדיין
+        // מתחילים מילה חדשה - מבטלים מיד את אנימציית הסמל אם היא עדיין
         // רצה, כדי שהיא לא "תתקע" ותחסום את תצוגת המילה החדשה
-        invalidScale.stopAnimation();
-        invalidOpacity.stopAnimation();
-        setShowInvalid(false);
+        feedbackScale.stopAnimation();
+        feedbackOpacity.stopAnimation();
+        setSymbolFeedback(null);
         if (tile) {
           selectedPathRef.current = [tile];
           setSelectedPath([tile]);
@@ -235,15 +259,22 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
             ה-X מוצג כשכבת-על (position: absolute) בכוונה - כדי שהופעתו
             לא תזיז שום דבר אחר במסך, לא משנה מה גודל הטקסט/האנימציה שלו. */}
         <View style={styles.inputDisplay}>
-          <Text style={styles.inputText}>{!showInvalid ? liveWord || feedback || ' ' : ' '}</Text>
-          {showInvalid && (
+          <Text style={styles.inputText}>{!symbolFeedback ? liveWord || feedback || ' ' : ' '}</Text>
+          {symbolFeedback && (
             <Animated.View
               style={[
                 styles.invalidXWrap,
-                { transform: [{ scale: invalidScale }], opacity: invalidOpacity },
+                { transform: [{ scale: feedbackScale }], opacity: feedbackOpacity },
               ]}
             >
-              <Text style={styles.invalidX}>✕</Text>
+              <Text
+                style={[
+                  styles.invalidX,
+                  symbolFeedback === 'duplicate' && styles.duplicateSymbol,
+                ]}
+              >
+                {symbolFeedback === 'duplicate' ? '↺' : '✕'}
+              </Text>
             </Animated.View>
           )}
         </View>
@@ -291,6 +322,10 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
             );
           })}
         </View>
+
+        <TouchableOpacity style={styles.shuffleButton} onPress={shuffleLetters} activeOpacity={0.7}>
+          <Text style={styles.shuffleButtonText}>🔀 ערבוב אותיות</Text>
+        </TouchableOpacity>
       </View>
 
       {/* רשימת מילים שנמצאו - מוצמדת לתחתית המסך */}
@@ -352,6 +387,19 @@ const styles = StyleSheet.create({
     position: 'relative',
     marginVertical: 16,
   },
+  shuffleButton: {
+    alignSelf: 'center',
+    backgroundColor: '#EDE0C8',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 18,
+    marginBottom: 8,
+  },
+  shuffleButtonText: {
+    fontSize: 14,
+    color: '#5B4A32',
+    writingDirection: 'rtl',
+  },
   line: {
     position: 'absolute',
     height: 6,
@@ -399,6 +447,9 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: '800',
     color: '#C0392B',
+  },
+  duplicateSymbol: {
+    color: '#B5651D',
   },
   foundListWrapper: {
     flex: 1,

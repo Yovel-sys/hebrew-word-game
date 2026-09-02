@@ -3,30 +3,35 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface Props {
   onStart: () => void;
+  onOpenSettings: () => void;
+  onResetProgress: () => void;
 }
 
-// מסך פתיחה בסיסי - placeholder. עדיין לא הוחלט מה בדיוק יהיה כאן
-// (לוגו? אנימציה? הסבר קצר על המשחק?) - אבל יש כאן מסגרת מוכנה שקל
-// להרחיב: רק צריך להוסיף תוכן בתוך containerה, הכפתור כבר מחובר לניווט.
-export default function SplashScreen({ onStart }: Props) {
+export default function SplashScreen({ onStart, onOpenSettings, onResetProgress }: Props) {
   return (
     <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.settingsButton}
+        onPress={onOpenSettings}
+        hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+      >
+        <Text style={styles.settingsIcon}>⚙️</Text>
+      </TouchableOpacity>
+
+      <View style={styles.iconCircle}>
+        <Text style={styles.iconText}>🔤</Text>
+      </View>
+
       <Text style={styles.title}>מעגל אותיות</Text>
       <Text style={styles.subtitle}>הרכיבו כמה שיותר מילים מהאותיות שבמעגל</Text>
 
-      <View style={styles.instructionBox}>
-        <Text style={styles.instructionText}>
-          גררו אצבע בין האותיות בלי להרים כדי לבנות מילה - ההגשה קורית
-          אוטומטית ברגע שמרימים.
-        </Text>
-        <Text style={styles.instructionText}>
-          אפשר לחזור על אותה אות יותר מפעם אחת באותה מילה - פשוט גררו
-          אליה שוב (גם אם זה אומר לחזור אחורה בנתיב).
-        </Text>
-      </View>
-
       <TouchableOpacity style={styles.startButton} onPress={onStart} activeOpacity={0.8}>
         <Text style={styles.startButtonText}>בואו נתחיל</Text>
+      </TouchableOpacity>
+
+      {/* TODO זמני לבדיקות בלבד - להסיר/להעביר למסך ההגדרות האמיתי כשייבנה */}
+      <TouchableOpacity onPress={onResetProgress} style={styles.resetButton}>
+        <Text style={styles.resetButtonText}>איפוס התקדמות (זמני, לבדיקות)</Text>
       </TouchableOpacity>
     </View>
   );
@@ -40,6 +45,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 32,
   },
+  settingsButton: {
+    position: 'absolute',
+    top: 56,
+    left: 24,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#EDE0C8',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  settingsIcon: {
+    fontSize: 22,
+  },
+  iconCircle: {
+    width: 110,
+    height: 110,
+    borderRadius: 55,
+    backgroundColor: '#F4C542',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  iconText: {
+    fontSize: 52,
+  },
   title: {
     fontSize: 32,
     fontWeight: '800',
@@ -52,21 +83,7 @@ const styles = StyleSheet.create({
     color: '#7A6A52',
     writingDirection: 'rtl',
     textAlign: 'center',
-    marginBottom: 24,
-  },
-  instructionBox: {
-    backgroundColor: '#F4E9D0',
-    borderRadius: 16,
-    padding: 16,
     marginBottom: 40,
-    gap: 10,
-  },
-  instructionText: {
-    fontSize: 14,
-    color: '#5B4A32',
-    writingDirection: 'rtl',
-    textAlign: 'right',
-    lineHeight: 20,
   },
   startButton: {
     backgroundColor: '#3A2E1F',
@@ -79,5 +96,14 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#FFF8E7',
     writingDirection: 'rtl',
+  },
+  resetButton: {
+    marginTop: 24,
+  },
+  resetButtonText: {
+    fontSize: 12,
+    color: '#B5651D',
+    writingDirection: 'rtl',
+    textDecorationLine: 'underline',
   },
 });

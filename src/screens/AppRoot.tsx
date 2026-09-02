@@ -2,12 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { Level, StoredProgress } from '../types';
 import { LEVELS } from '../data/levels';
-import { loadProgress, saveProgress, addFoundWordToProgress, getFoundWordsForLevel } from '../utils/progress';
+import { loadProgress, saveProgress, clearProgress, addFoundWordToProgress, getFoundWordsForLevel } from '../utils/progress';
+import { hasSeenExplanation, markExplanationSeen } from '../utils/onboarding';
 import SplashScreen from './SplashScreen';
+import ExplanationScreen from './ExplanationScreen';
+import SettingsScreen from './SettingsScreen';
 import LevelSelectScreen from './LevelSelectScreen';
 import GameScreen from './GameScreen';
 
-type Screen = { name: 'splash' } | { name: 'levels' } | { name: 'game'; level: Level };
+type Screen =
+  | { name: 'splash' }
+  | { name: 'explanation' }
+  | { name: 'settings' }
+  | { name: 'levels' }
+  | { name: 'game'; level: Level };
 
 export default function AppRoot() {
   const [progress, setProgress] = useState<StoredProgress | null>(null);
@@ -17,10 +25,46 @@ export default function AppRoot() {
     loadProgress().then(setProgress);
   }, []);
 
+  async function handleResetProgress() {
+    await clearProgress();
+    setProgress({ totalScore: 0, foundWordsByLevel: {} });
+  }
+
+  async function handleStart() {
+    // מסך ההסבר מוצג רק בפעם הראשונה שלוחצים "בואו נתחיל" - אחרי זה
+    // קופצים ישר לרשימת השלבים. הדגל נשמר ב-AsyncStorage, לא רק בזיכרון,
+    // כדי שזה יישאר ככה גם בהפעלה הבאה של האפליקציה.
+    const seen = await hasSeenExplanation();
+    if (seen) {
+      setScreen({ name: 'levels' });
+    } else {
+      setScreen({ name: 'explanation' });
+    }
+  }
+
+  async function handleExplanationDone() {
+    await markExplanationSeen();
+    setScreen({ name: 'levels' });
+  }
+
   if (screen.name === 'splash') {
     // מסך הפתיחה מוצג מיד, בלי לחכות לטעינת AsyncStorage - אין בו
     // תלות בהתקדמות שמורה, אז אין סיבה להשהות אותו.
-    return <SplashScreen onStart={() => setScreen({ name: 'levels' })} />;
+    return (
+      <SplashScreen
+        onStart={handleStart}
+        onOpenSettings={() => setScreen({ name: 'settings' })}
+        onResetProgress={handleResetProgress}
+      />
+    );
+  }
+
+  if (screen.name === 'explanation') {
+    return <ExplanationScreen onDone={handleExplanationDone} />;
+  }
+
+  if (screen.name === 'settings') {
+    return <SettingsScreen onBack={() => setScreen({ name: 'splash' })} />;
   }
 
   if (!progress) {

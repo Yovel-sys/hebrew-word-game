@@ -33,6 +33,18 @@ export async function saveProgress(progress: StoredProgress): Promise<void> {
 }
 
 /**
+ * מוחקת את כל ההתקדמות השמורה (ניקוד + מילים שנמצאו בכל השלבים).
+ * שימושי בעיקר לבדיקות/פיתוח - כרגע מחובר לכפתור זמני במסך הפתיחה.
+ */
+export async function clearProgress(): Promise<void> {
+  try {
+    await AsyncStorage.removeItem(STORAGE_KEY);
+  } catch (err) {
+    console.warn('נכשל במחיקת התקדמות:', err);
+  }
+}
+
+/**
  * מוסיפה מילה שנמצאה בשלב מסוים לתוך ההתקדמות השמורה, ומעדכנת את
  * הניקוד המצטב הכולל. לא בודקת תקינות המילה - זה תפקידה של submitWord
  * (utils/gameLogic.ts); הפונקציה הזו רק אחראית על השמירה עצמה.

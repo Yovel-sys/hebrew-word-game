@@ -12,8 +12,14 @@ interface RawPuzzle {
 const RAW_PUZZLES = puzzlesData as RawPuzzle[];
 
 /**
- * כמה נקודות מצטברות (מכל השלבים ביחד) צריך כדי לפתוח שלב מסוים.
- * שלב 0 (הראשון, הקל ביותר) תמיד פתוח.
+ * כמה שלבים ראשונים תמיד פתוחים בלי שום תנאי ניקוד - נותן לשחקנים
+ * חדשים כמה חידות להתנסות בהן מיד, לפני שנכנס לתמונה שיקול ה"פתיחה".
+ */
+const FREE_LEVELS = 4;
+
+/**
+ * כמה נקודות מצטברות (מכל השלבים ביחד) צריך כדי לפתוח שלב מסוים,
+ * לשלבים שאחרי FREE_LEVELS.
  *
  * הסף מבוסס על הניקוד ה*אמיתי* הניתן להשגה בשלבים הקודמים (achievableScore,
  * מחושב ב-generateDictionary.ts מסכימת כל המילים האפשריות בכל שלב) - לא
@@ -21,13 +27,13 @@ const RAW_PUZZLES = puzzlesData as RawPuzzle[];
  * הניקוד האפשרי בשלבים שקדמו לו. כך יש הבטחה מתמטית שכל שלב ניתן לפתיחה
  * (אי אפשר לדרוש יותר נקודות ממה שבכלל אפשר לצבור).
  */
-const UNLOCK_FRACTION = 0.5;
+const UNLOCK_FRACTION = 0.22;
 
 function computeRequiredScores(puzzles: RawPuzzle[]): number[] {
   const required: number[] = [];
   let cumulativeAchievable = 0;
   for (let i = 0; i < puzzles.length; i++) {
-    required.push(i === 0 ? 0 : Math.round(cumulativeAchievable * UNLOCK_FRACTION));
+    required.push(i < FREE_LEVELS ? 0 : Math.round(cumulativeAchievable * UNLOCK_FRACTION));
     cumulativeAchievable += puzzles[i].achievableScore;
   }
   return required;

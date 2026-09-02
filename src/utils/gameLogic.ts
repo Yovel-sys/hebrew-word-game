@@ -50,6 +50,7 @@ export interface SubmitResult {
   state: GameState;
   success: boolean;
   message?: string;
+  reason?: InvalidReason;
 }
 
 /**
@@ -72,6 +73,7 @@ export function submitWord(state: GameState, dictionary: Set<string>): SubmitRes
       state: { ...state, currentInput: '' },
       success: false,
       message: messages[result.reason],
+      reason: result.reason,
     };
   }
 
