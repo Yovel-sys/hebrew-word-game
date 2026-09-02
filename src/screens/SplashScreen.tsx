@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { tapHaptic } from '../utils/haptics';
 
 interface Props {
   onStart: () => void;
@@ -12,7 +13,10 @@ export default function SplashScreen({ onStart, onOpenSettings, onResetProgress 
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.settingsButton}
-        onPress={onOpenSettings}
+        onPress={() => {
+          tapHaptic();
+          onOpenSettings();
+        }}
         hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
       >
         <Text style={styles.settingsIcon}>⚙️</Text>
@@ -25,12 +29,25 @@ export default function SplashScreen({ onStart, onOpenSettings, onResetProgress 
       <Text style={styles.title}>מעגל אותיות</Text>
       <Text style={styles.subtitle}>הרכיבו כמה שיותר מילים מהאותיות שבמעגל</Text>
 
-      <TouchableOpacity style={styles.startButton} onPress={onStart} activeOpacity={0.8}>
+      <TouchableOpacity
+        style={styles.startButton}
+        onPress={() => {
+          tapHaptic();
+          onStart();
+        }}
+        activeOpacity={0.8}
+      >
         <Text style={styles.startButtonText}>בואו נתחיל</Text>
       </TouchableOpacity>
 
       {/* TODO זמני לבדיקות בלבד - להסיר/להעביר למסך ההגדרות האמיתי כשייבנה */}
-      <TouchableOpacity onPress={onResetProgress} style={styles.resetButton}>
+      <TouchableOpacity
+        onPress={() => {
+          tapHaptic();
+          onResetProgress();
+        }}
+        style={styles.resetButton}
+      >
         <Text style={styles.resetButtonText}>איפוס התקדמות (זמני, לבדיקות)</Text>
       </TouchableOpacity>
     </View>

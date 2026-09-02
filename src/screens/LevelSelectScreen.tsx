@@ -4,6 +4,7 @@ import { Level, StoredProgress } from '../types';
 import { getFoundWordsForLevel } from '../utils/progress';
 import { isLevelUnlocked } from '../data/levels';
 import { POINTS_ICON } from '../utils/ui';
+import { tapHaptic } from '../utils/haptics';
 
 interface Props {
   levels: Level[];
@@ -16,7 +17,13 @@ export default function LevelSelectScreen({ levels, progress, onSelectLevel, onB
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={onBackToSplash} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
+        <TouchableOpacity
+          onPress={() => {
+            tapHaptic();
+            onBackToSplash();
+          }}
+          hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+        >
           <Text style={styles.homeButton}>🏠</Text>
         </TouchableOpacity>
         <Text style={styles.title}>שלבים</Text>
@@ -51,7 +58,10 @@ export default function LevelSelectScreen({ levels, progress, onSelectLevel, onB
           return (
             <TouchableOpacity
               style={styles.card}
-              onPress={() => onSelectLevel(item)}
+              onPress={() => {
+                tapHaptic();
+                onSelectLevel(item);
+              }}
               activeOpacity={0.7}
             >
               <View style={styles.cardRight}>
