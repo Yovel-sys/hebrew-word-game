@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { playClickSound } from '../utils/sound';
 
 interface Props {
   onDone: () => void;
@@ -27,7 +28,14 @@ export default function ExplanationScreen({ onDone }: Props) {
         </Text>
       </View>
 
-      <TouchableOpacity style={styles.doneButton} onPress={onDone} activeOpacity={0.8}>
+      <TouchableOpacity
+        style={styles.doneButton}
+        onPress={() => {
+          playClickSound();
+          onDone();
+        }}
+        activeOpacity={0.8}
+      >
         <Text style={styles.doneButtonText}>הבנתי, בואו נתחיל</Text>
       </TouchableOpacity>
     </View>

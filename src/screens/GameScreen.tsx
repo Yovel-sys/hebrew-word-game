@@ -15,6 +15,7 @@ import { buildDictionarySet } from '../utils/wordValidator';
 import { restoreState, submitWord } from '../utils/gameLogic';
 import { POINTS_ICON } from '../utils/ui';
 import { toFinalFormAtEnd } from '../utils/hebrewLetters';
+import { playClickSound, playCorrectSound, playIncorrectSound } from '../utils/sound';
 import { GameState, Level } from '../types';
 
 // גודל אזור המעגל וכל אריח אות
@@ -66,6 +67,7 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
   const [letterOrder, setLetterOrder] = useState<string[]>(() => level.letters);
 
   function shuffleLetters() {
+    playClickSound();
     resetSelection();
     setLetterOrder((prev) => {
       const arr = [...prev];
@@ -101,6 +103,7 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
   }
 
   function pulseTile(index: number) {
+    playClickSound();
     const val = tileScales[index];
     if (!val) return;
     val.setValue(1);
@@ -159,10 +162,12 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
     setState(result.state);
 
     if (result.success) {
+      playCorrectSound();
       const newFoundWord = result.state.foundWords[result.state.foundWords.length - 1];
       setFeedback(`${newFoundWord.isPangram ? '⭐ ' : ''}+${newFoundWord.score} ${POINTS_ICON}`);
       onWordFound(newFoundWord.word, newFoundWord.score);
     } else {
+      playIncorrectSound();
       setFeedback(null);
       triggerSymbolFeedback(result.reason === 'already_found' ? 'duplicate' : 'invalid');
     }
@@ -246,7 +251,13 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
     <View style={styles.container}>
       <View style={styles.topSection}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={onBack} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
+          <TouchableOpacity
+            onPress={() => {
+              playClickSound();
+              onBack();
+            }}
+            hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+          >
             <Text style={styles.backButton}>‹ שלבים</Text>
           </TouchableOpacity>
           <Text style={styles.score}>{state.totalScore} {POINTS_ICON}</Text>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { playClickSound } from '../utils/sound';
 
 interface Props {
   onBack: () => void;
@@ -11,7 +12,13 @@ export default function SettingsScreen({ onBack }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={onBack} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
+        <TouchableOpacity
+          onPress={() => {
+            playClickSound();
+            onBack();
+          }}
+          hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+        >
           <Text style={styles.backButton}>‹ חזרה</Text>
         </TouchableOpacity>
         <Text style={styles.title}>הגדרות</Text>
