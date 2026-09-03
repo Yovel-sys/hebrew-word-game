@@ -1,10 +1,14 @@
 import React, { useMemo, useRef, useState } from 'react';
 import {
   Animated,
+  KeyboardAvoidingView,
+  Modal,
   PanResponder,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -55,6 +59,33 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
 
   const [state, setState] = useState<GameState>(() => restoreState(puzzle, initialFoundWords));
   const [feedback, setFeedback] = useState<string | null>(null);
+
+  // דיווח על מילה שגויה - מוקאפ בלבד: לא נשלח לשום שרת, רק מציג טופס ואישור
+  const [reportModalVisible, setReportModalVisible] = useState(false);
+  const [reportSubmitted, setReportSubmitted] = useState(false);
+  const [reportWord, setReportWord] = useState('');
+  const [reportMeaning, setReportMeaning] = useState('');
+
+  function openReportModal() {
+    tapHaptic();
+    playClickSound();
+    setReportSubmitted(false);
+    setReportWord('');
+    setReportMeaning('');
+    setReportModalVisible(true);
+  }
+
+  function closeReportModal() {
+    playClickSound();
+    setReportModalVisible(false);
+  }
+
+  function submitReport() {
+    if (!reportWord.trim()) return;
+    playClickSound();
+    successHaptic();
+    setReportSubmitted(true);
+  }
   const [selectedPath, setSelectedPath] = useState<SelectedTile[]>([]);
   const [dragPoint, setDragPoint] = useState<Point | null>(null);
 
@@ -277,7 +308,16 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
           >
             <Text style={styles.backButton}>‹ שלבים</Text>
           </TouchableOpacity>
-          <Text style={styles.score}>{state.totalScore} {POINTS_ICON}</Text>
+          <View style={styles.headerRight}>
+            <TouchableOpacity
+              style={styles.reportButton}
+              onPress={openReportModal}
+              hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+            >
+              <Text style={styles.reportButtonText}>🚩</Text>
+            </TouchableOpacity>
+            <Text style={styles.score}>{state.totalScore} {POINTS_ICON}</Text>
+          </View>
         </View>
         <Text style={styles.levelLabel}>
           שלב {level.index + 1} · {state.foundWords.length}/{level.wordCount} מילים
@@ -369,6 +409,87 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
           ))}
         </ScrollView>
       </View>
+
+      <Modal
+        visible={reportModalVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={closeReportModal}
+      >
+        <KeyboardAvoidingView
+          style={styles.modalOverlay}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        >
+          <View style={styles.modalCard}>
+            {reportSubmitted ? (
+              <>
+                <Text style={styles.modalTitle}>תודה! 🙏</Text>
+                <Text style={styles.modalMessage}>
+                  קיבלנו את הדיווח שלך ונבדוק אותו בהקדם.
+                </Text>
+                <TouchableOpacity
+                  style={[styles.modalButton, styles.modalConfirmButton]}
+                  onPress={closeReportModal}
+                  activeOpacity={0.8}
+                >
+                  <Text style={styles.modalConfirmText}>סגירה</Text>
+                </TouchableOpacity>
+              </>
+            ) : (
+              <>
+                <Text style={styles.modalTitle}>דיווח על מילה שגויה</Text>
+                <Text style={styles.modalMessage}>
+                  ניסית מילה שאתה בטוח שהיא נכונה, אבל המשחק לא זיהה אותה? ספר
+                  לנו עליה ונבדוק אותה.
+                </Text>
+
+                <Text style={styles.fieldLabel}>מה המילה?</Text>
+                <TextInput
+                  style={styles.input}
+                  value={reportWord}
+                  onChangeText={setReportWord}
+                  placeholder="לדוגמה: שולחן"
+                  placeholderTextColor="#B7A97E"
+                  textAlign="right"
+                />
+
+                <Text style={styles.fieldLabel}>מה הפירוש שלה?</Text>
+                <TextInput
+                  style={[styles.input, styles.inputMultiline]}
+                  value={reportMeaning}
+                  onChangeText={setReportMeaning}
+                  placeholder="הסבר קצר על משמעות המילה"
+                  placeholderTextColor="#B7A97E"
+                  textAlign="right"
+                  multiline
+                />
+
+                <View style={styles.modalButtons}>
+                  <TouchableOpacity
+                    style={[
+                      styles.modalButton,
+                      styles.modalConfirmButton,
+                      !reportWord.trim() && styles.modalButtonDisabled,
+                    ]}
+                    onPress={submitReport}
+                    activeOpacity={0.8}
+                    disabled={!reportWord.trim()}
+                  >
+                    <Text style={styles.modalConfirmText}>שליחה</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[styles.modalButton, styles.modalCancelButton]}
+                    onPress={closeReportModal}
+                    activeOpacity={0.8}
+                  >
+                    <Text style={styles.modalCancelText}>ביטול</Text>
+                  </TouchableOpacity>
+                </View>
+              </>
+            )}
+          </View>
+        </KeyboardAvoidingView>
+      </Modal>
     </View>
   );
 }
@@ -392,6 +513,22 @@ const styles = StyleSheet.create({
   },
   score: { fontSize: 20, fontWeight: '700', color: '#3A2E1F', writingDirection: 'rtl' },
   backButton: { fontSize: 16, color: '#7A6A52', writingDirection: 'rtl' },
+  headerRight: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    gap: 10,
+  },
+  reportButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#EDE0C8',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  reportButtonText: {
+    fontSize: 15,
+  },
   levelLabel: {
     fontSize: 14,
     color: '#9C8B6F',
@@ -509,5 +646,89 @@ const styles = StyleSheet.create({
   foundScoreText: {
     fontSize: 16,
     color: '#7A6A52',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(58, 46, 31, 0.55)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 32,
+  },
+  modalCard: {
+    backgroundColor: '#FFF8E7',
+    borderRadius: 20,
+    padding: 24,
+    width: '100%',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#3A2E1F',
+    writingDirection: 'rtl',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  modalMessage: {
+    fontSize: 14,
+    color: '#7A6A52',
+    writingDirection: 'rtl',
+    textAlign: 'center',
+    lineHeight: 20,
+    marginBottom: 20,
+  },
+  fieldLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#5B4A32',
+    writingDirection: 'rtl',
+    textAlign: 'right',
+    marginBottom: 6,
+  },
+  input: {
+    backgroundColor: '#F2E6C9',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#E7D6AC',
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    fontSize: 15,
+    color: '#3A2E1F',
+    writingDirection: 'rtl',
+    marginBottom: 16,
+  },
+  inputMultiline: {
+    height: 70,
+    textAlignVertical: 'top',
+  },
+  modalButtons: {
+    flexDirection: 'row-reverse',
+    gap: 12,
+  },
+  modalButton: {
+    flex: 1,
+    borderRadius: 14,
+    paddingVertical: 14,
+    alignItems: 'center',
+  },
+  modalButtonDisabled: {
+    opacity: 0.5,
+  },
+  modalConfirmButton: {
+    backgroundColor: '#3A2E1F',
+  },
+  modalConfirmText: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#FFF8E7',
+    writingDirection: 'rtl',
+  },
+  modalCancelButton: {
+    backgroundColor: '#EDE0C8',
+  },
+  modalCancelText: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#3A2E1F',
+    writingDirection: 'rtl',
   },
 });
