@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Alert, Animated, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface Props {
   onBack: () => void;
@@ -59,10 +59,7 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
   const [soundEffectsEnabled, setSoundEffectsEnabled] = useState(true);
   const [hapticEnabled, setHapticEnabled] = useState(true);
   const [confirmVisible, setConfirmVisible] = useState(false);
-
-  function handleReportBug() {
-    Alert.alert('דיווח על באג', 'התכונה הזו תהיה זמינה בקרוב.');
-  }
+  const [comingSoonVisible, setComingSoonVisible] = useState(false);
 
   function handleConfirmReset() {
     setConfirmVisible(false);
@@ -106,7 +103,7 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
 
         <Text style={styles.sectionTitle}>עזרה</Text>
         <View style={styles.card}>
-          <TouchableOpacity style={styles.row} onPress={handleReportBug}>
+          <TouchableOpacity style={styles.row} onPress={() => setComingSoonVisible(true)}>
             <Text style={styles.rowLabel}>דיווח על באג</Text>
             <Text style={styles.chevron}>‹</Text>
           </TouchableOpacity>
@@ -146,6 +143,23 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
             </View>
           </View>
         </View>
+      </Modal>
+
+      <Modal
+        visible={comingSoonVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setComingSoonVisible(false)}
+      >
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          activeOpacity={1}
+          onPress={() => setComingSoonVisible(false)}
+        >
+          <View style={styles.comingSoonCard}>
+            <Text style={styles.comingSoonText}>בקרוב</Text>
+          </View>
+        </TouchableOpacity>
       </Modal>
     </View>
   );
@@ -297,5 +311,18 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#3A2E1F',
     writingDirection: 'rtl',
+  },
+  comingSoonCard: {
+    backgroundColor: '#FFF8E7',
+    borderRadius: 20,
+    paddingVertical: 28,
+    paddingHorizontal: 40,
+  },
+  comingSoonText: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#3A2E1F',
+    writingDirection: 'rtl',
+    textAlign: 'center',
   },
 });
