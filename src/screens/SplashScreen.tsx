@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { tapHaptic } from '../utils/haptics';
 import { playClickSound } from '../utils/sound';
 
@@ -23,9 +23,11 @@ export default function SplashScreen({ onStart, onOpenSettings }: Props) {
         <Text style={styles.settingsIcon}>⚙️</Text>
       </TouchableOpacity>
 
-      <View style={styles.iconCircle}>
-        <Text style={styles.iconText}>🔤</Text>
-      </View>
+      <Image
+        source={require('../../assets/icon.png')}
+        style={styles.iconImage}
+        resizeMode="contain"
+      />
 
       <Text style={styles.title}>מעגל אותיות</Text>
       <Text style={styles.subtitle}>הרכיבו כמה שיותר מילים מהאותיות שבמעגל</Text>
@@ -67,17 +69,11 @@ const styles = StyleSheet.create({
   settingsIcon: {
     fontSize: 22,
   },
-  iconCircle: {
-    width: 110,
-    height: 110,
-    borderRadius: 55,
-    backgroundColor: '#F4C542',
-    justifyContent: 'center',
-    alignItems: 'center',
+  iconImage: {
+    width: 128,
+    height: 128,
+    borderRadius: 28,
     marginBottom: 20,
-  },
-  iconText: {
-    fontSize: 52,
   },
   title: {
     fontSize: 32,
