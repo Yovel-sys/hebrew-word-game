@@ -1,20 +1,21 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { tapHaptic } from '../utils/haptics';
+import { playClickSound } from '../utils/sound';
 
 interface Props {
   onStart: () => void;
   onOpenSettings: () => void;
-  onResetProgress: () => void;
 }
 
-export default function SplashScreen({ onStart, onOpenSettings, onResetProgress }: Props) {
+export default function SplashScreen({ onStart, onOpenSettings }: Props) {
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.settingsButton}
         onPress={() => {
           tapHaptic();
+          playClickSound();
           onOpenSettings();
         }}
         hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
@@ -33,22 +34,12 @@ export default function SplashScreen({ onStart, onOpenSettings, onResetProgress 
         style={styles.startButton}
         onPress={() => {
           tapHaptic();
+          playClickSound();
           onStart();
         }}
         activeOpacity={0.8}
       >
         <Text style={styles.startButtonText}>בואו נתחיל</Text>
-      </TouchableOpacity>
-
-      {/* TODO זמני לבדיקות בלבד - להסיר/להעביר למסך ההגדרות האמיתי כשייבנה */}
-      <TouchableOpacity
-        onPress={() => {
-          tapHaptic();
-          onResetProgress();
-        }}
-        style={styles.resetButton}
-      >
-        <Text style={styles.resetButtonText}>איפוס התקדמות (זמני, לבדיקות)</Text>
       </TouchableOpacity>
     </View>
   );
@@ -113,14 +104,5 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#FFF8E7',
     writingDirection: 'rtl',
-  },
-  resetButton: {
-    marginTop: 24,
-  },
-  resetButtonText: {
-    fontSize: 12,
-    color: '#B5651D',
-    writingDirection: 'rtl',
-    textDecorationLine: 'underline',
   },
 });

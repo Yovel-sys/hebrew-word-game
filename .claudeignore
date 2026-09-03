@@ -1,0 +1,12 @@
+node_modules/
+.expo/
+android/app/build/
+ios/Pods/
+ios/build/
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.ttf
+dist/
+coverage/

@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { tapHaptic } from '../utils/haptics';
+import { playClickSound } from '../utils/sound';
 
 interface Props {
   onDone: () => void;
@@ -32,6 +33,7 @@ export default function ExplanationScreen({ onDone }: Props) {
         style={styles.doneButton}
         onPress={() => {
           tapHaptic();
+          playClickSound();
           onDone();
         }}
         activeOpacity={0.8}

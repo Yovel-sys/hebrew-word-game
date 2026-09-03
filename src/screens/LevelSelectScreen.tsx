@@ -5,6 +5,7 @@ import { getFoundWordsForLevel } from '../utils/progress';
 import { isLevelUnlocked } from '../data/levels';
 import { POINTS_ICON } from '../utils/ui';
 import { tapHaptic } from '../utils/haptics';
+import { playClickSound } from '../utils/sound';
 
 interface Props {
   levels: Level[];
@@ -20,6 +21,7 @@ export default function LevelSelectScreen({ levels, progress, onSelectLevel, onB
         <TouchableOpacity
           onPress={() => {
             tapHaptic();
+            playClickSound();
             onBackToSplash();
           }}
           hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
@@ -60,6 +62,7 @@ export default function LevelSelectScreen({ levels, progress, onSelectLevel, onB
               style={styles.card}
               onPress={() => {
                 tapHaptic();
+                playClickSound();
                 onSelectLevel(item);
               }}
               activeOpacity={0.7}

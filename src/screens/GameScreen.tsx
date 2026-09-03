@@ -16,6 +16,13 @@ import { restoreState, submitWord } from '../utils/gameLogic';
 import { POINTS_ICON } from '../utils/ui';
 import { toFinalFormAtEnd } from '../utils/hebrewLetters';
 import { errorHaptic, successHaptic, tapHaptic } from '../utils/haptics';
+import {
+  playClickSound,
+  playCorrectSound,
+  playDuplicateSound,
+  playIncorrectSound,
+  playLetterClickSound,
+} from '../utils/sound';
 import { GameState, Level } from '../types';
 
 // גודל אזור המעגל וכל אריח אות
@@ -68,6 +75,7 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
 
   function shuffleLetters() {
     tapHaptic();
+    playClickSound();
     resetSelection();
     setLetterOrder((prev) => {
       const arr = [...prev];
@@ -104,6 +112,7 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
 
   function pulseTile(index: number) {
     tapHaptic();
+    playLetterClickSound();
     const val = tileScales[index];
     if (!val) return;
     val.setValue(1);
@@ -163,13 +172,20 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
 
     if (result.success) {
       successHaptic();
+      playCorrectSound();
       const newFoundWord = result.state.foundWords[result.state.foundWords.length - 1];
       setFeedback(`${newFoundWord.isPangram ? '⭐ ' : ''}+${newFoundWord.score} ${POINTS_ICON}`);
       onWordFound(newFoundWord.word, newFoundWord.score);
     } else {
       errorHaptic();
+      const isDuplicate = result.reason === 'already_found';
+      if (isDuplicate) {
+        playDuplicateSound();
+      } else {
+        playIncorrectSound();
+      }
       setFeedback(null);
-      triggerSymbolFeedback(result.reason === 'already_found' ? 'duplicate' : 'invalid');
+      triggerSymbolFeedback(isDuplicate ? 'duplicate' : 'invalid');
     }
   }
 
@@ -254,6 +270,7 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
           <TouchableOpacity
             onPress={() => {
               tapHaptic();
+              playClickSound();
               onBack();
             }}
             hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
@@ -365,6 +382,7 @@ const styles = StyleSheet.create({
   topSection: {
     alignItems: 'center',
     paddingHorizontal: 16,
+    overflow: 'visible',
   },
   header: {
     flexDirection: 'row-reverse',
@@ -383,9 +401,11 @@ const styles = StyleSheet.create({
   },
   wordCount: { fontSize: 16, color: '#7A6A52', writingDirection: 'rtl' },
   inputDisplay: {
+    width: '100%',
     height: 44,
     justifyContent: 'center',
     marginBottom: 8,
+    overflow: 'visible',
   },
   inputText: {
     fontSize: 30,
@@ -447,15 +467,16 @@ const styles = StyleSheet.create({
   },
   invalidXWrap: {
     position: 'absolute',
-    top: 0,
+    top: -8,
     left: 0,
     right: 0,
-    bottom: 0,
+    bottom: -8,
     justifyContent: 'center',
     alignItems: 'center',
   },
   invalidX: {
     fontSize: 30,
+    lineHeight: 40,
     fontWeight: '800',
     color: '#C0392B',
   },
