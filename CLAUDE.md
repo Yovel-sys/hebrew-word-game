@@ -24,3 +24,9 @@
 - Run iOS: `npx expo run:ios`
 - Run Android: `npx expo run:android`
 - Type Check: `npx tsc`
+
+## Git workflow
+
+- Always create a new branch before starting work
+- Open a PR at the end of every task, don't push directly to main
+- After PR is approved, merge it into main and delete the branch
