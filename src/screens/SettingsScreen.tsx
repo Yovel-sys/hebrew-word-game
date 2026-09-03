@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Alert, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Alert, Animated, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface Props {
   onBack: () => void;
@@ -11,17 +11,43 @@ interface ToggleProps {
   onValueChange: (value: boolean) => void;
 }
 
+const TOGGLE_TRAVEL = 20; // מרחק ההחלקה של הכפתור בפיקסלים: רוחב המסילה (50) פחות הכפתור (24) פחות הריפוד משני הצדדים (3+3)
+
 // מתג מותאם אישית במקום ה-Switch המובנה של react-native: על אנדרואיד/web
 // ה-Switch המובנה מתעלם לפעמים מ-trackColor ומציג את צבע ה-accent הירוק
-// של המערכת. הגרסה הזו בנויה כולה מ-View רגילים כדי לשלוט בצבעים במדויק.
+// של המערכת. הגרסה הזו בנויה מ-Animated.View כדי גם לשלוט בצבעים וגם
+// להחליק את הכפתור בין המצבים במקום לקפוץ ביניהם.
 function Toggle({ value, onValueChange }: ToggleProps) {
+  const anim = useRef(new Animated.Value(value ? 1 : 0)).current;
+
+  useEffect(() => {
+    Animated.timing(anim, {
+      toValue: value ? 1 : 0,
+      duration: 180,
+      useNativeDriver: false,
+    }).start();
+  }, [value, anim]);
+
+  const trackBackground = anim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['#E7D6AC', '#F4C542'],
+  });
+  const thumbBackground = anim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['#FFF8E7', '#3A2E1F'],
+  });
+  const translateX = anim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, TOGGLE_TRAVEL],
+  });
+
   return (
-    <TouchableOpacity
-      activeOpacity={0.8}
-      onPress={() => onValueChange(!value)}
-      style={[styles.toggleTrack, value ? styles.toggleTrackOn : styles.toggleTrackOff]}
-    >
-      <View style={[styles.toggleThumb, value ? styles.toggleThumbOn : styles.toggleThumbOff]} />
+    <TouchableOpacity activeOpacity={0.8} onPress={() => onValueChange(!value)}>
+      <Animated.View style={[styles.toggleTrack, { backgroundColor: trackBackground }]}>
+        <Animated.View
+          style={[styles.toggleThumb, { backgroundColor: thumbBackground, transform: [{ translateX }] }]}
+        />
+      </Animated.View>
     </TouchableOpacity>
   );
 }
@@ -197,24 +223,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 3,
   },
-  toggleTrackOn: {
-    backgroundColor: '#F4C542',
-    alignItems: 'flex-end',
-  },
-  toggleTrackOff: {
-    backgroundColor: '#E7D6AC',
-    alignItems: 'flex-start',
-  },
   toggleThumb: {
     width: 24,
     height: 24,
     borderRadius: 12,
-  },
-  toggleThumbOn: {
-    backgroundColor: '#3A2E1F',
-  },
-  toggleThumbOff: {
-    backgroundColor: '#FFF8E7',
   },
   dangerButton: {
     marginTop: 32,
