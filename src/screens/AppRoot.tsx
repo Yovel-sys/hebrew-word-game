@@ -54,7 +54,6 @@ export default function AppRoot() {
       <SplashScreen
         onStart={handleStart}
         onOpenSettings={() => setScreen({ name: 'settings' })}
-        onResetProgress={handleResetProgress}
       />
     );
   }
@@ -64,7 +63,12 @@ export default function AppRoot() {
   }
 
   if (screen.name === 'settings') {
-    return <SettingsScreen onBack={() => setScreen({ name: 'splash' })} />;
+    return (
+      <SettingsScreen
+        onBack={() => setScreen({ name: 'splash' })}
+        onResetProgress={handleResetProgress}
+      />
+    );
   }
 
   if (!progress) {
