@@ -44,9 +44,9 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
             <Switch
               value={musicEnabled}
               onValueChange={setMusicEnabled}
-              trackColor={{ false: '#D8C9A3', true: '#B99A48' }}
-              thumbColor={musicEnabled ? '#3A2E1F' : '#FFF8E7'}
-              ios_backgroundColor="#D8C9A3"
+              trackColor={{ false: '#EDE0C8', true: '#F4C542' }}
+              thumbColor="#3A2E1F"
+              ios_backgroundColor="#EDE0C8"
             />
           </View>
           <View style={styles.divider} />
@@ -55,9 +55,9 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
             <Switch
               value={soundEffectsEnabled}
               onValueChange={setSoundEffectsEnabled}
-              trackColor={{ false: '#D8C9A3', true: '#B99A48' }}
-              thumbColor={soundEffectsEnabled ? '#3A2E1F' : '#FFF8E7'}
-              ios_backgroundColor="#D8C9A3"
+              trackColor={{ false: '#EDE0C8', true: '#F4C542' }}
+              thumbColor="#3A2E1F"
+              ios_backgroundColor="#EDE0C8"
             />
           </View>
         </View>
@@ -69,9 +69,9 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
             <Switch
               value={hapticEnabled}
               onValueChange={setHapticEnabled}
-              trackColor={{ false: '#D8C9A3', true: '#B99A48' }}
-              thumbColor={hapticEnabled ? '#3A2E1F' : '#FFF8E7'}
-              ios_backgroundColor="#D8C9A3"
+              trackColor={{ false: '#EDE0C8', true: '#F4C542' }}
+              thumbColor="#3A2E1F"
+              ios_backgroundColor="#EDE0C8"
             />
           </View>
         </View>
