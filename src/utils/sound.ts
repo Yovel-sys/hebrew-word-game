@@ -1,4 +1,5 @@
 import { AudioPlayer, createAudioPlayer, setAudioModeAsync } from 'expo-audio';
+import { isSoundEffectsEnabled } from './settings';
 
 // צלילי המשחק: קליק לנגיעה באות/לחיצה על כפתור, וצליל הצלחה/שגיאה בהגשת מילה.
 const SOUND_FILES = {
@@ -33,6 +34,7 @@ function ensureAudioMode() {
 }
 
 function play(name: SoundName) {
+  if (!isSoundEffectsEnabled()) return;
   ensureAudioMode();
   try {
     const player = getPlayer(name);
