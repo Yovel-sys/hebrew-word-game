@@ -395,6 +395,7 @@ const styles = StyleSheet.create({
   },
   wordCount: { fontSize: 16, color: '#7A6A52', writingDirection: 'rtl' },
   inputDisplay: {
+    width: '100%',
     height: 44,
     justifyContent: 'center',
     marginBottom: 8,
