@@ -75,9 +75,15 @@ function scale(samples, factor) {
 const outDir = path.join(__dirname, '..', 'assets', 'sounds');
 fs.mkdirSync(outDir, { recursive: true });
 
-// קליק קצר וניטרלי - לנגיעה באות ולחיצה על כפתור
+// קליק לחיצה על כפתור - חד וקצר
 const click = scale(tone(1200, 900, 0.045, 0.002, 0.03), 0.5);
 writeWav(path.join(outDir, 'click.wav'), click);
+
+// קליק עדין לנגיעה באות - רך יותר מקליק הכפתור: תדר נמוך יותר,
+// עלייה/דעיכה מתונות יותר (סינוס בלבד, בלי הרמוניות חדות) ועוצמה נמוכה,
+// כי הוא מושמע הרבה פעמים ברצף תוך כדי גרירה
+const letterClick = scale(tone(620, 520, 0.06, 0.008, 0.045), 0.22);
+writeWav(path.join(outDir, 'letterClick.wav'), letterClick);
 
 // צליל הצלחה - שתי תווים עולים, שמח
 const correct = concat(
@@ -87,8 +93,9 @@ const correct = concat(
 );
 writeWav(path.join(outDir, 'correct.wav'), correct);
 
-// צליל שגיאה - טון נמוך ויורד, קצר
-const incorrect = scale(tone(320, 180, 0.16, 0.004, 0.09, 'square'), 0.35);
+// צליל שגיאה - טון נמוך ויורד, קצר ורך (סינוס, לא ריבועי, ובעוצמה נמוכה
+// יותר מהצלילים האחרים כדי שלא יבלוט חזק מדי ביחס אליהם)
+const incorrect = scale(tone(320, 180, 0.16, 0.006, 0.1), 0.16);
 writeWav(path.join(outDir, 'incorrect.wav'), incorrect);
 
 console.log('Generated sounds in', outDir);

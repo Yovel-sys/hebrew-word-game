@@ -15,7 +15,12 @@ import { buildDictionarySet } from '../utils/wordValidator';
 import { restoreState, submitWord } from '../utils/gameLogic';
 import { POINTS_ICON } from '../utils/ui';
 import { toFinalFormAtEnd } from '../utils/hebrewLetters';
-import { playClickSound, playCorrectSound, playIncorrectSound } from '../utils/sound';
+import {
+  playClickSound,
+  playCorrectSound,
+  playIncorrectSound,
+  playLetterClickSound,
+} from '../utils/sound';
 import { GameState, Level } from '../types';
 
 // גודל אזור המעגל וכל אריח אות
@@ -103,7 +108,7 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
   }
 
   function pulseTile(index: number) {
-    playClickSound();
+    playLetterClickSound();
     const val = tileScales[index];
     if (!val) return;
     val.setValue(1);

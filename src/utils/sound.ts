@@ -3,6 +3,7 @@ import { AudioPlayer, createAudioPlayer, setAudioModeAsync } from 'expo-audio';
 // צלילי המשחק: קליק לנגיעה באות/לחיצה על כפתור, וצליל הצלחה/שגיאה בהגשת מילה.
 const SOUND_FILES = {
   click: require('../../assets/sounds/click.wav'),
+  letterClick: require('../../assets/sounds/letterClick.wav'),
   correct: require('../../assets/sounds/correct.wav'),
   incorrect: require('../../assets/sounds/incorrect.wav'),
 } as const;
@@ -43,6 +44,10 @@ function play(name: SoundName) {
 
 export function playClickSound() {
   play('click');
+}
+
+export function playLetterClickSound() {
+  play('letterClick');
 }
 
 export function playCorrectSound() {
