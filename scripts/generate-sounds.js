@@ -102,8 +102,8 @@ writeWav(path.join(outDir, 'click.wav'), click);
 // פרץ רעש ממש קצר עם דעיכה מהירה מאוד, מעורבב עם טון גבוה קצרצר,
 // בעוצמה שקטה כי הוא מושמע הרבה פעמים ברצף תוך כדי גרירה
 const letterClick = mix(
-  scale(noise(0.008, 0.0005, 0.006), 0.09),
-  scale(tone(2400, 2000, 0.006, 0.0005, 0.005), 0.05)
+  scale(noise(0.008, 0.0005, 0.006), 0.13),
+  scale(tone(2400, 2000, 0.006, 0.0005, 0.005), 0.08)
 );
 writeWav(path.join(outDir, 'letterClick.wav'), letterClick);
 
