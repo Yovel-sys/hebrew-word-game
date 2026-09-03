@@ -48,8 +48,10 @@ function Toggle({ value, onValueChange }: ToggleProps) {
     <TouchableOpacity
       activeOpacity={0.8}
       onPress={() => {
-        playClickSound();
+        // הסדר חשוב: קודם לעדכן את הערך (שיכול לכבות/להדליק את הסאונד עצמו),
+        // ורק אז לנגן את הצליל - כך שכיבוי המתג לא ישמיע צליל, והדלקתו כן.
         onValueChange(!value);
+        playClickSound();
       }}
     >
       <Animated.View style={[styles.toggleTrack, { backgroundColor: trackBackground }]}>
