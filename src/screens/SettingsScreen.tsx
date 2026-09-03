@@ -1,9 +1,29 @@
 import React, { useState } from 'react';
-import { Alert, Modal, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface Props {
   onBack: () => void;
   onResetProgress: () => void;
+}
+
+interface ToggleProps {
+  value: boolean;
+  onValueChange: (value: boolean) => void;
+}
+
+// מתג מותאם אישית במקום ה-Switch המובנה של react-native: על אנדרואיד/web
+// ה-Switch המובנה מתעלם לפעמים מ-trackColor ומציג את צבע ה-accent הירוק
+// של המערכת. הגרסה הזו בנויה כולה מ-View רגילים כדי לשלוט בצבעים במדויק.
+function Toggle({ value, onValueChange }: ToggleProps) {
+  return (
+    <TouchableOpacity
+      activeOpacity={0.8}
+      onPress={() => onValueChange(!value)}
+      style={[styles.toggleTrack, value ? styles.toggleTrackOn : styles.toggleTrackOff]}
+    >
+      <View style={[styles.toggleThumb, value ? styles.toggleThumbOn : styles.toggleThumbOff]} />
+    </TouchableOpacity>
+  );
 }
 
 // מוקאפ בלבד: הבקרות (מוזיקה/אפקטים/רטט) שומרות מצב מקומי במסך הזה כדי
@@ -41,24 +61,12 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
         <View style={styles.card}>
           <View style={styles.row}>
             <Text style={styles.rowLabel}>מוזיקת רקע</Text>
-            <Switch
-              value={musicEnabled}
-              onValueChange={setMusicEnabled}
-              trackColor={{ false: '#EDE0C8', true: '#F4C542' }}
-              thumbColor="#3A2E1F"
-              ios_backgroundColor="#EDE0C8"
-            />
+            <Toggle value={musicEnabled} onValueChange={setMusicEnabled} />
           </View>
           <View style={styles.divider} />
           <View style={styles.row}>
             <Text style={styles.rowLabel}>אפקטים קוליים</Text>
-            <Switch
-              value={soundEffectsEnabled}
-              onValueChange={setSoundEffectsEnabled}
-              trackColor={{ false: '#EDE0C8', true: '#F4C542' }}
-              thumbColor="#3A2E1F"
-              ios_backgroundColor="#EDE0C8"
-            />
+            <Toggle value={soundEffectsEnabled} onValueChange={setSoundEffectsEnabled} />
           </View>
         </View>
 
@@ -66,13 +74,7 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
         <View style={styles.card}>
           <View style={styles.row}>
             <Text style={styles.rowLabel}>רטט (משוב הפטי)</Text>
-            <Switch
-              value={hapticEnabled}
-              onValueChange={setHapticEnabled}
-              trackColor={{ false: '#EDE0C8', true: '#F4C542' }}
-              thumbColor="#3A2E1F"
-              ios_backgroundColor="#EDE0C8"
-            />
+            <Toggle value={hapticEnabled} onValueChange={setHapticEnabled} />
           </View>
         </View>
 
@@ -187,6 +189,32 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     backgroundColor: '#E7D6AC',
+  },
+  toggleTrack: {
+    width: 50,
+    height: 30,
+    borderRadius: 15,
+    justifyContent: 'center',
+    paddingHorizontal: 3,
+  },
+  toggleTrackOn: {
+    backgroundColor: '#F4C542',
+    alignItems: 'flex-end',
+  },
+  toggleTrackOff: {
+    backgroundColor: '#E7D6AC',
+    alignItems: 'flex-start',
+  },
+  toggleThumb: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+  },
+  toggleThumbOn: {
+    backgroundColor: '#3A2E1F',
+  },
+  toggleThumbOff: {
+    backgroundColor: '#FFF8E7',
   },
   dangerButton: {
     marginTop: 32,
