@@ -376,6 +376,7 @@ const styles = StyleSheet.create({
   topSection: {
     alignItems: 'center',
     paddingHorizontal: 16,
+    overflow: 'visible',
   },
   header: {
     flexDirection: 'row-reverse',
@@ -397,6 +398,7 @@ const styles = StyleSheet.create({
     height: 44,
     justifyContent: 'center',
     marginBottom: 8,
+    overflow: 'visible',
   },
   inputText: {
     fontSize: 30,
