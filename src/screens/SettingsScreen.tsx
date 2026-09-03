@@ -80,7 +80,6 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
   const [bugReportSentVisible, setBugReportSentVisible] = useState(false);
   const [bugTitle, setBugTitle] = useState('');
   const [bugDescription, setBugDescription] = useState('');
-  const [bugEmail, setBugEmail] = useState('');
 
   function handleSoundEffectsChange(enabled: boolean) {
     setSoundEffectsEnabledState(enabled);
@@ -109,7 +108,6 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
     setBugReportVisible(false);
     setBugTitle('');
     setBugDescription('');
-    setBugEmail('');
     setBugReportSentVisible(true);
   }
 
@@ -231,19 +229,6 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
               onChangeText={setBugDescription}
               multiline
               numberOfLines={4}
-              textAlign="right"
-              writingDirection="rtl"
-            />
-
-            <Text style={styles.fieldLabel}>אימייל לחזרה אליכם (לא חובה)</Text>
-            <TextInput
-              style={styles.textInput}
-              placeholder="example@mail.com"
-              placeholderTextColor="#B3A488"
-              value={bugEmail}
-              onChangeText={setBugEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
               textAlign="right"
               writingDirection="rtl"
             />
