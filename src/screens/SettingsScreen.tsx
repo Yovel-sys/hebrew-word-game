@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { playClickSound } from '../utils/sound';
 
 interface Props {
   onBack: () => void;
@@ -42,7 +43,13 @@ function Toggle({ value, onValueChange }: ToggleProps) {
   });
 
   return (
-    <TouchableOpacity activeOpacity={0.8} onPress={() => onValueChange(!value)}>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      onPress={() => {
+        playClickSound();
+        onValueChange(!value);
+      }}
+    >
       <Animated.View style={[styles.toggleTrack, { backgroundColor: trackBackground }]}>
         <Animated.View
           style={[styles.toggleThumb, { backgroundColor: thumbBackground, transform: [{ translateX }] }]}
@@ -62,6 +69,7 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
   const [comingSoonVisible, setComingSoonVisible] = useState(false);
 
   function handleConfirmReset() {
+    playClickSound();
     setConfirmVisible(false);
     onResetProgress();
   }
@@ -69,7 +77,13 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={onBack} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
+        <TouchableOpacity
+          onPress={() => {
+            playClickSound();
+            onBack();
+          }}
+          hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+        >
           <Text style={styles.backButton}>‹ חזרה</Text>
         </TouchableOpacity>
         <Text style={styles.title}>הגדרות</Text>
@@ -103,7 +117,13 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
 
         <Text style={styles.sectionTitle}>עזרה</Text>
         <View style={styles.card}>
-          <TouchableOpacity style={styles.row} onPress={() => setComingSoonVisible(true)}>
+          <TouchableOpacity
+            style={styles.row}
+            onPress={() => {
+              playClickSound();
+              setComingSoonVisible(true);
+            }}
+          >
             <Text style={styles.rowLabel}>דיווח על באג</Text>
             <Text style={styles.chevron}>‹</Text>
           </TouchableOpacity>
@@ -111,7 +131,10 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
 
         <TouchableOpacity
           style={styles.dangerButton}
-          onPress={() => setConfirmVisible(true)}
+          onPress={() => {
+            playClickSound();
+            setConfirmVisible(true);
+          }}
           activeOpacity={0.8}
         >
           <Text style={styles.dangerButtonText}>מחיקת התקדמות</Text>
@@ -135,7 +158,10 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.modalButton, styles.modalCancelButton]}
-                onPress={() => setConfirmVisible(false)}
+                onPress={() => {
+                  playClickSound();
+                  setConfirmVisible(false);
+                }}
                 activeOpacity={0.8}
               >
                 <Text style={styles.modalCancelText}>לא</Text>
@@ -154,7 +180,10 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
         <TouchableOpacity
           style={styles.modalOverlay}
           activeOpacity={1}
-          onPress={() => setComingSoonVisible(false)}
+          onPress={() => {
+            playClickSound();
+            setComingSoonVisible(false);
+          }}
         >
           <View style={styles.comingSoonCard}>
             <Text style={styles.comingSoonText}>בקרוב</Text>
