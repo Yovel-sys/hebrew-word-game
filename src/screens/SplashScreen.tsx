@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { tapHaptic } from '../utils/haptics';
 import { playClickSound } from '../utils/sound';
 
 interface Props {
@@ -13,6 +14,7 @@ export default function SplashScreen({ onStart, onOpenSettings }: Props) {
       <TouchableOpacity
         style={styles.settingsButton}
         onPress={() => {
+          tapHaptic();
           playClickSound();
           onOpenSettings();
         }}
@@ -31,6 +33,7 @@ export default function SplashScreen({ onStart, onOpenSettings }: Props) {
       <TouchableOpacity
         style={styles.startButton}
         onPress={() => {
+          tapHaptic();
           playClickSound();
           onStart();
         }}

@@ -15,6 +15,7 @@ import { buildDictionarySet } from '../utils/wordValidator';
 import { restoreState, submitWord } from '../utils/gameLogic';
 import { POINTS_ICON } from '../utils/ui';
 import { toFinalFormAtEnd } from '../utils/hebrewLetters';
+import { errorHaptic, successHaptic, tapHaptic } from '../utils/haptics';
 import {
   playClickSound,
   playCorrectSound,
@@ -73,6 +74,7 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
   const [letterOrder, setLetterOrder] = useState<string[]>(() => level.letters);
 
   function shuffleLetters() {
+    tapHaptic();
     playClickSound();
     resetSelection();
     setLetterOrder((prev) => {
@@ -109,6 +111,7 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
   }
 
   function pulseTile(index: number) {
+    tapHaptic();
     playLetterClickSound();
     const val = tileScales[index];
     if (!val) return;
@@ -168,11 +171,13 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
     setState(result.state);
 
     if (result.success) {
+      successHaptic();
       playCorrectSound();
       const newFoundWord = result.state.foundWords[result.state.foundWords.length - 1];
       setFeedback(`${newFoundWord.isPangram ? '⭐ ' : ''}+${newFoundWord.score} ${POINTS_ICON}`);
       onWordFound(newFoundWord.word, newFoundWord.score);
     } else {
+      errorHaptic();
       const isDuplicate = result.reason === 'already_found';
       if (isDuplicate) {
         playDuplicateSound();
@@ -264,6 +269,7 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
         <View style={styles.header}>
           <TouchableOpacity
             onPress={() => {
+              tapHaptic();
               playClickSound();
               onBack();
             }}

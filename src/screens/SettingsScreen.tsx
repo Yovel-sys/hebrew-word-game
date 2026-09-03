@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { tapHaptic } from '../utils/haptics';
 import { playClickSound } from '../utils/sound';
 
 interface Props {
@@ -79,6 +80,7 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => {
+            tapHaptic();
             playClickSound();
             onBack();
           }}
