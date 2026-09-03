@@ -1,5 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Animated,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { tapHaptic } from '../utils/haptics';
 import { playClickSound } from '../utils/sound';
 import { isHapticEnabled, isSoundEffectsEnabled, setHapticEnabled, setSoundEffectsEnabled } from '../utils/settings';
@@ -67,7 +76,11 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
   const [soundEffectsEnabled, setSoundEffectsEnabledState] = useState(isSoundEffectsEnabled());
   const [hapticEnabled, setHapticEnabledState] = useState(isHapticEnabled());
   const [confirmVisible, setConfirmVisible] = useState(false);
-  const [comingSoonVisible, setComingSoonVisible] = useState(false);
+  const [bugReportVisible, setBugReportVisible] = useState(false);
+  const [bugReportSentVisible, setBugReportSentVisible] = useState(false);
+  const [bugTitle, setBugTitle] = useState('');
+  const [bugDescription, setBugDescription] = useState('');
+  const [bugEmail, setBugEmail] = useState('');
 
   function handleSoundEffectsChange(enabled: boolean) {
     setSoundEffectsEnabledState(enabled);
@@ -83,6 +96,21 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
     playClickSound();
     setConfirmVisible(false);
     onResetProgress();
+  }
+
+  function handleCloseBugReport() {
+    playClickSound();
+    setBugReportVisible(false);
+  }
+
+  function handleSubmitBugReport() {
+    tapHaptic();
+    playClickSound();
+    setBugReportVisible(false);
+    setBugTitle('');
+    setBugDescription('');
+    setBugEmail('');
+    setBugReportSentVisible(true);
   }
 
   return (
@@ -128,7 +156,7 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
             style={styles.row}
             onPress={() => {
               playClickSound();
-              setComingSoonVisible(true);
+              setBugReportVisible(true);
             }}
           >
             <Text style={styles.rowLabel}>דיווח על באג</Text>
@@ -178,22 +206,84 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
         </View>
       </Modal>
 
+      <Modal visible={bugReportVisible} transparent animationType="fade" onRequestClose={handleCloseBugReport}>
+        <View style={styles.modalOverlay}>
+          <View style={styles.bugReportCard}>
+            <Text style={styles.modalTitle}>דיווח על באג</Text>
+
+            <Text style={styles.fieldLabel}>כותרת</Text>
+            <TextInput
+              style={styles.textInput}
+              placeholder="תיאור קצר של הבעיה"
+              placeholderTextColor="#B3A488"
+              value={bugTitle}
+              onChangeText={setBugTitle}
+              textAlign="right"
+              writingDirection="rtl"
+            />
+
+            <Text style={styles.fieldLabel}>מה קרה?</Text>
+            <TextInput
+              style={[styles.textInput, styles.textArea]}
+              placeholder="ספרו לנו מה קרה, ואיך אפשר לשחזר את הבעיה"
+              placeholderTextColor="#B3A488"
+              value={bugDescription}
+              onChangeText={setBugDescription}
+              multiline
+              numberOfLines={4}
+              textAlign="right"
+              writingDirection="rtl"
+            />
+
+            <Text style={styles.fieldLabel}>אימייל לחזרה אליכם (לא חובה)</Text>
+            <TextInput
+              style={styles.textInput}
+              placeholder="example@mail.com"
+              placeholderTextColor="#B3A488"
+              value={bugEmail}
+              onChangeText={setBugEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              textAlign="right"
+              writingDirection="rtl"
+            />
+
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={[styles.modalButton, styles.modalConfirmButton]}
+                onPress={handleSubmitBugReport}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.modalConfirmText}>שליחה</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.modalButton, styles.modalCancelButton]}
+                onPress={handleCloseBugReport}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.modalCancelText}>ביטול</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
       <Modal
-        visible={comingSoonVisible}
+        visible={bugReportSentVisible}
         transparent
         animationType="fade"
-        onRequestClose={() => setComingSoonVisible(false)}
+        onRequestClose={() => setBugReportSentVisible(false)}
       >
         <TouchableOpacity
           style={styles.modalOverlay}
           activeOpacity={1}
           onPress={() => {
             playClickSound();
-            setComingSoonVisible(false);
+            setBugReportSentVisible(false);
           }}
         >
           <View style={styles.comingSoonCard}>
-            <Text style={styles.comingSoonText}>בקרוב</Text>
+            <Text style={styles.comingSoonText}>תודה! הדיווח נשלח</Text>
           </View>
         </TouchableOpacity>
       </Modal>
@@ -304,6 +394,37 @@ const styles = StyleSheet.create({
     padding: 24,
     width: '100%',
   },
+  bugReportCard: {
+    backgroundColor: '#FFF8E7',
+    borderRadius: 20,
+    padding: 24,
+    width: '100%',
+  },
+  fieldLabel: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#7A6A52',
+    writingDirection: 'rtl',
+    textAlign: 'right',
+    marginTop: 14,
+    marginBottom: 6,
+  },
+  textInput: {
+    backgroundColor: '#F2E6C9',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#E7D6AC',
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    fontSize: 15,
+    color: '#3A2E1F',
+    writingDirection: 'rtl',
+  },
+  textArea: {
+    minHeight: 90,
+    textAlignVertical: 'top',
+    paddingTop: 10,
+  },
   modalTitle: {
     fontSize: 18,
     fontWeight: '700',
@@ -323,6 +444,7 @@ const styles = StyleSheet.create({
   modalButtons: {
     flexDirection: 'row-reverse',
     gap: 12,
+    marginTop: 24,
   },
   modalButton: {
     flex: 1,
