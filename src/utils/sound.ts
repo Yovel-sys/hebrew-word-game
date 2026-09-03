@@ -6,6 +6,7 @@ const SOUND_FILES = {
   letterClick: require('../../assets/sounds/letterClick.wav'),
   correct: require('../../assets/sounds/correct.wav'),
   incorrect: require('../../assets/sounds/incorrect.wav'),
+  duplicate: require('../../assets/sounds/duplicate.wav'),
 } as const;
 
 type SoundName = keyof typeof SOUND_FILES;
@@ -56,4 +57,8 @@ export function playCorrectSound() {
 
 export function playIncorrectSound() {
   play('incorrect');
+}
+
+export function playDuplicateSound() {
+  play('duplicate');
 }

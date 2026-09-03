@@ -18,6 +18,7 @@ import { toFinalFormAtEnd } from '../utils/hebrewLetters';
 import {
   playClickSound,
   playCorrectSound,
+  playDuplicateSound,
   playIncorrectSound,
   playLetterClickSound,
 } from '../utils/sound';
@@ -172,9 +173,14 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
       setFeedback(`${newFoundWord.isPangram ? '⭐ ' : ''}+${newFoundWord.score} ${POINTS_ICON}`);
       onWordFound(newFoundWord.word, newFoundWord.score);
     } else {
-      playIncorrectSound();
+      const isDuplicate = result.reason === 'already_found';
+      if (isDuplicate) {
+        playDuplicateSound();
+      } else {
+        playIncorrectSound();
+      }
       setFeedback(null);
-      triggerSymbolFeedback(result.reason === 'already_found' ? 'duplicate' : 'invalid');
+      triggerSymbolFeedback(isDuplicate ? 'duplicate' : 'invalid');
     }
   }
 

@@ -98,13 +98,12 @@ fs.mkdirSync(outDir, { recursive: true });
 const click = scale(tone(1200, 900, 0.045, 0.002, 0.03), 0.5);
 writeWav(path.join(outDir, 'click.wav'), click);
 
-// קליק לנגיעה באות - "טקטוק" קצר של מקלדת: פרץ רעש קצרצר (תופס את
-// אופי ה"נקישה") מעורבב עם צליל גבוה קצר (ה"קלאק" של המקש), אבל
-// הרבה יותר עדין/שקט מנקישת מקלדת אמיתית ומקליק הכפתור, כי הוא
-// מושמע הרבה פעמים ברצף תוך כדי גרירה
+// קליק לנגיעה באות - "טקטוק" עדין מאוד של מקלדת: פרץ רעש קצרצר ברמה
+// שקטה מעורבב עם צליל גבוה קצר וחלש עוד יותר, כדי שיישמע כמעט כמו
+// לחישה של מגע ולא כמו נקישה - הוא מושמע הרבה פעמים ברצף תוך כדי גרירה
 const letterClick = mix(
-  scale(noise(0.018, 0.001, 0.016), 0.14),
-  scale(tone(2600, 1900, 0.016, 0.001, 0.014), 0.09)
+  scale(noise(0.02, 0.002, 0.018), 0.07),
+  scale(tone(2200, 1600, 0.018, 0.002, 0.016), 0.045)
 );
 writeWav(path.join(outDir, 'letterClick.wav'), letterClick);
 
@@ -120,5 +119,14 @@ writeWav(path.join(outDir, 'correct.wav'), correct);
 // יותר מהצלילים האחרים כדי שלא יבלוט חזק מדי ביחס אליהם)
 const incorrect = scale(tone(320, 180, 0.16, 0.006, 0.1), 0.16);
 writeWav(path.join(outDir, 'incorrect.wav'), incorrect);
+
+// צליל "מילה שכבר נמצאה" - נייטרלי, לא שלילי כמו טעות: שני "טוק" קצרים
+// באותו גובה צליל (כמו הקשה חוזרת/תזכורת), שונה מהזמזום היורד של טעות
+const duplicate = concat(
+  scale(tone(600, 600, 0.06, 0.004, 0.045), 0.22),
+  silence(0.045),
+  scale(tone(600, 600, 0.06, 0.004, 0.045), 0.22)
+);
+writeWav(path.join(outDir, 'duplicate.wav'), duplicate);
 
 console.log('Generated sounds in', outDir);
