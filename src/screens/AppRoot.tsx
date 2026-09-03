@@ -4,6 +4,7 @@ import { Level, StoredProgress } from '../types';
 import { LEVELS } from '../data/levels';
 import { loadProgress, saveProgress, clearProgress, addFoundWordToProgress, getFoundWordsForLevel } from '../utils/progress';
 import { hasSeenExplanation, markExplanationSeen } from '../utils/onboarding';
+import { loadSettings } from '../utils/settings';
 import SplashScreen from './SplashScreen';
 import ExplanationScreen from './ExplanationScreen';
 import SettingsScreen from './SettingsScreen';
@@ -23,6 +24,7 @@ export default function AppRoot() {
 
   useEffect(() => {
     loadProgress().then(setProgress);
+    loadSettings();
   }, []);
 
   async function handleResetProgress() {

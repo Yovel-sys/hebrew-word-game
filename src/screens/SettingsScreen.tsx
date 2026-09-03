@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { tapHaptic } from '../utils/haptics';
 import { playClickSound } from '../utils/sound';
+import { isHapticEnabled, isSoundEffectsEnabled, setHapticEnabled, setSoundEffectsEnabled } from '../utils/settings';
 
 interface Props {
   onBack: () => void;
@@ -60,14 +61,21 @@ function Toggle({ value, onValueChange }: ToggleProps) {
   );
 }
 
-// מוקאפ בלבד: הבקרות (מוזיקה/אפקטים/רטט) שומרות מצב מקומי במסך הזה כדי
-// שהתצוגה תגיב, אבל לא מחוברות בפועל לניגון סאונד/רטט ולא נשמרות ב-AsyncStorage.
 export default function SettingsScreen({ onBack, onResetProgress }: Props) {
-  const [musicEnabled, setMusicEnabled] = useState(true);
-  const [soundEffectsEnabled, setSoundEffectsEnabled] = useState(true);
-  const [hapticEnabled, setHapticEnabled] = useState(true);
+  const [soundEffectsEnabled, setSoundEffectsEnabledState] = useState(isSoundEffectsEnabled());
+  const [hapticEnabled, setHapticEnabledState] = useState(isHapticEnabled());
   const [confirmVisible, setConfirmVisible] = useState(false);
   const [comingSoonVisible, setComingSoonVisible] = useState(false);
+
+  function handleSoundEffectsChange(enabled: boolean) {
+    setSoundEffectsEnabledState(enabled);
+    setSoundEffectsEnabled(enabled);
+  }
+
+  function handleHapticChange(enabled: boolean) {
+    setHapticEnabledState(enabled);
+    setHapticEnabled(enabled);
+  }
 
   function handleConfirmReset() {
     playClickSound();
@@ -99,13 +107,8 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
         <Text style={styles.sectionTitle}>סאונד</Text>
         <View style={styles.card}>
           <View style={styles.row}>
-            <Text style={styles.rowLabel}>מוזיקת רקע</Text>
-            <Toggle value={musicEnabled} onValueChange={setMusicEnabled} />
-          </View>
-          <View style={styles.divider} />
-          <View style={styles.row}>
             <Text style={styles.rowLabel}>אפקטים קוליים</Text>
-            <Toggle value={soundEffectsEnabled} onValueChange={setSoundEffectsEnabled} />
+            <Toggle value={soundEffectsEnabled} onValueChange={handleSoundEffectsChange} />
           </View>
         </View>
 
@@ -113,7 +116,7 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
         <View style={styles.card}>
           <View style={styles.row}>
             <Text style={styles.rowLabel}>רטט (משוב הפטי)</Text>
-            <Toggle value={hapticEnabled} onValueChange={setHapticEnabled} />
+            <Toggle value={hapticEnabled} onValueChange={handleHapticChange} />
           </View>
         </View>
 
