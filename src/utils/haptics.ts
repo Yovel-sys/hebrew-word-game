@@ -8,17 +8,17 @@ const isSupported = Platform.OS !== 'web';
 // רטט קליל - נגיעה באות או לחיצה על כפתור רגיל
 export function tapHaptic() {
   if (!isSupported || !isHapticEnabled()) return;
-  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch((err) => console.warn('[haptics] tapHaptic failed', err));
+  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
 }
 
 // רטט הצלחה - מילה תקינה נמצאה
 export function successHaptic() {
   if (!isSupported || !isHapticEnabled()) return;
-  Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch((err) => console.warn('[haptics] successHaptic failed', err));
+  Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
 }
 
 // רטט כישלון - מילה לא תקינה או כפולה
 export function errorHaptic() {
   if (!isSupported || !isHapticEnabled()) return;
-  Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error).catch((err) => console.warn('[haptics] errorHaptic failed', err));
+  Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error).catch(() => {});
 }
