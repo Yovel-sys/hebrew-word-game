@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { tapHaptic } from '../utils/haptics';
 import { playClickSound } from '../utils/sound';
 
@@ -23,8 +23,19 @@ export default function SplashScreen({ onStart, onOpenSettings }: Props) {
         <Text style={styles.settingsIcon}>⚙️</Text>
       </TouchableOpacity>
 
-      <View style={styles.iconCircle}>
-        <Text style={styles.iconText}>🔤</Text>
+      <View style={styles.iconDecor}>
+        <View style={styles.glowOuter} />
+        <View style={styles.glowInner} />
+        <View style={[styles.accentDot, styles.accentDotTopLeft]} />
+        <View style={[styles.accentDot, styles.accentDotTopRight]} />
+        <View style={[styles.accentDot, styles.accentDotBottomLeft]} />
+        <View style={[styles.accentDot, styles.accentDotBottomRight]} />
+        <View style={[styles.accentDot, styles.accentDotRight]} />
+        <Image
+          source={require('../../assets/splash-icon.png')}
+          style={styles.iconImage}
+          resizeMode="contain"
+        />
       </View>
 
       <Text style={styles.title}>מעגל אותיות</Text>
@@ -67,17 +78,76 @@ const styles = StyleSheet.create({
   settingsIcon: {
     fontSize: 22,
   },
-  iconCircle: {
-    width: 110,
-    height: 110,
-    borderRadius: 55,
-    backgroundColor: '#F4C542',
+  iconDecor: {
+    width: 220,
+    height: 220,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
   },
-  iconText: {
-    fontSize: 52,
+  glowOuter: {
+    position: 'absolute',
+    width: 220,
+    height: 220,
+    borderRadius: 110,
+    backgroundColor: '#F7C948',
+    opacity: 0.16,
+  },
+  glowInner: {
+    position: 'absolute',
+    width: 172,
+    height: 172,
+    borderRadius: 86,
+    backgroundColor: '#F7C948',
+    opacity: 0.25,
+  },
+  accentDot: {
+    position: 'absolute',
+    borderRadius: 999,
+  },
+  accentDotTopLeft: {
+    width: 16,
+    height: 16,
+    top: 14,
+    left: 22,
+    backgroundColor: '#C9891B',
+    opacity: 0.7,
+  },
+  accentDotTopRight: {
+    width: 12,
+    height: 12,
+    top: 30,
+    right: 10,
+    backgroundColor: '#3A2E1F',
+    opacity: 0.3,
+  },
+  accentDotBottomLeft: {
+    width: 12,
+    height: 12,
+    bottom: 20,
+    left: 6,
+    backgroundColor: '#3A2E1F',
+    opacity: 0.3,
+  },
+  accentDotBottomRight: {
+    width: 18,
+    height: 18,
+    bottom: 8,
+    right: 26,
+    backgroundColor: '#C9891B',
+    opacity: 0.7,
+  },
+  accentDotRight: {
+    width: 9,
+    height: 9,
+    top: '48%',
+    right: -4,
+    backgroundColor: '#F7C948',
+    opacity: 0.9,
+  },
+  iconImage: {
+    width: 150,
+    height: 150,
   },
   title: {
     fontSize: 32,
