@@ -60,6 +60,25 @@ function tone(freqStart, freqEnd, duration, attack, decay, wave = 'sine') {
   return out;
 }
 
+function noise(duration, attack, decay) {
+  const n = Math.floor(SAMPLE_RATE * duration);
+  const out = new Array(n);
+  for (let i = 0; i < n; i++) {
+    const t = i / SAMPLE_RATE;
+    out[i] = (Math.random() * 2 - 1) * envelope(t, duration, attack, decay);
+  }
+  return out;
+}
+
+function mix(...tracks) {
+  const length = Math.max(...tracks.map((track) => track.length));
+  const out = new Array(length).fill(0);
+  for (const track of tracks) {
+    for (let i = 0; i < track.length; i++) out[i] += track[i];
+  }
+  return out;
+}
+
 function concat(...parts) {
   return parts.flat();
 }
@@ -79,10 +98,14 @@ fs.mkdirSync(outDir, { recursive: true });
 const click = scale(tone(1200, 900, 0.045, 0.002, 0.03), 0.5);
 writeWav(path.join(outDir, 'click.wav'), click);
 
-// קליק עדין לנגיעה באות - רך יותר מקליק הכפתור: תדר נמוך יותר,
-// עלייה/דעיכה מתונות יותר (סינוס בלבד, בלי הרמוניות חדות) ועוצמה נמוכה,
-// כי הוא מושמע הרבה פעמים ברצף תוך כדי גרירה
-const letterClick = scale(tone(620, 520, 0.06, 0.008, 0.045), 0.22);
+// קליק לנגיעה באות - "טקטוק" קצר של מקלדת: פרץ רעש קצרצר (תופס את
+// אופי ה"נקישה") מעורבב עם צליל גבוה קצר (ה"קלאק" של המקש), אבל
+// הרבה יותר עדין/שקט מנקישת מקלדת אמיתית ומקליק הכפתור, כי הוא
+// מושמע הרבה פעמים ברצף תוך כדי גרירה
+const letterClick = mix(
+  scale(noise(0.018, 0.001, 0.016), 0.14),
+  scale(tone(2600, 1900, 0.016, 0.001, 0.014), 0.09)
+);
 writeWav(path.join(outDir, 'letterClick.wav'), letterClick);
 
 // צליל הצלחה - שתי תווים עולים, שמח
