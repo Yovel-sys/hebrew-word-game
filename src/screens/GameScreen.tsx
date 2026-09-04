@@ -51,9 +51,16 @@ interface Props {
   initialFoundWords: string[]; // מילים שנמצאו בעבר בשלב הזה (מ-AsyncStorage)
   onWordFound: (word: string, scoreGained: number) => void;
   onBack: () => void;
+  onOpenSettings: () => void;
 }
 
-export default function GameScreen({ level, initialFoundWords, onWordFound, onBack }: Props) {
+export default function GameScreen({
+  level,
+  initialFoundWords,
+  onWordFound,
+  onBack,
+  onOpenSettings,
+}: Props) {
   const puzzle = useMemo(() => ({ letters: level.letters }), [level]);
   // המילון: נטען פעם אחת בעליית המסך.
   const dictionary = useMemo(() => buildDictionarySet(ALL_WORDS), []);
@@ -345,11 +352,22 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
           </TouchableOpacity>
           <View style={styles.headerRight}>
             <TouchableOpacity
-              style={styles.reportButton}
+              style={styles.headerIconButton}
               onPress={openReportModal}
               hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
             >
-              <Text style={styles.reportButtonText}>🚩</Text>
+              <Text style={styles.headerIconText}>🚩</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.headerIconButton}
+              onPress={() => {
+                tapHaptic();
+                playClickSound();
+                onOpenSettings();
+              }}
+              hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+            >
+              <Text style={styles.headerIconText}>⚙️</Text>
             </TouchableOpacity>
             <Text style={styles.score}>{state.totalScore} {POINTS_ICON}</Text>
           </View>
@@ -558,7 +576,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 10,
   },
-  reportButton: {
+  headerIconButton: {
     width: 32,
     height: 32,
     borderRadius: 16,
@@ -566,7 +584,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  reportButtonText: {
+  headerIconText: {
     fontSize: 15,
   },
   levelLabel: {

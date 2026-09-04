@@ -12,22 +12,42 @@ interface Props {
   progress: StoredProgress;
   onSelectLevel: (level: Level) => void;
   onBackToSplash: () => void;
+  onOpenSettings: () => void;
 }
 
-export default function LevelSelectScreen({ levels, progress, onSelectLevel, onBackToSplash }: Props) {
+export default function LevelSelectScreen({
+  levels,
+  progress,
+  onSelectLevel,
+  onBackToSplash,
+  onOpenSettings,
+}: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => {
-            tapHaptic();
-            playClickSound();
-            onBackToSplash();
-          }}
-          hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
-        >
-          <Text style={styles.homeButton}>🏠</Text>
-        </TouchableOpacity>
+        {/* שני האייקונים מקובצים יחד כדי שה-header יישאר בן שלושה חלקים */}
+        <View style={styles.headerActions}>
+          <TouchableOpacity
+            onPress={() => {
+              tapHaptic();
+              playClickSound();
+              onBackToSplash();
+            }}
+            hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+          >
+            <Text style={styles.headerIcon}>🏠</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              tapHaptic();
+              playClickSound();
+              onOpenSettings();
+            }}
+            hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+          >
+            <Text style={styles.headerIcon}>⚙️</Text>
+          </TouchableOpacity>
+        </View>
         <Text style={styles.title}>שלבים</Text>
         <Text style={styles.totalScore}>
           {progress.totalScore} {POINTS_ICON}
@@ -116,7 +136,12 @@ const styles = StyleSheet.create({
     color: '#7A6A52',
     writingDirection: 'rtl',
   },
-  homeButton: {
+  headerActions: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    gap: 14,
+  },
+  headerIcon: {
     fontSize: 22,
   },
   list: {

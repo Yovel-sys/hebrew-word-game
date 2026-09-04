@@ -14,7 +14,9 @@ import GameScreen from './GameScreen';
 type Screen =
   | { name: 'splash' }
   | { name: 'explanation' }
-  | { name: 'settings' }
+  // ההגדרות נגישות מכמה מסכים, ולכן הן זוכרות לאן לחזור במקום
+  // ליפול תמיד למסך הפתיחה
+  | { name: 'settings'; returnTo: Screen }
   | { name: 'levels' }
   | { name: 'game'; level: Level };
 
@@ -55,7 +57,7 @@ export default function AppRoot() {
     return (
       <SplashScreen
         onStart={handleStart}
-        onOpenSettings={() => setScreen({ name: 'settings' })}
+        onOpenSettings={() => setScreen({ name: 'settings', returnTo: { name: 'splash' } })}
       />
     );
   }
@@ -65,9 +67,10 @@ export default function AppRoot() {
   }
 
   if (screen.name === 'settings') {
+    const returnTo = screen.returnTo;
     return (
       <SettingsScreen
-        onBack={() => setScreen({ name: 'splash' })}
+        onBack={() => setScreen(returnTo)}
         onResetProgress={handleResetProgress}
       />
     );
@@ -103,6 +106,7 @@ export default function AppRoot() {
         initialFoundWords={getFoundWordsForLevel(progress, level.index)}
         onWordFound={(word, score) => handleWordFound(level.index, word, score)}
         onBack={() => setScreen({ name: 'levels' })}
+        onOpenSettings={() => setScreen({ name: 'settings', returnTo: { name: 'game', level } })}
       />
     );
   }
@@ -113,6 +117,7 @@ export default function AppRoot() {
       progress={progress}
       onSelectLevel={(level) => setScreen({ name: 'game', level })}
       onBackToSplash={() => setScreen({ name: 'splash' })}
+      onOpenSettings={() => setScreen({ name: 'settings', returnTo: { name: 'levels' } })}
     />
   );
 }
