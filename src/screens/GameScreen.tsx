@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Animated,
   KeyboardAvoidingView,
@@ -17,7 +17,7 @@ import { computeCirclePositions, Point } from '../utils/circleLayout';
 import { computeLineStyle, distance } from '../utils/lineGeometry';
 import { buildDictionarySet } from '../utils/wordValidator';
 import { restoreState, submitWord } from '../utils/gameLogic';
-import { POINTS_ICON } from '../utils/ui';
+import { CONFIRMATION_DURATION_MS, POINTS_ICON } from '../utils/ui';
 import { toFinalFormAtEnd } from '../utils/hebrewLetters';
 import { errorHaptic, successHaptic, tapHaptic } from '../utils/haptics';
 import {
@@ -69,6 +69,15 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
   const [reportSending, setReportSending] = useState(false);
   const [reportError, setReportError] = useState<string | null>(null);
 
+  // הודעת האישור נסגרת לבד; אפשר גם לסגור אותה מוקדם בנגיעה.
+  // ה-cleanup מבטל את הטיימר אם המסך יורד או אם המשתמש סגר בעצמו,
+  // כדי לא לעדכן state של קומפוננטה שכבר לא מוצגת.
+  useEffect(() => {
+    if (!reportSubmitted || !reportModalVisible) return;
+    const timer = setTimeout(() => setReportModalVisible(false), CONFIRMATION_DURATION_MS);
+    return () => clearTimeout(timer);
+  }, [reportSubmitted, reportModalVisible]);
+
   function openReportModal() {
     tapHaptic();
     playClickSound();
@@ -94,7 +103,7 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
     setReportError(null);
 
     const word = reportWord.trim();
-    const result = await submitToWeb3Forms(`דיווח על מילה שגויה: ${word}`, {
+    const result = await submitToWeb3Forms(`דיווח על מילה שגויה: ${word}`, 'גלגל המילים - מילה', {
       'המילה': word,
       'הפירוש': reportMeaning.trim() || 'לא צורף פירוש',
       'שלב': String(level.index + 1),
@@ -442,84 +451,84 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
         animationType="fade"
         onRequestClose={closeReportModal}
       >
-        <KeyboardAvoidingView
-          style={styles.modalOverlay}
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        >
-          <View style={styles.modalCard}>
-            {reportSubmitted ? (
-              <>
-                <Text style={styles.modalTitle}>תודה! 🙏</Text>
-                <Text style={styles.modalMessage}>
-                  קיבלנו את הדיווח שלך ונבדוק אותו בהקדם.
-                </Text>
+        {reportSubmitted ? (
+          <TouchableOpacity
+            style={styles.modalOverlay}
+            activeOpacity={1}
+            onPress={() => {
+              playClickSound();
+              setReportModalVisible(false);
+            }}
+          >
+            <View style={styles.modalCard}>
+              <Text style={styles.modalTitle}>תודה! 🙏</Text>
+              <Text style={styles.modalMessage}>
+                קיבלנו את הדיווח שלך ונבדוק אותו בהקדם.
+              </Text>
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <KeyboardAvoidingView
+            style={styles.modalOverlay}
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          >
+            <View style={styles.modalCard}>
+              <Text style={styles.modalTitle}>דיווח על מילה שגויה</Text>
+              <Text style={styles.modalMessage}>
+                ניסית מילה שאתה בטוח שהיא נכונה, אבל המשחק לא זיהה אותה? ספר
+                לנו עליה ונבדוק אותה.
+              </Text>
+
+              <Text style={styles.fieldLabel}>מה המילה?</Text>
+              <TextInput
+                style={styles.input}
+                value={reportWord}
+                onChangeText={setReportWord}
+                placeholder="לדוגמה: שולחן"
+                placeholderTextColor="#B7A97E"
+                textAlign="right"
+                editable={!reportSending}
+              />
+
+              <Text style={styles.fieldLabel}>מה הפירוש שלה?</Text>
+              <TextInput
+                style={[styles.input, styles.inputMultiline]}
+                value={reportMeaning}
+                onChangeText={setReportMeaning}
+                placeholder="הסבר קצר על משמעות המילה"
+                placeholderTextColor="#B7A97E"
+                textAlign="right"
+                multiline
+                editable={!reportSending}
+              />
+
+              {reportError !== null && <Text style={styles.errorText}>{reportError}</Text>}
+
+              <View style={styles.modalButtons}>
                 <TouchableOpacity
-                  style={[styles.modalButton, styles.modalConfirmButton]}
+                  style={[
+                    styles.modalButton,
+                    styles.modalConfirmButton,
+                    (reportSending || !reportWord.trim()) && styles.modalButtonDisabled,
+                  ]}
+                  onPress={submitReport}
+                  activeOpacity={0.8}
+                  disabled={reportSending || !reportWord.trim()}
+                >
+                  <Text style={styles.modalConfirmText}>{reportSending ? 'שולח...' : 'שליחה'}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.modalButton, styles.modalCancelButton, reportSending && styles.modalButtonDisabled]}
                   onPress={closeReportModal}
                   activeOpacity={0.8}
+                  disabled={reportSending}
                 >
-                  <Text style={styles.modalConfirmText}>סגירה</Text>
+                  <Text style={styles.modalCancelText}>ביטול</Text>
                 </TouchableOpacity>
-              </>
-            ) : (
-              <>
-                <Text style={styles.modalTitle}>דיווח על מילה שגויה</Text>
-                <Text style={styles.modalMessage}>
-                  ניסית מילה שאתה בטוח שהיא נכונה, אבל המשחק לא זיהה אותה? ספר
-                  לנו עליה ונבדוק אותה.
-                </Text>
-
-                <Text style={styles.fieldLabel}>מה המילה?</Text>
-                <TextInput
-                  style={styles.input}
-                  value={reportWord}
-                  onChangeText={setReportWord}
-                  placeholder="לדוגמה: שולחן"
-                  placeholderTextColor="#B7A97E"
-                  textAlign="right"
-                  editable={!reportSending}
-                />
-
-                <Text style={styles.fieldLabel}>מה הפירוש שלה?</Text>
-                <TextInput
-                  style={[styles.input, styles.inputMultiline]}
-                  value={reportMeaning}
-                  onChangeText={setReportMeaning}
-                  placeholder="הסבר קצר על משמעות המילה"
-                  placeholderTextColor="#B7A97E"
-                  textAlign="right"
-                  multiline
-                  editable={!reportSending}
-                />
-
-                {reportError !== null && <Text style={styles.errorText}>{reportError}</Text>}
-
-                <View style={styles.modalButtons}>
-                  <TouchableOpacity
-                    style={[
-                      styles.modalButton,
-                      styles.modalConfirmButton,
-                      (reportSending || !reportWord.trim()) && styles.modalButtonDisabled,
-                    ]}
-                    onPress={submitReport}
-                    activeOpacity={0.8}
-                    disabled={reportSending || !reportWord.trim()}
-                  >
-                    <Text style={styles.modalConfirmText}>{reportSending ? 'שולח...' : 'שליחה'}</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[styles.modalButton, styles.modalCancelButton, reportSending && styles.modalButtonDisabled]}
-                    onPress={closeReportModal}
-                    activeOpacity={0.8}
-                    disabled={reportSending}
-                  >
-                    <Text style={styles.modalCancelText}>ביטול</Text>
-                  </TouchableOpacity>
-                </View>
-              </>
-            )}
-          </View>
-        </KeyboardAvoidingView>
+              </View>
+            </View>
+          </KeyboardAvoidingView>
+        )}
       </Modal>
     </View>
   );

@@ -12,6 +12,7 @@ import {
 import { tapHaptic } from '../utils/haptics';
 import { playClickSound } from '../utils/sound';
 import { isHapticEnabled, isSoundEffectsEnabled, setHapticEnabled, setSoundEffectsEnabled } from '../utils/settings';
+import { CONFIRMATION_DURATION_MS } from '../utils/ui';
 import { submitToWeb3Forms } from '../utils/web3forms';
 
 interface Props {
@@ -23,9 +24,6 @@ interface ToggleProps {
   value: boolean;
   onValueChange: (value: boolean) => void;
 }
-
-// כמה זמן הודעת "הדיווח נשלח" נשארת על המסך לפני שהיא נסגרת מעצמה
-const CONFIRMATION_DURATION_MS = 2000;
 
 const TOGGLE_TRAVEL = 20; // מרחק ההחלקה של הכפתור בפיקסלים: רוחב המסילה (50) פחות הכפתור (24) פחות הריפוד משני הצדדים (3+3)
 
@@ -134,7 +132,7 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
     setBugSending(true);
     setBugError(null);
 
-    const result = await submitToWeb3Forms(`דיווח על באג: ${bugTitle.trim()}`, {
+    const result = await submitToWeb3Forms(`דיווח על באג: ${bugTitle.trim()}`, 'גלגל המילים - באג', {
       'כותרת': bugTitle.trim(),
       'מה קרה': bugDescription.trim() || 'לא צורף תיאור',
     });

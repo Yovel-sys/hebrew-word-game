@@ -39,9 +39,12 @@ function deviceContext(): Web3FormsFields {
 /**
  * שולח טופס ל-Web3Forms. הפונקציה לא זורקת שגיאות - היא תמיד מחזירה תוצאה,
  * כך שמסכי ה-UI יכולים פשוט להציג הודעה מתאימה.
+ *
+ * @param fromName שם השולח שיוצג בתיבת הדואר, לפי סוג הדיווח
  */
 export async function submitToWeb3Forms(
   subject: string,
+  fromName: string,
   fields: Web3FormsFields,
 ): Promise<Web3FormsResult> {
   const accessKey = getAccessKey();
@@ -62,7 +65,9 @@ export async function submitToWeb3Forms(
       body: JSON.stringify({
         access_key: accessKey,
         subject,
-        from_name: 'גלגל המילים',
+        // שם השולח שמופיע בתיבת הדואר. שונה לכל סוג דיווח כדי שאפשר יהיה
+        // לסנן ולמיין את שני סוגי הפניות בלי לפתוח אותן.
+        from_name: fromName,
         // מלכודת ספאם של Web3Forms: אם השדה מלא, הפנייה נזרקת.
         botcheck: '',
         ...deviceContext(),
