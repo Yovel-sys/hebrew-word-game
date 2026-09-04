@@ -28,6 +28,7 @@ import {
   playLetterClickSound,
 } from '../utils/sound';
 import { GameState, Level } from '../types';
+import { submitToWeb3Forms } from '../utils/web3forms';
 
 // גודל אזור המעגל וכל אריח אות
 const CIRCLE_SIZE = 260;
@@ -60,11 +61,13 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
   const [state, setState] = useState<GameState>(() => restoreState(puzzle, initialFoundWords));
   const [feedback, setFeedback] = useState<string | null>(null);
 
-  // דיווח על מילה שגויה - מוקאפ בלבד: לא נשלח לשום שרת, רק מציג טופס ואישור
+  // דיווח על מילה שגויה - נשלח ל-Web3Forms ומגיע למייל של הצוות
   const [reportModalVisible, setReportModalVisible] = useState(false);
   const [reportSubmitted, setReportSubmitted] = useState(false);
   const [reportWord, setReportWord] = useState('');
   const [reportMeaning, setReportMeaning] = useState('');
+  const [reportSending, setReportSending] = useState(false);
+  const [reportError, setReportError] = useState<string | null>(null);
 
   function openReportModal() {
     tapHaptic();
@@ -72,17 +75,40 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
     setReportSubmitted(false);
     setReportWord('');
     setReportMeaning('');
+    setReportError(null);
     setReportModalVisible(true);
   }
 
   function closeReportModal() {
+    // בזמן שליחה חוסמים סגירה כדי שהמודאל לא ייעלם באמצע הבקשה
+    if (reportSending) return;
     playClickSound();
+    setReportError(null);
     setReportModalVisible(false);
   }
 
-  function submitReport() {
-    if (!reportWord.trim()) return;
+  async function submitReport() {
+    if (reportSending || !reportWord.trim()) return;
     playClickSound();
+    setReportSending(true);
+    setReportError(null);
+
+    const word = reportWord.trim();
+    const result = await submitToWeb3Forms(`דיווח על מילה שגויה: ${word}`, {
+      'המילה': word,
+      'הפירוש': reportMeaning.trim() || 'לא צורף פירוש',
+      'שלב': String(level.index + 1),
+      'אותיות השלב': level.letters.join(' '),
+    });
+
+    setReportSending(false);
+
+    if (!result.success) {
+      errorHaptic();
+      setReportError(result.message ?? 'השליחה נכשלה. נסו שוב.');
+      return;
+    }
+
     successHaptic();
     setReportSubmitted(true);
   }
@@ -451,6 +477,7 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
                   placeholder="לדוגמה: שולחן"
                   placeholderTextColor="#B7A97E"
                   textAlign="right"
+                  editable={!reportSending}
                 />
 
                 <Text style={styles.fieldLabel}>מה הפירוש שלה?</Text>
@@ -462,25 +489,29 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
                   placeholderTextColor="#B7A97E"
                   textAlign="right"
                   multiline
+                  editable={!reportSending}
                 />
+
+                {reportError !== null && <Text style={styles.errorText}>{reportError}</Text>}
 
                 <View style={styles.modalButtons}>
                   <TouchableOpacity
                     style={[
                       styles.modalButton,
                       styles.modalConfirmButton,
-                      !reportWord.trim() && styles.modalButtonDisabled,
+                      (reportSending || !reportWord.trim()) && styles.modalButtonDisabled,
                     ]}
                     onPress={submitReport}
                     activeOpacity={0.8}
-                    disabled={!reportWord.trim()}
+                    disabled={reportSending || !reportWord.trim()}
                   >
-                    <Text style={styles.modalConfirmText}>שליחה</Text>
+                    <Text style={styles.modalConfirmText}>{reportSending ? 'שולח...' : 'שליחה'}</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    style={[styles.modalButton, styles.modalCancelButton]}
+                    style={[styles.modalButton, styles.modalCancelButton, reportSending && styles.modalButtonDisabled]}
                     onPress={closeReportModal}
                     activeOpacity={0.8}
+                    disabled={reportSending}
                   >
                     <Text style={styles.modalCancelText}>ביטול</Text>
                   </TouchableOpacity>
@@ -712,6 +743,13 @@ const styles = StyleSheet.create({
   },
   modalButtonDisabled: {
     opacity: 0.5,
+  },
+  errorText: {
+    marginTop: 10,
+    fontSize: 13,
+    color: '#B4342A',
+    textAlign: 'right',
+    writingDirection: 'rtl',
   },
   modalConfirmButton: {
     backgroundColor: '#3A2E1F',

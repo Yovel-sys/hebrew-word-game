@@ -30,3 +30,22 @@ npm run web
 - `src/utils` — game logic, word validation, letter/circle layout helpers
 - `src/data` — dictionary, puzzle definitions, and level data
 - `scripts` — offline scripts for generating the word dictionary
+
+## Bug reports (Web3Forms)
+
+The in-app report forms — "דיווח על באג" in Settings and "דיווח על מילה שגויה" in the
+game — submit to [Web3Forms](https://web3forms.com), which forwards them to your inbox.
+
+1. Get a free Access Key at https://web3forms.com using the email that should receive reports.
+2. Copy `.env.example` to `.env` and fill in the key:
+
+   ```bash
+   cp .env.example .env
+   # WEB3FORMS_ACCESS_KEY=your-access-key
+   ```
+
+3. Restart the dev server so `app.config.js` picks up the new value.
+
+`.env` is git-ignored. For EAS builds, set `WEB3FORMS_ACCESS_KEY` as an environment
+variable on the build profile. Without a key the forms show a friendly error instead
+of sending.
