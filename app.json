@@ -14,7 +14,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.hebrewwordgame"
+      "bundleIdentifier": "com.yovlezstudio.wordswheel",
+      "buildNumber": "1"
     },
     "android": {
       "adaptiveIcon": {
@@ -23,7 +24,8 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.hebrewwordgame"
+      "package": "com.yovlezstudio.wordswheel",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
