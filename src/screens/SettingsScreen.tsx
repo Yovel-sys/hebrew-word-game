@@ -235,11 +235,11 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
 
             <View style={styles.modalButtons}>
               <TouchableOpacity
-                style={[styles.modalButton, styles.modalConfirmButton]}
+                style={[styles.modalButton, styles.bugSubmitButton]}
                 onPress={handleSubmitBugReport}
                 activeOpacity={0.8}
               >
-                <Text style={styles.modalConfirmText}>שליחה</Text>
+                <Text style={styles.bugSubmitText}>שליחה</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.modalButton, styles.modalCancelButton]}
@@ -448,6 +448,15 @@ const styles = StyleSheet.create({
   },
   modalCancelButton: {
     backgroundColor: '#EDE0C8',
+  },
+  bugSubmitButton: {
+    backgroundColor: '#F4C542',
+  },
+  bugSubmitText: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#3A2E1F',
+    writingDirection: 'rtl',
   },
   modalCancelText: {
     fontSize: 15,
