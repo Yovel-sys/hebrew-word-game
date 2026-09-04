@@ -44,7 +44,18 @@ game — submit to [Web3Forms](https://web3forms.com), which forwards them to yo
    # WEB3FORMS_ACCESS_KEY=your-access-key
    ```
 
+   On Windows PowerShell, write the file through .NET rather than `>`, which
+   defaults to UTF-16 and produces a `.env` that cannot be parsed:
+
+   ```powershell
+   [IO.File]::WriteAllText("$PWD\.env", "WEB3FORMS_ACCESS_KEY=your-access-key`n")
+   ```
+
 3. Restart the dev server so `app.config.js` picks up the new value.
+
+Verify it resolved with `npx expo config --type public` — the output should list
+`env: export WEB3FORMS_ACCESS_KEY` and an `extra.web3formsAccessKey` value. If that
+line is missing, the `.env` file is not being read.
 
 `.env` is git-ignored, so the key never lands in this public repository.
 Without a key the forms show a friendly error instead of sending.
@@ -56,9 +67,12 @@ rather than in `.env` (which stays on your machine). Register it once per
 environment:
 
 ```bash
-eas env:create --name WEB3FORMS_ACCESS_KEY --value <your-access-key> \
+eas env:set --name WEB3FORMS_ACCESS_KEY --value <your-access-key> \
   --environment production --visibility sensitive
 ```
+
+(`eas env:set` creates or updates in one step; the older `env:create` /
+`env:update` pair is deprecated.)
 
 Each build profile in `eas.json` is bound to a matching environment via its
 `environment` field, so `eas build --profile production` picks the value up
