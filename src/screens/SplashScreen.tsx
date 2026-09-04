@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { tapHaptic } from '../utils/haptics';
 import { playClickSound } from '../utils/sound';
+import { HEADER_INSET, HEADER_TOP, headerIconStyles } from '../utils/ui';
 
 interface Props {
   onStart: () => void;
@@ -12,7 +13,7 @@ export default function SplashScreen({ onStart, onOpenSettings }: Props) {
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        style={styles.settingsButton}
+        style={[headerIconStyles.button, styles.settingsButton]}
         onPress={() => {
           tapHaptic();
           playClickSound();
@@ -20,7 +21,7 @@ export default function SplashScreen({ onStart, onOpenSettings }: Props) {
         }}
         hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
       >
-        <Text style={styles.settingsIcon}>⚙️</Text>
+        <Text style={headerIconStyles.text}>⚙️</Text>
       </TouchableOpacity>
 
       <View style={styles.iconDecor}>
@@ -64,19 +65,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 32,
   },
+  // המידות מגיעות מ-headerIconStyles; כאן רק העיגון לפינה
   settingsButton: {
     position: 'absolute',
-    top: 56,
-    left: 24,
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: '#EDE0C8',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  settingsIcon: {
-    fontSize: 22,
+    top: HEADER_TOP,
+    left: HEADER_INSET,
   },
   iconDecor: {
     width: 220,

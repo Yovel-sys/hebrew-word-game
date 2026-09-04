@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Animated,
   KeyboardAvoidingView,
@@ -17,7 +17,7 @@ import { computeCirclePositions, Point } from '../utils/circleLayout';
 import { computeLineStyle, distance } from '../utils/lineGeometry';
 import { buildDictionarySet } from '../utils/wordValidator';
 import { restoreState, submitWord } from '../utils/gameLogic';
-import { POINTS_ICON } from '../utils/ui';
+import { CONFIRMATION_DURATION_MS, HEADER_INSET, POINTS_ICON, headerIconStyles } from '../utils/ui';
 import { toFinalFormAtEnd } from '../utils/hebrewLetters';
 import { errorHaptic, successHaptic, tapHaptic } from '../utils/haptics';
 import {
@@ -28,6 +28,7 @@ import {
   playLetterClickSound,
 } from '../utils/sound';
 import { GameState, Level } from '../types';
+import { submitToWeb3Forms } from '../utils/web3forms';
 
 // גודל אזור המעגל וכל אריח אות
 const CIRCLE_SIZE = 260;
@@ -50,9 +51,16 @@ interface Props {
   initialFoundWords: string[]; // מילים שנמצאו בעבר בשלב הזה (מ-AsyncStorage)
   onWordFound: (word: string, scoreGained: number) => void;
   onBack: () => void;
+  onOpenSettings: () => void;
 }
 
-export default function GameScreen({ level, initialFoundWords, onWordFound, onBack }: Props) {
+export default function GameScreen({
+  level,
+  initialFoundWords,
+  onWordFound,
+  onBack,
+  onOpenSettings,
+}: Props) {
   const puzzle = useMemo(() => ({ letters: level.letters }), [level]);
   // המילון: נטען פעם אחת בעליית המסך.
   const dictionary = useMemo(() => buildDictionarySet(ALL_WORDS), []);
@@ -60,11 +68,22 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
   const [state, setState] = useState<GameState>(() => restoreState(puzzle, initialFoundWords));
   const [feedback, setFeedback] = useState<string | null>(null);
 
-  // דיווח על מילה שגויה - מוקאפ בלבד: לא נשלח לשום שרת, רק מציג טופס ואישור
+  // דיווח על מילה שגויה - נשלח ל-Web3Forms ומגיע למייל של הצוות
   const [reportModalVisible, setReportModalVisible] = useState(false);
   const [reportSubmitted, setReportSubmitted] = useState(false);
   const [reportWord, setReportWord] = useState('');
   const [reportMeaning, setReportMeaning] = useState('');
+  const [reportSending, setReportSending] = useState(false);
+  const [reportError, setReportError] = useState<string | null>(null);
+
+  // הודעת האישור נסגרת לבד; אפשר גם לסגור אותה מוקדם בנגיעה.
+  // ה-cleanup מבטל את הטיימר אם המסך יורד או אם המשתמש סגר בעצמו,
+  // כדי לא לעדכן state של קומפוננטה שכבר לא מוצגת.
+  useEffect(() => {
+    if (!reportSubmitted || !reportModalVisible) return;
+    const timer = setTimeout(() => setReportModalVisible(false), CONFIRMATION_DURATION_MS);
+    return () => clearTimeout(timer);
+  }, [reportSubmitted, reportModalVisible]);
 
   function openReportModal() {
     tapHaptic();
@@ -72,17 +91,40 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
     setReportSubmitted(false);
     setReportWord('');
     setReportMeaning('');
+    setReportError(null);
     setReportModalVisible(true);
   }
 
   function closeReportModal() {
+    // בזמן שליחה חוסמים סגירה כדי שהמודאל לא ייעלם באמצע הבקשה
+    if (reportSending) return;
     playClickSound();
+    setReportError(null);
     setReportModalVisible(false);
   }
 
-  function submitReport() {
-    if (!reportWord.trim()) return;
+  async function submitReport() {
+    if (reportSending || !reportWord.trim()) return;
     playClickSound();
+    setReportSending(true);
+    setReportError(null);
+
+    const word = reportWord.trim();
+    const result = await submitToWeb3Forms(`דיווח על מילה שגויה: ${word}`, 'גלגל המילים - מילה', {
+      'המילה': word,
+      'הפירוש': reportMeaning.trim() || 'לא צורף פירוש',
+      'שלב': String(level.index + 1),
+      'אותיות השלב': level.letters.join(' '),
+    });
+
+    setReportSending(false);
+
+    if (!result.success) {
+      errorHaptic();
+      setReportError(result.message ?? 'השליחה נכשלה. נסו שוב.');
+      return;
+    }
+
     successHaptic();
     setReportSubmitted(true);
   }
@@ -308,15 +350,29 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
           >
             <Text style={styles.backButton}>‹ שלבים</Text>
           </TouchableOpacity>
-          <View style={styles.headerRight}>
+          {/* הסדר כאן הוא row-reverse: הילד הראשון מופיע הכי ימינה.
+              גלגל ההגדרות אחרון, כדי שיישב בפינה השמאלית העליונה
+              באותו מקום שבו הוא מופיע בשאר המסכים. */}
+          <View style={styles.headerLeft}>
+            <Text style={styles.score}>{state.totalScore} {POINTS_ICON}</Text>
             <TouchableOpacity
-              style={styles.reportButton}
+              style={headerIconStyles.button}
               onPress={openReportModal}
               hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
             >
-              <Text style={styles.reportButtonText}>🚩</Text>
+              <Text style={headerIconStyles.text}>🚩</Text>
             </TouchableOpacity>
-            <Text style={styles.score}>{state.totalScore} {POINTS_ICON}</Text>
+            <TouchableOpacity
+              style={headerIconStyles.button}
+              onPress={() => {
+                tapHaptic();
+                playClickSound();
+                onOpenSettings();
+              }}
+              hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+            >
+              <Text style={headerIconStyles.text}>⚙️</Text>
+            </TouchableOpacity>
           </View>
         </View>
         <Text style={styles.levelLabel}>
@@ -416,79 +472,84 @@ export default function GameScreen({ level, initialFoundWords, onWordFound, onBa
         animationType="fade"
         onRequestClose={closeReportModal}
       >
-        <KeyboardAvoidingView
-          style={styles.modalOverlay}
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        >
-          <View style={styles.modalCard}>
-            {reportSubmitted ? (
-              <>
-                <Text style={styles.modalTitle}>תודה! 🙏</Text>
-                <Text style={styles.modalMessage}>
-                  קיבלנו את הדיווח שלך ונבדוק אותו בהקדם.
-                </Text>
+        {reportSubmitted ? (
+          <TouchableOpacity
+            style={styles.modalOverlay}
+            activeOpacity={1}
+            onPress={() => {
+              playClickSound();
+              setReportModalVisible(false);
+            }}
+          >
+            <View style={styles.modalCard}>
+              <Text style={styles.modalTitle}>תודה!</Text>
+              <Text style={styles.modalMessage}>
+                קיבלנו את הדיווח שלך ונבדוק אותו בהקדם.
+              </Text>
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <KeyboardAvoidingView
+            style={styles.modalOverlay}
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          >
+            <View style={styles.modalCard}>
+              <Text style={styles.modalTitle}>דיווח על מילה שגויה</Text>
+              <Text style={styles.modalMessage}>
+                ניסית מילה שאתה בטוח שהיא נכונה, אבל המשחק לא זיהה אותה? ספר
+                לנו עליה ונבדוק אותה.
+              </Text>
+
+              <Text style={styles.fieldLabel}>מה המילה?</Text>
+              <TextInput
+                style={styles.input}
+                value={reportWord}
+                onChangeText={setReportWord}
+                placeholder="לדוגמה: שולחן"
+                placeholderTextColor="#B7A97E"
+                textAlign="right"
+                editable={!reportSending}
+              />
+
+              <Text style={styles.fieldLabel}>מה הפירוש שלה?</Text>
+              <TextInput
+                style={[styles.input, styles.inputMultiline]}
+                value={reportMeaning}
+                onChangeText={setReportMeaning}
+                placeholder="הסבר קצר על משמעות המילה"
+                placeholderTextColor="#B7A97E"
+                textAlign="right"
+                multiline
+                editable={!reportSending}
+              />
+
+              {reportError !== null && <Text style={styles.errorText}>{reportError}</Text>}
+
+              <View style={styles.modalButtons}>
                 <TouchableOpacity
-                  style={[styles.modalButton, styles.modalConfirmButton]}
+                  style={[
+                    styles.modalButton,
+                    styles.modalConfirmButton,
+                    (reportSending || !reportWord.trim()) && styles.modalButtonDisabled,
+                  ]}
+                  onPress={submitReport}
+                  activeOpacity={0.8}
+                  disabled={reportSending || !reportWord.trim()}
+                >
+                  <Text style={styles.modalConfirmText}>{reportSending ? 'שולח...' : 'שליחה'}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.modalButton, styles.modalCancelButton, reportSending && styles.modalButtonDisabled]}
                   onPress={closeReportModal}
                   activeOpacity={0.8}
+                  disabled={reportSending}
                 >
-                  <Text style={styles.modalConfirmText}>סגירה</Text>
+                  <Text style={styles.modalCancelText}>ביטול</Text>
                 </TouchableOpacity>
-              </>
-            ) : (
-              <>
-                <Text style={styles.modalTitle}>דיווח על מילה שגויה</Text>
-                <Text style={styles.modalMessage}>
-                  ניסית מילה שאתה בטוח שהיא נכונה, אבל המשחק לא זיהה אותה? ספר
-                  לנו עליה ונבדוק אותה.
-                </Text>
-
-                <Text style={styles.fieldLabel}>מה המילה?</Text>
-                <TextInput
-                  style={styles.input}
-                  value={reportWord}
-                  onChangeText={setReportWord}
-                  placeholder="לדוגמה: שולחן"
-                  placeholderTextColor="#B7A97E"
-                  textAlign="right"
-                />
-
-                <Text style={styles.fieldLabel}>מה הפירוש שלה?</Text>
-                <TextInput
-                  style={[styles.input, styles.inputMultiline]}
-                  value={reportMeaning}
-                  onChangeText={setReportMeaning}
-                  placeholder="הסבר קצר על משמעות המילה"
-                  placeholderTextColor="#B7A97E"
-                  textAlign="right"
-                  multiline
-                />
-
-                <View style={styles.modalButtons}>
-                  <TouchableOpacity
-                    style={[
-                      styles.modalButton,
-                      styles.modalConfirmButton,
-                      !reportWord.trim() && styles.modalButtonDisabled,
-                    ]}
-                    onPress={submitReport}
-                    activeOpacity={0.8}
-                    disabled={!reportWord.trim()}
-                  >
-                    <Text style={styles.modalConfirmText}>שליחה</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[styles.modalButton, styles.modalCancelButton]}
-                    onPress={closeReportModal}
-                    activeOpacity={0.8}
-                  >
-                    <Text style={styles.modalCancelText}>ביטול</Text>
-                  </TouchableOpacity>
-                </View>
-              </>
-            )}
-          </View>
-        </KeyboardAvoidingView>
+              </View>
+            </View>
+          </KeyboardAvoidingView>
+        )}
       </Modal>
     </View>
   );
@@ -502,7 +563,7 @@ const styles = StyleSheet.create({
   },
   topSection: {
     alignItems: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: HEADER_INSET,
     overflow: 'visible',
   },
   header: {
@@ -513,21 +574,10 @@ const styles = StyleSheet.create({
   },
   score: { fontSize: 20, fontWeight: '700', color: '#3A2E1F', writingDirection: 'rtl' },
   backButton: { fontSize: 16, color: '#7A6A52', writingDirection: 'rtl' },
-  headerRight: {
+  headerLeft: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
     gap: 10,
-  },
-  reportButton: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: '#EDE0C8',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  reportButtonText: {
-    fontSize: 15,
   },
   levelLabel: {
     fontSize: 14,
@@ -712,6 +762,13 @@ const styles = StyleSheet.create({
   },
   modalButtonDisabled: {
     opacity: 0.5,
+  },
+  errorText: {
+    marginTop: 10,
+    fontSize: 13,
+    color: '#B4342A',
+    textAlign: 'right',
+    writingDirection: 'rtl',
   },
   modalConfirmButton: {
     backgroundColor: '#3A2E1F',

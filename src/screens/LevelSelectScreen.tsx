@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native
 import { Level, StoredProgress } from '../types';
 import { getFoundWordsForLevel } from '../utils/progress';
 import { isLevelUnlocked } from '../data/levels';
-import { POINTS_ICON } from '../utils/ui';
+import { HEADER_INSET, POINTS_ICON, headerIconStyles } from '../utils/ui';
 import { tapHaptic } from '../utils/haptics';
 import { playClickSound } from '../utils/sound';
 
@@ -12,9 +12,16 @@ interface Props {
   progress: StoredProgress;
   onSelectLevel: (level: Level) => void;
   onBackToSplash: () => void;
+  onOpenSettings: () => void;
 }
 
-export default function LevelSelectScreen({ levels, progress, onSelectLevel, onBackToSplash }: Props) {
+export default function LevelSelectScreen({
+  levels,
+  progress,
+  onSelectLevel,
+  onBackToSplash,
+  onOpenSettings,
+}: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -26,12 +33,26 @@ export default function LevelSelectScreen({ levels, progress, onSelectLevel, onB
           }}
           hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
         >
-          <Text style={styles.homeButton}>🏠</Text>
+          <Text style={styles.headerIcon}>🏠</Text>
         </TouchableOpacity>
         <Text style={styles.title}>שלבים</Text>
-        <Text style={styles.totalScore}>
-          {progress.totalScore} {POINTS_ICON}
-        </Text>
+        {/* גלגל ההגדרות יושב בפינה השמאלית העליונה בכל מסכי האפליקציה */}
+        <View style={styles.headerLeft}>
+          <Text style={styles.totalScore}>
+            {progress.totalScore} {POINTS_ICON}
+          </Text>
+          <TouchableOpacity
+            style={headerIconStyles.button}
+            onPress={() => {
+              tapHaptic();
+              playClickSound();
+              onOpenSettings();
+            }}
+            hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+          >
+            <Text style={headerIconStyles.text}>⚙️</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <FlatList
@@ -102,7 +123,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: HEADER_INSET,
     marginBottom: 16,
   },
   title: {
@@ -116,7 +137,12 @@ const styles = StyleSheet.create({
     color: '#7A6A52',
     writingDirection: 'rtl',
   },
-  homeButton: {
+  headerLeft: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    gap: 10,
+  },
+  headerIcon: {
     fontSize: 22,
   },
   list: {

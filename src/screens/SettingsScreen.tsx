@@ -12,6 +12,8 @@ import {
 import { tapHaptic } from '../utils/haptics';
 import { playClickSound } from '../utils/sound';
 import { isHapticEnabled, isSoundEffectsEnabled, setHapticEnabled, setSoundEffectsEnabled } from '../utils/settings';
+import { CONFIRMATION_DURATION_MS } from '../utils/ui';
+import { submitToWeb3Forms } from '../utils/web3forms';
 
 interface Props {
   onBack: () => void;
@@ -80,6 +82,8 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
   const [bugReportSentVisible, setBugReportSentVisible] = useState(false);
   const [bugTitle, setBugTitle] = useState('');
   const [bugDescription, setBugDescription] = useState('');
+  const [bugSending, setBugSending] = useState(false);
+  const [bugError, setBugError] = useState<string | null>(null);
 
   function handleSoundEffectsChange(enabled: boolean) {
     setSoundEffectsEnabledState(enabled);
@@ -97,14 +101,49 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
     onResetProgress();
   }
 
-  function handleCloseBugReport() {
+  // הודעת האישור נסגרת לבד; אפשר גם לסגור אותה מוקדם בנגיעה.
+  // ה-cleanup מבטל את הטיימר אם המסך יורד או אם המשתמש סגר בעצמו,
+  // כדי לא לעדכן state של קומפוננטה שכבר לא מוצגת.
+  useEffect(() => {
+    if (!bugReportSentVisible) return;
+    const timer = setTimeout(() => setBugReportSentVisible(false), CONFIRMATION_DURATION_MS);
+    return () => clearTimeout(timer);
+  }, [bugReportSentVisible]);
+
+  function handleOpenBugReport() {
+    tapHaptic();
     playClickSound();
+    setBugError(null);
+    setBugReportVisible(true);
+  }
+
+  function handleCloseBugReport() {
+    // בזמן שליחה חוסמים סגירה כדי שהמודאל לא ייעלם באמצע הבקשה
+    if (bugSending) return;
+    playClickSound();
+    setBugError(null);
     setBugReportVisible(false);
   }
 
-  function handleSubmitBugReport() {
+  async function handleSubmitBugReport() {
+    if (bugSending || !bugTitle.trim()) return;
     tapHaptic();
     playClickSound();
+    setBugSending(true);
+    setBugError(null);
+
+    const result = await submitToWeb3Forms(`דיווח על באג: ${bugTitle.trim()}`, 'גלגל המילים - באג', {
+      'כותרת': bugTitle.trim(),
+      'מה קרה': bugDescription.trim() || 'לא צורף תיאור',
+    });
+
+    setBugSending(false);
+
+    if (!result.success) {
+      setBugError(result.message ?? 'השליחה נכשלה. נסו שוב.');
+      return;
+    }
+
     setBugReportVisible(false);
     setBugTitle('');
     setBugDescription('');
@@ -150,13 +189,7 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
 
         <Text style={styles.sectionTitle}>עזרה</Text>
         <View style={styles.card}>
-          <TouchableOpacity
-            style={styles.row}
-            onPress={() => {
-              playClickSound();
-              setBugReportVisible(true);
-            }}
-          >
+          <TouchableOpacity style={styles.row} onPress={handleOpenBugReport}>
             <Text style={styles.rowLabel}>דיווח על באג</Text>
             <Text style={styles.chevron}>‹</Text>
           </TouchableOpacity>
@@ -217,7 +250,7 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
               value={bugTitle}
               onChangeText={setBugTitle}
               textAlign="right"
-              writingDirection="rtl"
+              editable={!bugSending}
             />
 
             <Text style={styles.fieldLabel}>מה קרה?</Text>
@@ -230,21 +263,29 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
               multiline
               numberOfLines={4}
               textAlign="right"
-              writingDirection="rtl"
+              editable={!bugSending}
             />
+
+            {bugError !== null && <Text style={styles.errorText}>{bugError}</Text>}
 
             <View style={styles.modalButtons}>
               <TouchableOpacity
-                style={[styles.modalButton, styles.bugSubmitButton]}
+                style={[
+                  styles.modalButton,
+                  styles.bugSubmitButton,
+                  (bugSending || !bugTitle.trim()) && styles.modalButtonDisabled,
+                ]}
                 onPress={handleSubmitBugReport}
                 activeOpacity={0.8}
+                disabled={bugSending || !bugTitle.trim()}
               >
-                <Text style={styles.bugSubmitText}>שליחה</Text>
+                <Text style={styles.bugSubmitText}>{bugSending ? 'שולח...' : 'שליחה'}</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.modalButton, styles.modalCancelButton]}
+                style={[styles.modalButton, styles.modalCancelButton, bugSending && styles.modalButtonDisabled]}
                 onPress={handleCloseBugReport}
                 activeOpacity={0.8}
+                disabled={bugSending}
               >
                 <Text style={styles.modalCancelText}>ביטול</Text>
               </TouchableOpacity>
@@ -451,6 +492,16 @@ const styles = StyleSheet.create({
   },
   bugSubmitButton: {
     backgroundColor: '#F4C542',
+  },
+  modalButtonDisabled: {
+    opacity: 0.5,
+  },
+  errorText: {
+    marginTop: 10,
+    fontSize: 13,
+    color: '#B4342A',
+    textAlign: 'right',
+    writingDirection: 'rtl',
   },
   bugSubmitText: {
     fontSize: 15,
