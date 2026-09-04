@@ -17,7 +17,7 @@ import { computeCirclePositions, Point } from '../utils/circleLayout';
 import { computeLineStyle, distance } from '../utils/lineGeometry';
 import { buildDictionarySet } from '../utils/wordValidator';
 import { restoreState, submitWord } from '../utils/gameLogic';
-import { CONFIRMATION_DURATION_MS, POINTS_ICON } from '../utils/ui';
+import { CONFIRMATION_DURATION_MS, HEADER_INSET, POINTS_ICON, headerIconStyles } from '../utils/ui';
 import { toFinalFormAtEnd } from '../utils/hebrewLetters';
 import { errorHaptic, successHaptic, tapHaptic } from '../utils/haptics';
 import {
@@ -350,16 +350,20 @@ export default function GameScreen({
           >
             <Text style={styles.backButton}>‹ שלבים</Text>
           </TouchableOpacity>
-          <View style={styles.headerRight}>
+          {/* הסדר כאן הוא row-reverse: הילד הראשון מופיע הכי ימינה.
+              גלגל ההגדרות אחרון, כדי שיישב בפינה השמאלית העליונה
+              באותו מקום שבו הוא מופיע בשאר המסכים. */}
+          <View style={styles.headerLeft}>
+            <Text style={styles.score}>{state.totalScore} {POINTS_ICON}</Text>
             <TouchableOpacity
-              style={styles.headerIconButton}
+              style={headerIconStyles.button}
               onPress={openReportModal}
               hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
             >
-              <Text style={styles.headerIconText}>🚩</Text>
+              <Text style={headerIconStyles.text}>🚩</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.headerIconButton}
+              style={headerIconStyles.button}
               onPress={() => {
                 tapHaptic();
                 playClickSound();
@@ -367,9 +371,8 @@ export default function GameScreen({
               }}
               hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
             >
-              <Text style={styles.headerIconText}>⚙️</Text>
+              <Text style={headerIconStyles.text}>⚙️</Text>
             </TouchableOpacity>
-            <Text style={styles.score}>{state.totalScore} {POINTS_ICON}</Text>
           </View>
         </View>
         <Text style={styles.levelLabel}>
@@ -560,7 +563,7 @@ const styles = StyleSheet.create({
   },
   topSection: {
     alignItems: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: HEADER_INSET,
     overflow: 'visible',
   },
   header: {
@@ -571,21 +574,10 @@ const styles = StyleSheet.create({
   },
   score: { fontSize: 20, fontWeight: '700', color: '#3A2E1F', writingDirection: 'rtl' },
   backButton: { fontSize: 16, color: '#7A6A52', writingDirection: 'rtl' },
-  headerRight: {
+  headerLeft: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
     gap: 10,
-  },
-  headerIconButton: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: '#EDE0C8',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  headerIconText: {
-    fontSize: 15,
   },
   levelLabel: {
     fontSize: 14,

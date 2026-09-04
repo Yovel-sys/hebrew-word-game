@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native
 import { Level, StoredProgress } from '../types';
 import { getFoundWordsForLevel } from '../utils/progress';
 import { isLevelUnlocked } from '../data/levels';
-import { POINTS_ICON } from '../utils/ui';
+import { HEADER_INSET, POINTS_ICON, headerIconStyles } from '../utils/ui';
 import { tapHaptic } from '../utils/haptics';
 import { playClickSound } from '../utils/sound';
 
@@ -25,19 +25,24 @@ export default function LevelSelectScreen({
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        {/* שני האייקונים מקובצים יחד כדי שה-header יישאר בן שלושה חלקים */}
-        <View style={styles.headerActions}>
+        <TouchableOpacity
+          onPress={() => {
+            tapHaptic();
+            playClickSound();
+            onBackToSplash();
+          }}
+          hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+        >
+          <Text style={styles.headerIcon}>🏠</Text>
+        </TouchableOpacity>
+        <Text style={styles.title}>שלבים</Text>
+        {/* גלגל ההגדרות יושב בפינה השמאלית העליונה בכל מסכי האפליקציה */}
+        <View style={styles.headerLeft}>
+          <Text style={styles.totalScore}>
+            {progress.totalScore} {POINTS_ICON}
+          </Text>
           <TouchableOpacity
-            onPress={() => {
-              tapHaptic();
-              playClickSound();
-              onBackToSplash();
-            }}
-            hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
-          >
-            <Text style={styles.headerIcon}>🏠</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
+            style={headerIconStyles.button}
             onPress={() => {
               tapHaptic();
               playClickSound();
@@ -45,13 +50,9 @@ export default function LevelSelectScreen({
             }}
             hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
           >
-            <Text style={styles.headerIcon}>⚙️</Text>
+            <Text style={headerIconStyles.text}>⚙️</Text>
           </TouchableOpacity>
         </View>
-        <Text style={styles.title}>שלבים</Text>
-        <Text style={styles.totalScore}>
-          {progress.totalScore} {POINTS_ICON}
-        </Text>
       </View>
 
       <FlatList
@@ -122,7 +123,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: HEADER_INSET,
     marginBottom: 16,
   },
   title: {
@@ -136,10 +137,10 @@ const styles = StyleSheet.create({
     color: '#7A6A52',
     writingDirection: 'rtl',
   },
-  headerActions: {
+  headerLeft: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
-    gap: 14,
+    gap: 10,
   },
   headerIcon: {
     fontSize: 22,
