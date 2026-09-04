@@ -479,7 +479,7 @@ export default function GameScreen({
             }}
           >
             <View style={styles.modalCard}>
-              <Text style={styles.modalTitle}>תודה! 🙏</Text>
+              <Text style={styles.modalTitle}>תודה!</Text>
               <Text style={styles.modalMessage}>
                 קיבלנו את הדיווח שלך ונבדוק אותו בהקדם.
               </Text>
