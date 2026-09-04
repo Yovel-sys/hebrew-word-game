@@ -24,6 +24,9 @@ interface ToggleProps {
   onValueChange: (value: boolean) => void;
 }
 
+// כמה זמן הודעת "הדיווח נשלח" נשארת על המסך לפני שהיא נסגרת מעצמה
+const CONFIRMATION_DURATION_MS = 2000;
+
 const TOGGLE_TRAVEL = 20; // מרחק ההחלקה של הכפתור בפיקסלים: רוחב המסילה (50) פחות הכפתור (24) פחות הריפוד משני הצדדים (3+3)
 
 // מתג מותאם אישית במקום ה-Switch המובנה של react-native: על אנדרואיד/web
@@ -99,6 +102,15 @@ export default function SettingsScreen({ onBack, onResetProgress }: Props) {
     setConfirmVisible(false);
     onResetProgress();
   }
+
+  // הודעת האישור נסגרת לבד; אפשר גם לסגור אותה מוקדם בנגיעה.
+  // ה-cleanup מבטל את הטיימר אם המסך יורד או אם המשתמש סגר בעצמו,
+  // כדי לא לעדכן state של קומפוננטה שכבר לא מוצגת.
+  useEffect(() => {
+    if (!bugReportSentVisible) return;
+    const timer = setTimeout(() => setBugReportSentVisible(false), CONFIRMATION_DURATION_MS);
+    return () => clearTimeout(timer);
+  }, [bugReportSentVisible]);
 
   function handleOpenBugReport() {
     tapHaptic();
