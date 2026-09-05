@@ -35,6 +35,8 @@ import {
   playLetterClickSound,
 } from '../utils/sound';
 import { GameState, Level } from '../types';
+import { useRemainingByLength } from '../hooks/useRemainingByLength';
+import RemainingByLength from '../components/RemainingByLength';
 import { submitToWeb3Forms } from '../utils/web3forms';
 
 // גודל אזור המעגל וכל אריח אות
@@ -349,6 +351,15 @@ export default function GameScreen({
     })
   ).current;
 
+  // רשימת המילים שנמצאו כמחרוזות בלבד - מזהה יציב לחישוב ה"נשארו",
+  // כדי שהוא לא ירוץ מחדש בכל רינדור של גרירה (foundWords הוא מערך חדש
+  // רק כשבאמת נמצאה מילה, אבל כאן זה מפורש).
+  const foundWordStrings = useMemo(
+    () => state.foundWords.map((fw) => fw.word),
+    [state.foundWords]
+  );
+  const remainingByLength = useRemainingByLength(level.letters, foundWordStrings);
+
   const liveWord = selectedPath.map((t) => t.char).join('');
   const selectedIndices = new Set(selectedPath.map((t) => t.index));
 
@@ -463,9 +474,25 @@ export default function GameScreen({
           })}
         </View>
 
-        <TouchableOpacity style={styles.shuffleButton} onPress={shuffleLetters} activeOpacity={0.7}>
-          <Text style={styles.shuffleButtonText}>🔀 ערבוב אותיות</Text>
-        </TouchableOpacity>
+        {/* שורת הפקדים מתחת לגלגל: הרמז "כמה נשאר" ממלא את השטח הפנוי
+            מימין לכפתור הערבוב, וה-spacer בצד שמאל שומר על הכפתור
+            במרכז המסך בלי תלות ברוחב הרמז. */}
+        <View style={styles.controlsRow}>
+          <View style={styles.remainingSlot}>
+            <RemainingByLength groups={remainingByLength} />
+          </View>
+          <TouchableOpacity
+            style={styles.shuffleButton}
+            onPress={shuffleLetters}
+            activeOpacity={0.7}
+            accessibilityRole="button"
+            accessibilityLabel="ערבוב אותיות"
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          >
+            <Text style={styles.shuffleButtonText}>🔀</Text>
+          </TouchableOpacity>
+          <View style={styles.controlsSpacer} />
+        </View>
       </View>
 
       {/* רשימת מילים שנמצאו - מוצמדת לתחתית המסך */}
@@ -622,19 +649,35 @@ const styles = StyleSheet.create({
     position: 'relative',
     marginVertical: 16,
   },
-  shuffleButton: {
-    alignSelf: 'center',
-    backgroundColor: '#EDE0C8',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 18,
+  // גובה השורה נקבע ע"י הגבוה מבין הרמז לכפתור. הרמז עוטף לשורות בתוך
+  // חצי הרוחב הפנוי, כך שבפועל הוא כמעט תמיד נמוך מהכפתור ולא מוסיף
+  // שום גובה למסך.
+  controlsRow: {
+    width: '100%',
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    minHeight: 44,
     marginBottom: 8,
   },
+  remainingSlot: {
+    flex: 1,
+    paddingLeft: 8,
+  },
+  // תאום הרוחב של הרמז בצד השני של הכפתור - זה מה ששומר על הכפתור
+  // במרכז המסך.
+  controlsSpacer: {
+    flex: 1,
+  },
+  shuffleButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#EDE0C8',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   shuffleButtonText: {
-    fontFamily: FONTS.regular,
-    fontSize: 14,
-    color: '#5B4A32',
-    writingDirection: 'rtl',
+    fontSize: 18,
   },
   line: {
     position: 'absolute',
