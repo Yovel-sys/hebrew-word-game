@@ -15,16 +15,21 @@ interface Props {
 /**
  * רמז מינימלי: כמה מילים נשארו למצוא בכל אורך.
  * אורך המילה מיוצג בריבועים (אות = ריבוע) במקום בספרה, כדי שהשורה
- * תיקרא כ"צורת מילה" ולא כשתי מספרים זה לצד זה.
+ * תיקרא כ"צורת מילה" ולא כשני מספרים זה לצד זה.
  */
 export default function RemainingByLength({ groups }: Props) {
   if (groups.length === 0) return null;
+
+  // כל שורות הריבועים מקבלות את הרוחב של השורה הארוכה ביותר, כך שעמודת
+  // ה-×N מיושרת לאורך כל הבלוק במקום "לקפוץ" פנימה בכל שורה קצרה.
+  const maxLength = Math.max(...groups.map((g) => g.length));
+  const squaresWidth = maxLength * SQUARE_SIZE + (maxLength - 1) * SQUARE_GAP;
 
   return (
     <View style={styles.container}>
       {groups.map((group) => (
         <View key={group.length} style={styles.group}>
-          <View style={styles.squares}>
+          <View style={[styles.squares, { width: squaresWidth }]}>
             {Array.from({ length: group.length }, (_, i) => (
               <View key={i} style={styles.square} />
             ))}
@@ -37,23 +42,20 @@ export default function RemainingByLength({ groups }: Props) {
 }
 
 const styles = StyleSheet.create({
-  // row-reverse: הקבוצה הראשונה (המילים הקצרות) מתחילה בימין, כמו כיוון
-  // הקריאה של שאר המסך. עוטף לשורה נוספת בשלבים עם מילים ארוכות.
+  // עמודה: שורה אחת לכל אורך מילה, מהקצרה למעלה לארוכה למטה.
+  // הבלוק כולו נצמד לימין, כמו כיוון הקריאה של שאר המסך.
   container: {
-    flexDirection: 'row-reverse',
-    flexWrap: 'wrap',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
     alignSelf: 'flex-end',
-    columnGap: 10,
+    alignItems: 'flex-end',
     rowGap: 4,
-    maxWidth: '100%',
   },
   group: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
-    gap: 3,
+    gap: 4,
   },
+  // row-reverse כאן מצמיד את הריבועים לימין בתוך הרוחב הקבוע, כך
+  // שכל השורות מתחילות מאותו קו ימני.
   squares: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
@@ -68,6 +70,7 @@ const styles = StyleSheet.create({
   count: {
     fontFamily: FONTS.regular,
     fontSize: 11,
+    lineHeight: 13,
     color: '#9C8B6F',
   },
 });
