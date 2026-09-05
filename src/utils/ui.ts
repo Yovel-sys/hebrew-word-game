@@ -14,6 +14,13 @@ export const CONFIRMATION_DURATION_MS = 1000;
 export const HEADER_INSET = 16; // מרחק אופקי מקצה המסך
 export const HEADER_TOP = 48; // מרחק אנכי מראש המסך
 
+// כל אריח בגלגל הוא אות יחידה (ר' usesOnlyAvailableLetters ב-wordValidator),
+// אז מילה שגוררת חזרה לאריח שכבר נבחר תמיד תיפסל בבדיקת התקינות. לכן
+// חוסמים את זה כבר בגרירה עצמה, כדי שהמשתמש לא "יבזבז" ניסיון על מילה
+// שבלתי אפשרית מבנה. שמור כדגל (ולא נמחק) למקרה שנרצה להחזיר את האפשרות
+// אם יתווספו אריחים עם אותיות כפולות בעתיד.
+export const ALLOW_REPEATED_TILE_IN_WORD = false;
+
 export const headerIconStyles = StyleSheet.create({
   button: {
     width: 32,
