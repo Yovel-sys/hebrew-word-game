@@ -474,14 +474,25 @@ export default function GameScreen({
           })}
         </View>
 
-        <TouchableOpacity style={styles.shuffleButton} onPress={shuffleLetters} activeOpacity={0.7}>
-          <Text style={styles.shuffleButtonText}>🔀 ערבוב אותיות</Text>
-        </TouchableOpacity>
-
-        {/* רמז "כמה נשאר" - צמוד לפינה הימנית התחתונה של אזור הגלגל,
-            ממש מעל רשימת המילים שכבר נמצאו */}
-        <View style={styles.remainingWrap}>
-          <RemainingByLength groups={remainingByLength} />
+        {/* שורת הפקדים מתחת לגלגל: כפתור הערבוב נשאר במרכז המסך (ממוקם
+            כשכבת-על, כדי שרוחב הרמז לא יזיז אותו), והרמז "כמה נשאר"
+            יושב במקום הפנוי מימינו במקום להוסיף שורה משלו. */}
+        <View style={styles.controlsRow}>
+          <View style={styles.remainingSlot}>
+            <RemainingByLength groups={remainingByLength} />
+          </View>
+          <View style={styles.shuffleCenter} pointerEvents="box-none">
+            <TouchableOpacity
+              style={styles.shuffleButton}
+              onPress={shuffleLetters}
+              activeOpacity={0.7}
+              accessibilityRole="button"
+              accessibilityLabel="ערבוב אותיות"
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            >
+              <Text style={styles.shuffleButtonText}>🔀</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
 
@@ -639,23 +650,32 @@ const styles = StyleSheet.create({
     position: 'relative',
     marginVertical: 16,
   },
-  shuffleButton: {
-    alignSelf: 'center',
-    backgroundColor: '#EDE0C8',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 18,
+  // גובה השורה נקבע ע"י הגבוה מבין השניים (הרמז או הכפתור), כך שהרמז
+  // "מתמלא" לתוך המקום הפנוי לצד הכפתור במקום להאריך את המסך.
+  controlsRow: {
+    width: '100%',
+    minHeight: 44,
+    justifyContent: 'center',
     marginBottom: 8,
   },
-  shuffleButtonText: {
-    fontFamily: FONTS.regular,
-    fontSize: 14,
-    color: '#5B4A32',
-    writingDirection: 'rtl',
+  remainingSlot: {
+    alignSelf: 'flex-end',
   },
-  remainingWrap: {
-    width: '100%',
-    marginBottom: 4,
+  shuffleCenter: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  shuffleButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#EDE0C8',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  shuffleButtonText: {
+    fontSize: 18,
   },
   line: {
     position: 'absolute',

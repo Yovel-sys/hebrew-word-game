@@ -5,7 +5,7 @@ import { RemainingGroup } from '../hooks/useRemainingByLength';
 
 // ריבוע קטן שמייצג אות אחת. מספיק גדול כדי שאפשר יהיה לספור ריבועים
 // במבט חטוף, ומספיק קטן כדי שהרמז לא יתחרה בגלגל על תשומת הלב.
-const SQUARE_SIZE = 7;
+const SQUARE_SIZE = 6;
 const SQUARE_GAP = 2;
 
 interface Props {
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   container: {
     alignSelf: 'flex-end',
     alignItems: 'flex-end',
-    rowGap: 4,
+    rowGap: 3,
   },
   group: {
     flexDirection: 'row-reverse',
@@ -69,8 +69,8 @@ const styles = StyleSheet.create({
   },
   count: {
     fontFamily: FONTS.regular,
-    fontSize: 11,
-    lineHeight: 13,
+    fontSize: 10,
+    lineHeight: 12,
     color: '#9C8B6F',
   },
 });
