@@ -181,13 +181,22 @@ function generatePuzzles(
   targetCount: number,
   letterFreq: Record<string, number>
 ): PuzzleCandidate[] {
-  const wordLetterSets = words.map((w) => ({
-    word: w,
-    letters: new Set(normalize(w)),
-  }));
+  const wordLetterSets = words.map((w) => {
+    const normalized = normalize(w);
+    const letters = new Set(normalized);
+    return {
+      word: w,
+      letters,
+      // אין reuse: לכל אות בגלגל אריח יחיד, אז מילה עם אות כפולה
+      // (כמו "מטיילת") לא ניתנת להרכבה ולא תיכנס למאגר המילים התקין.
+      hasNoRepeatedLetters: letters.size === normalized.length,
+    };
+  });
 
-  const pangramCandidates = wordLetterSets.filter((w) => w.letters.size === letterCount);
-  console.log(`מועמדי פנגרם (${letterCount} אותיות ייחודיות): ${pangramCandidates.length}`);
+  const pangramCandidates = wordLetterSets.filter(
+    (w) => w.letters.size === letterCount && w.hasNoRepeatedLetters
+  );
+  console.log(`מועמדי פנגרם (${letterCount} אותיות ייחודיות, בלי reuse): ${pangramCandidates.length}`);
 
   const puzzles: PuzzleCandidate[] = [];
   const shuffled = [...pangramCandidates].sort(() => rng() - 0.5);
@@ -197,6 +206,7 @@ function generatePuzzles(
 
     const letterSet = candidate.letters;
     const matchingWords = wordLetterSets.filter((w) => {
+      if (!w.hasNoRepeatedLetters) return false;
       for (const l of w.letters) {
         if (!letterSet.has(l)) return false;
       }
