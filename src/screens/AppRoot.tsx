@@ -5,6 +5,7 @@ import { LEVELS } from '../data/levels';
 import { loadProgress, saveProgress, clearProgress, addFoundWordToProgress, getFoundWordsForLevel } from '../utils/progress';
 import { hasSeenExplanation, markExplanationSeen } from '../utils/onboarding';
 import { loadSettings } from '../utils/settings';
+import { useAppFonts } from '../utils/fonts';
 import SplashScreen from './SplashScreen';
 import ExplanationScreen from './ExplanationScreen';
 import SettingsScreen from './SettingsScreen';
@@ -23,6 +24,7 @@ type Screen =
 export default function AppRoot() {
   const [progress, setProgress] = useState<StoredProgress | null>(null);
   const [screen, setScreen] = useState<Screen>({ name: 'splash' });
+  const fontsReady = useAppFonts();
 
   useEffect(() => {
     loadProgress().then(setProgress);
@@ -49,6 +51,16 @@ export default function AppRoot() {
   async function handleExplanationDone() {
     await markExplanationSeen();
     setScreen({ name: 'levels' });
+  }
+
+  if (!fontsReady) {
+    // מחכים לפונטים לפני הרינדור הראשון, אחרת מסך הפתיחה מוצג לרגע
+    // בפונט ברירת המחדל ואז "קופץ" לפונט הנכון.
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" color="#3A2E1F" />
+      </View>
+    );
   }
 
   if (screen.name === 'splash') {

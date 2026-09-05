@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { tapHaptic } from '../utils/haptics';
 import { playClickSound } from '../utils/sound';
+import { FONTS } from '../utils/fonts';
 
 interface Props {
   onDone: () => void;
@@ -49,8 +50,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
   },
   title: {
+    fontFamily: FONTS.display,
     fontSize: 26,
-    fontWeight: '800',
     color: '#3A2E1F',
     writingDirection: 'rtl',
     marginBottom: 20,
@@ -64,6 +65,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   instructionText: {
+    fontFamily: FONTS.regular,
     fontSize: 15,
     color: '#5B4A32',
     writingDirection: 'rtl',
@@ -77,8 +79,8 @@ const styles = StyleSheet.create({
     borderRadius: 28,
   },
   doneButtonText: {
+    fontFamily: FONTS.bold,
     fontSize: 18,
-    fontWeight: '700',
     color: '#FFF8E7',
     writingDirection: 'rtl',
   },

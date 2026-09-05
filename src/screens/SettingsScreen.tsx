@@ -14,6 +14,7 @@ import { playClickSound } from '../utils/sound';
 import { isHapticEnabled, isSoundEffectsEnabled, setHapticEnabled, setSoundEffectsEnabled } from '../utils/settings';
 import { CONFIRMATION_DURATION_MS } from '../utils/ui';
 import { submitToWeb3Forms } from '../utils/web3forms';
+import { FONTS } from '../utils/fonts';
 
 interface Props {
   onBack: () => void;
@@ -330,12 +331,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   title: {
+    fontFamily: FONTS.display,
     fontSize: 22,
-    fontWeight: '700',
     color: '#3A2E1F',
     writingDirection: 'rtl',
   },
   backButton: {
+    fontFamily: FONTS.regular,
     fontSize: 16,
     color: '#7A6A52',
     writingDirection: 'rtl',
@@ -348,8 +350,8 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   sectionTitle: {
+    fontFamily: FONTS.bold,
     fontSize: 14,
-    fontWeight: '700',
     color: '#7A6A52',
     writingDirection: 'rtl',
     textAlign: 'right',
@@ -370,6 +372,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
   },
   rowLabel: {
+    fontFamily: FONTS.regular,
     fontSize: 16,
     color: '#3A2E1F',
     writingDirection: 'rtl',
@@ -402,8 +405,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dangerButtonText: {
+    fontFamily: FONTS.bold,
     fontSize: 16,
-    fontWeight: '700',
     color: '#FFF8E7',
     writingDirection: 'rtl',
   },
@@ -427,8 +430,8 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   fieldLabel: {
+    fontFamily: FONTS.medium,
     fontSize: 13,
-    fontWeight: '600',
     color: '#7A6A52',
     writingDirection: 'rtl',
     textAlign: 'right',
@@ -436,6 +439,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   textInput: {
+    fontFamily: FONTS.regular,
     backgroundColor: '#F2E6C9',
     borderRadius: 12,
     borderWidth: 1,
@@ -452,14 +456,15 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   modalTitle: {
+    fontFamily: FONTS.bold,
     fontSize: 18,
-    fontWeight: '700',
     color: '#3A2E1F',
     writingDirection: 'rtl',
     textAlign: 'center',
     marginBottom: 10,
   },
   modalMessage: {
+    fontFamily: FONTS.regular,
     fontSize: 14,
     color: '#7A6A52',
     writingDirection: 'rtl',
@@ -482,8 +487,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#D64545',
   },
   modalConfirmText: {
+    fontFamily: FONTS.bold,
     fontSize: 15,
-    fontWeight: '700',
     color: '#FFF8E7',
     writingDirection: 'rtl',
   },
@@ -497,6 +502,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   errorText: {
+    fontFamily: FONTS.regular,
     marginTop: 10,
     fontSize: 13,
     color: '#B4342A',
@@ -504,14 +510,14 @@ const styles = StyleSheet.create({
     writingDirection: 'rtl',
   },
   bugSubmitText: {
+    fontFamily: FONTS.bold,
     fontSize: 15,
-    fontWeight: '700',
     color: '#3A2E1F',
     writingDirection: 'rtl',
   },
   modalCancelText: {
+    fontFamily: FONTS.bold,
     fontSize: 15,
-    fontWeight: '700',
     color: '#3A2E1F',
     writingDirection: 'rtl',
   },
@@ -522,8 +528,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   comingSoonText: {
+    fontFamily: FONTS.bold,
     fontSize: 20,
-    fontWeight: '700',
     color: '#3A2E1F',
     writingDirection: 'rtl',
     textAlign: 'center',

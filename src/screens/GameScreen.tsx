@@ -17,6 +17,7 @@ import { computeCirclePositions, Point } from '../utils/circleLayout';
 import { computeLineStyle, distance } from '../utils/lineGeometry';
 import { buildDictionarySet } from '../utils/wordValidator';
 import { restoreState, submitWord } from '../utils/gameLogic';
+import { FONTS } from '../utils/fonts';
 import {
   ALLOW_REPEATED_TILE_IN_WORD,
   CONFIRMATION_DURATION_MS,
@@ -587,21 +588,22 @@ const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 16,
   },
-  score: { fontSize: 20, fontWeight: '700', color: '#3A2E1F', writingDirection: 'rtl' },
-  backButton: { fontSize: 16, color: '#7A6A52', writingDirection: 'rtl' },
+  score: { fontFamily: FONTS.bold, fontSize: 20, color: '#3A2E1F', writingDirection: 'rtl' },
+  backButton: { fontFamily: FONTS.regular, fontSize: 16, color: '#7A6A52', writingDirection: 'rtl' },
   headerLeft: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
     gap: 10,
   },
   levelLabel: {
+    fontFamily: FONTS.regular,
     fontSize: 14,
     color: '#9C8B6F',
     writingDirection: 'rtl',
     alignSelf: 'flex-end',
     marginBottom: 8,
   },
-  wordCount: { fontSize: 16, color: '#7A6A52', writingDirection: 'rtl' },
+  wordCount: { fontFamily: FONTS.regular, fontSize: 16, color: '#7A6A52', writingDirection: 'rtl' },
   inputDisplay: {
     width: '100%',
     height: 44,
@@ -610,8 +612,8 @@ const styles = StyleSheet.create({
     overflow: 'visible',
   },
   inputText: {
+    fontFamily: FONTS.medium,
     fontSize: 30,
-    fontWeight: '600',
     color: '#3A2E1F',
     writingDirection: 'rtl',
     textAlign: 'center',
@@ -629,6 +631,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   shuffleButtonText: {
+    fontFamily: FONTS.regular,
     fontSize: 14,
     color: '#5B4A32',
     writingDirection: 'rtl',
@@ -660,8 +663,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#3A2E1F',
   },
   letterText: {
+    fontFamily: FONTS.bold,
     fontSize: 26,
-    fontWeight: '700',
     color: '#3A2E1F',
   },
   letterTextSelected: {
@@ -704,11 +707,13 @@ const styles = StyleSheet.create({
     borderBottomColor: '#D8C9A8',
   },
   foundWordText: {
+    fontFamily: FONTS.regular,
     fontSize: 18,
     color: '#3A2E1F',
     writingDirection: 'rtl',
   },
   foundScoreText: {
+    fontFamily: FONTS.regular,
     fontSize: 16,
     color: '#7A6A52',
   },
@@ -726,14 +731,15 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   modalTitle: {
+    fontFamily: FONTS.bold,
     fontSize: 18,
-    fontWeight: '700',
     color: '#3A2E1F',
     writingDirection: 'rtl',
     textAlign: 'center',
     marginBottom: 10,
   },
   modalMessage: {
+    fontFamily: FONTS.regular,
     fontSize: 14,
     color: '#7A6A52',
     writingDirection: 'rtl',
@@ -742,14 +748,15 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   fieldLabel: {
+    fontFamily: FONTS.medium,
     fontSize: 14,
-    fontWeight: '600',
     color: '#5B4A32',
     writingDirection: 'rtl',
     textAlign: 'right',
     marginBottom: 6,
   },
   input: {
+    fontFamily: FONTS.regular,
     backgroundColor: '#F2E6C9',
     borderRadius: 12,
     borderWidth: 1,
@@ -779,6 +786,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   errorText: {
+    fontFamily: FONTS.regular,
     marginTop: 10,
     fontSize: 13,
     color: '#B4342A',
@@ -789,8 +797,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#3A2E1F',
   },
   modalConfirmText: {
+    fontFamily: FONTS.bold,
     fontSize: 15,
-    fontWeight: '700',
     color: '#FFF8E7',
     writingDirection: 'rtl',
   },
@@ -798,8 +806,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#EDE0C8',
   },
   modalCancelText: {
+    fontFamily: FONTS.bold,
     fontSize: 15,
-    fontWeight: '700',
     color: '#3A2E1F',
     writingDirection: 'rtl',
   },
