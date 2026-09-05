@@ -1,994 +1,374 @@
 [
   {
     "letters": [
-      "מ",
-      "ט",
-      "ת",
-      "י",
-      "ל"
+      "ו",
+      "ש",
+      "ע",
+      "כ",
+      "י"
     ],
-    "pangramWord": "מטיילת",
-    "wordCount": 60,
+    "pangramWord": "ועכשיו",
+    "wordCount": 57,
     "sampleWords": [
-      "טי",
-      "טייל",
-      "טיילת",
-      "טיילתי",
-      "טיל"
+      "וו",
+      "וי",
+      "ויי",
+      "יו",
+      "יכו"
     ],
-    "difficulty": 0.000014453616004240872,
-    "achievableScore": 258
+    "difficulty": 0.000008902361508675055,
+    "achievableScore": 210
+  },
+  {
+    "letters": [
+      "י",
+      "ע",
+      "כ",
+      "ר",
+      "ת"
+    ],
+    "pangramWord": "תיערך",
+    "wordCount": 56,
+    "sampleWords": [
+      "ייערך",
+      "יכיר",
+      "יעיר",
+      "יער",
+      "יעריך"
+    ],
+    "difficulty": 0.000009137488821548955,
+    "achievableScore": 223
   },
   {
     "letters": [
       "פ",
-      "ו",
-      "ת",
-      "ה",
-      "ח"
+      "י",
+      "ק",
+      "ד",
+      "ת"
     ],
-    "pangramWord": "התפתחו",
-    "wordCount": 58,
+    "pangramWord": "תדפקי",
+    "wordCount": 60,
     "sampleWords": [
-      "הוו",
-      "הווה",
-      "החווה",
-      "הפח",
-      "הפחות"
+      "דד",
+      "דדי",
+      "די",
+      "דידי",
+      "דיי"
     ],
-    "difficulty": 0.000014681007684040152,
-    "achievableScore": 250
+    "difficulty": 0.000009644458307990626,
+    "achievableScore": 241
   },
   {
     "letters": [
-      "ה",
-      "ת",
-      "מ",
+      "ק",
+      "ר",
       "ח",
-      "ק"
+      "ת",
+      "ה"
     ],
-    "pangramWord": "התחמקת",
-    "wordCount": 60,
+    "pangramWord": "הרחקת",
+    "wordCount": 51,
     "sampleWords": [
-      "ההם",
-      "הם",
-      "המה",
-      "המת",
-      "המתה"
+      "הקר",
+      "הקרח",
+      "הר",
+      "הרה",
+      "הרחק"
     ],
-    "difficulty": 0.000014723927519447412,
+    "difficulty": 0.000009734352034339588,
+    "achievableScore": 191
+  },
+  {
+    "letters": [
+      "ר",
+      "ס",
+      "ד",
+      "ה",
+      "ת"
+    ],
+    "pangramWord": "הסתדרת",
+    "wordCount": 57,
+    "sampleWords": [
+      "דד",
+      "דהה",
+      "דר",
+      "דרדס",
+      "דרה"
+    ],
+    "difficulty": 0.000009786695759856037,
+    "achievableScore": 207
+  },
+  {
+    "letters": [
+      "ו",
+      "ת",
+      "פ",
+      "מ",
+      "ט"
+    ],
+    "pangramWord": "פטמות",
+    "wordCount": 56,
+    "sampleWords": [
+      "וו",
+      "וטו",
+      "טוטו",
+      "טופו",
+      "טמטום"
+    ],
+    "difficulty": 0.000010031066151274275,
     "achievableScore": 229
   },
   {
     "letters": [
-      "פ",
       "ע",
-      "ה",
-      "י",
-      "ו"
-    ],
-    "pangramWord": "הופיע",
-    "wordCount": 57,
-    "sampleWords": [
-      "הוו",
-      "הווה",
-      "הוי",
-      "הופיע",
-      "הופיעה"
-    ],
-    "difficulty": 0.000014817772708005805,
-    "achievableScore": 245
-  },
-  {
-    "letters": [
-      "ה",
-      "ל",
-      "ע",
-      "פ",
-      "ו"
-    ],
-    "pangramWord": "הופעלה",
-    "wordCount": 60,
-    "sampleWords": [
-      "הוו",
-      "הווה",
-      "הועלה",
-      "הופל",
-      "הופלל"
-    ],
-    "difficulty": 0.00001560344826483125,
-    "achievableScore": 245
-  },
-  {
-    "letters": [
-      "פ",
-      "ל",
-      "מ",
-      "ו",
-      "ע"
-    ],
-    "pangramWord": "מעולף",
-    "wordCount": 57,
-    "sampleWords": [
-      "וו",
-      "ופל",
-      "לו",
-      "לוו",
-      "לול"
-    ],
-    "difficulty": 0.00001565690788061095,
-    "achievableScore": 227
-  },
-  {
-    "letters": [
-      "פ",
-      "ה",
-      "ו",
       "א",
-      "נ"
+      "נ",
+      "ק",
+      "י"
     ],
-    "pangramWord": "אפונה",
+    "pangramWord": "אעניק",
     "wordCount": 58,
     "sampleWords": [
-      "או",
-      "אווה",
-      "אוון",
-      "און",
-      "אונה"
+      "אי",
+      "איי",
+      "איין",
+      "אין",
+      "איני"
     ],
-    "difficulty": 0.00001579845694124565,
+    "difficulty": 0.000010108576551348432,
     "achievableScore": 204
   },
   {
     "letters": [
-      "ק",
-      "פ",
-      "ר",
-      "ה",
-      "ת"
-    ],
-    "pangramWord": "התפרקה",
-    "wordCount": 57,
-    "sampleWords": [
-      "הפקה",
-      "הפקת",
-      "הפר",
-      "הפרה",
-      "הפרת"
-    ],
-    "difficulty": 0.00001600328826713964,
-    "achievableScore": 208
-  },
-  {
-    "letters": [
-      "ב",
-      "י",
-      "ע",
-      "ק",
-      "מ"
-    ],
-    "pangramWord": "מעקבים",
-    "wordCount": 60,
-    "sampleWords": [
-      "בי",
-      "ביב",
-      "ביים",
-      "בם",
-      "בקי"
-    ],
-    "difficulty": 0.000016211586145916,
-    "achievableScore": 249
-  },
-  {
-    "letters": [
-      "ח",
-      "ס",
-      "ה",
-      "י",
-      "ת"
-    ],
-    "pangramWord": "התייחס",
-    "wordCount": 57,
-    "sampleWords": [
-      "החיה",
-      "החייתי",
-      "היה",
-      "היי",
-      "היית"
-    ],
-    "difficulty": 0.0000162556765149381,
-    "achievableScore": 258
-  },
-  {
-    "letters": [
-      "ו",
       "נ",
-      "ס",
-      "ר",
-      "פ"
-    ],
-    "pangramWord": "סופרנו",
-    "wordCount": 60,
-    "sampleWords": [
-      "וו",
-      "ונוס",
-      "נו",
-      "נוסף",
-      "נוף"
-    ],
-    "difficulty": 0.00001637194419669006,
-    "achievableScore": 224
-  },
-  {
-    "letters": [
-      "ר",
-      "נ",
-      "ש",
-      "ק",
-      "ת"
-    ],
-    "pangramWord": "נתקשר",
-    "wordCount": 55,
-    "sampleWords": [
-      "ננתק",
-      "נקשר",
-      "נר",
-      "נשק",
-      "נשר"
-    ],
-    "difficulty": 0.00001645268207395204,
-    "achievableScore": 172
-  },
-  {
-    "letters": [
-      "ל",
-      "ר",
-      "ב",
-      "ד",
-      "מ"
-    ],
-    "pangramWord": "למדבר",
-    "wordCount": 57,
-    "sampleWords": [
-      "בבל",
-      "בד",
-      "בדל",
-      "בדר",
-      "בל"
-    ],
-    "difficulty": 0.000016808907854914464,
-    "achievableScore": 173
-  },
-  {
-    "letters": [
-      "ק",
-      "פ",
-      "ד",
-      "ת",
-      "ו"
-    ],
-    "pangramWord": "דופקת",
-    "wordCount": 60,
-    "sampleWords": [
-      "דד",
-      "דו",
-      "דוד",
-      "דודות",
-      "דופק"
-    ],
-    "difficulty": 0.00001739039297930688,
-    "achievableScore": 258
-  },
-  {
-    "letters": [
-      "ה",
-      "ק",
-      "ת",
-      "ע",
-      "ש"
-    ],
-    "pangramWord": "התעקש",
-    "wordCount": 58,
-    "sampleWords": [
-      "העתק",
-      "העתקה",
-      "העתקת",
-      "הקש",
-      "הקשה"
-    ],
-    "difficulty": 0.000018041058325893962,
-    "achievableScore": 228
-  },
-  {
-    "letters": [
-      "ר",
-      "ת",
-      "ב",
-      "ס",
-      "ה"
-    ],
-    "pangramWord": "הסברת",
-    "wordCount": 53,
-    "sampleWords": [
-      "בבה",
-      "בה",
-      "בהה",
-      "בס",
-      "בר"
-    ],
-    "difficulty": 0.000018214791672025175,
-    "achievableScore": 179
-  },
-  {
-    "letters": [
-      "ב",
-      "ק",
       "א",
-      "ש",
-      "י"
+      "ק",
+      "ב",
+      "ת"
     ],
-    "pangramWord": "אקשיב",
-    "wordCount": 59,
+    "pangramWord": "נאבקת",
+    "wordCount": 53,
     "sampleWords": [
       "אב",
       "אבא",
-      "אבי",
-      "אביא",
-      "אביב"
+      "אבן",
+      "אבק",
+      "אן"
     ],
-    "difficulty": 0.000018407563190050048,
-    "achievableScore": 179
+    "difficulty": 0.000010144551699551972,
+    "achievableScore": 161
   },
   {
     "letters": [
-      "ק",
       "ב",
-      "ד",
-      "י",
-      "ה"
+      "ס",
+      "כ",
+      "ת",
+      "נ"
     ],
-    "pangramWord": "בדיקה",
-    "wordCount": 56,
+    "pangramWord": "נסתבך",
+    "wordCount": 60,
     "sampleWords": [
-      "בבה",
-      "בד",
-      "בדה",
-      "בדי",
-      "בדיה"
+      "בך",
+      "בכן",
+      "בן",
+      "בס",
+      "בת"
     ],
-    "difficulty": 0.000018682297920097614,
-    "achievableScore": 199
+    "difficulty": 0.000010210457431443476,
+    "achievableScore": 207
   },
   {
     "letters": [
-      "י",
-      "ג",
       "ו",
+      "י",
       "ע",
-      "מ"
+      "ג",
+      "ת"
     ],
-    "pangramWord": "געגועים",
-    "wordCount": 52,
+    "pangramWord": "תגיעו",
+    "wordCount": 54,
     "sampleWords": [
       "גג",
+      "גגות",
       "גו",
-      "גווע",
-      "גוועים",
-      "גומי"
+      "גוויות",
+      "גווע"
     ],
-    "difficulty": 0.000019003090812854504,
-    "achievableScore": 206
+    "difficulty": 0.000010255362656652927,
+    "achievableScore": 248
   },
   {
     "letters": [
+      "ג",
+      "ו",
       "י",
-      "צ",
       "ת",
-      "ו",
-      "ב"
+      "ס"
     ],
-    "pangramWord": "ביצות",
-    "wordCount": 49,
-    "sampleWords": [
-      "בו",
-      "בובות",
-      "בוץ",
-      "בי",
-      "ביב"
-    ],
-    "difficulty": 0.000019007899147362085,
-    "achievableScore": 199
-  },
-  {
-    "letters": [
-      "ט",
-      "מ",
-      "י",
-      "ב",
-      "ע"
-    ],
-    "pangramWord": "מטביע",
-    "wordCount": 59,
-    "sampleWords": [
-      "בי",
-      "ביב",
-      "ביט",
-      "ביים",
-      "בם"
-    ],
-    "difficulty": 0.00001931442568898987,
-    "achievableScore": 274
-  },
-  {
-    "letters": [
-      "ד",
-      "ה",
-      "פ",
-      "ו",
-      "ח"
-    ],
-    "pangramWord": "דחופה",
-    "wordCount": 55,
-    "sampleWords": [
-      "דד",
-      "דהה",
-      "דו",
-      "דוד",
-      "דודה"
-    ],
-    "difficulty": 0.000019555981931421564,
-    "achievableScore": 185
-  },
-  {
-    "letters": [
-      "א",
-      "י",
-      "ט",
-      "נ",
-      "ש"
-    ],
-    "pangramWord": "איינשטיין",
-    "wordCount": 60,
-    "sampleWords": [
-      "אט",
-      "אטי",
-      "אי",
-      "איי",
-      "איין"
-    ],
-    "difficulty": 0.00001958881079769381,
-    "achievableScore": 181
-  },
-  {
-    "letters": [
-      "ה",
-      "ט",
-      "ת",
-      "ל",
-      "ק"
-    ],
-    "pangramWord": "הקלטת",
-    "wordCount": 57,
-    "sampleWords": [
-      "הטה",
-      "הטל",
-      "הטלה",
-      "הטלת",
-      "הל"
-    ],
-    "difficulty": 0.00001960245481042996,
-    "achievableScore": 208
-  },
-  {
-    "letters": [
-      "ו",
-      "ד",
-      "פ",
-      "א",
-      "ל"
-    ],
-    "pangramWord": "אדולף",
+    "pangramWord": "תיסוג",
     "wordCount": 56,
     "sampleWords": [
-      "אד",
-      "אדו",
-      "אדולף",
-      "אדל",
-      "או"
+      "גג",
+      "גגות",
+      "גו",
+      "גוויות",
+      "גויס"
     ],
-    "difficulty": 0.000019690374581374026,
-    "achievableScore": 177
+    "difficulty": 0.00001046546935157956,
+    "achievableScore": 209
   },
   {
     "letters": [
-      "נ",
-      "ח",
-      "ו",
-      "א",
-      "ב"
-    ],
-    "pangramWord": "אובחן",
-    "wordCount": 52,
-    "sampleWords": [
-      "אב",
-      "אבא",
-      "אבו",
-      "אבוא",
-      "אבחון"
-    ],
-    "difficulty": 0.00001970080902306706,
-    "achievableScore": 172
-  },
-  {
-    "letters": [
-      "א",
       "ת",
-      "ט",
-      "י",
-      "ל"
-    ],
-    "pangramWord": "אתלטית",
-    "wordCount": 51,
-    "sampleWords": [
-      "אט",
-      "אטי",
-      "אטיל",
-      "אי",
-      "איי"
-    ],
-    "difficulty": 0.000020542819991002315,
-    "achievableScore": 185
-  },
-  {
-    "letters": [
-      "ס",
-      "ב",
-      "י",
-      "ו",
+      "ע",
+      "נ",
+      "ש",
       "כ"
     ],
-    "pangramWord": "סיבוך",
-    "wordCount": 53,
+    "pangramWord": "תשכנע",
+    "wordCount": 55,
     "sampleWords": [
-      "בו",
-      "בוס",
-      "בי",
-      "ביב",
-      "ביוב"
+      "כך",
+      "כן",
+      "כת",
+      "נכנע",
+      "נכנעת"
     ],
-    "difficulty": 0.00002117314539938967,
+    "difficulty": 0.000010537754820472718,
+    "achievableScore": 212
+  },
+  {
+    "letters": [
+      "מ",
+      "ת",
+      "ד",
+      "פ",
+      "ק"
+    ],
+    "pangramWord": "מפקדת",
+    "wordCount": 56,
+    "sampleWords": [
+      "דד",
+      "דם",
+      "דמם",
+      "דממת",
+      "דף"
+    ],
+    "difficulty": 0.000010597279003405362,
+    "achievableScore": 220
+  },
+  {
+    "letters": [
+      "ה",
+      "ס",
+      "ר",
+      "ת",
+      "ע"
+    ],
+    "pangramWord": "הסתער",
+    "wordCount": 52,
+    "sampleWords": [
+      "הס",
+      "הסעה",
+      "הסער",
+      "הסעת",
+      "הסר"
+    ],
+    "difficulty": 0.000010611984261312553,
     "achievableScore": 175
   },
   {
     "letters": [
       "ת",
-      "א",
-      "ו",
-      "ד",
-      "ג"
-    ],
-    "pangramWord": "דואגת",
-    "wordCount": 58,
-    "sampleWords": [
-      "אגדות",
-      "אגו",
-      "אד",
-      "אדאג",
-      "אדו"
-    ],
-    "difficulty": 0.00002128502059064063,
-    "achievableScore": 226
-  },
-  {
-    "letters": [
-      "ת",
-      "א",
       "ה",
-      "נ",
-      "פ"
-    ],
-    "pangramWord": "אתפנה",
-    "wordCount": 44,
-    "sampleWords": [
-      "אן",
-      "אנא",
-      "אנה",
-      "אף",
-      "אפה"
-    ],
-    "difficulty": 0.00002130864392526602,
-    "achievableScore": 137
-  },
-  {
-    "letters": [
       "י",
-      "ט",
-      "א",
-      "ו",
-      "ד"
-    ],
-    "pangramWord": "אידיוטי",
-    "wordCount": 56,
-    "sampleWords": [
-      "אד",
-      "אדו",
-      "אדי",
-      "או",
-      "אוד"
-    ],
-    "difficulty": 0.000021340248983367417,
-    "achievableScore": 189
-  },
-  {
-    "letters": [
-      "ה",
-      "ג",
-      "ר",
-      "ו",
-      "ח"
-    ],
-    "pangramWord": "חגורה",
-    "wordCount": 50,
-    "sampleWords": [
-      "גג",
-      "גו",
-      "גור",
-      "גורה",
-      "גורו"
-    ],
-    "difficulty": 0.000021461684045321027,
-    "achievableScore": 172
-  },
-  {
-    "letters": [
-      "נ",
-      "ת",
-      "ב",
-      "ד",
-      "ה"
-    ],
-    "pangramWord": "התנדבת",
-    "wordCount": 45,
-    "sampleWords": [
-      "בבה",
-      "בד",
-      "בדה",
-      "בה",
-      "בהה"
-    ],
-    "difficulty": 0.000021511697735808625,
-    "achievableScore": 153
-  },
-  {
-    "letters": [
-      "נ",
-      "ג",
-      "ו",
-      "א",
-      "ב"
-    ],
-    "pangramWord": "אגנוב",
-    "wordCount": 54,
-    "sampleWords": [
-      "אב",
-      "אבא",
-      "אבו",
-      "אבוא",
-      "אבן"
-    ],
-    "difficulty": 0.000022217893446398422,
-    "achievableScore": 165
-  },
-  {
-    "letters": [
-      "ה",
-      "ז",
-      "ל",
-      "ח",
-      "י"
-    ],
-    "pangramWord": "זחילה",
-    "wordCount": 59,
-    "sampleWords": [
-      "הזה",
-      "הזז",
-      "הזיה",
-      "הזיז",
-      "החיה"
-    ],
-    "difficulty": 0.000022293618221273638,
-    "achievableScore": 205
-  },
-  {
-    "letters": [
-      "ו",
-      "א",
-      "כ",
-      "ש",
-      "נ"
-    ],
-    "pangramWord": "אנשוך",
-    "wordCount": 51,
-    "sampleWords": [
-      "או",
-      "אוון",
-      "און",
-      "אך",
-      "אכוון"
-    ],
-    "difficulty": 0.00002233215584420097,
-    "achievableScore": 163
-  },
-  {
-    "letters": [
-      "ח",
-      "י",
-      "א",
-      "ר",
-      "כ"
-    ],
-    "pangramWord": "אחריך",
-    "wordCount": 51,
-    "sampleWords": [
-      "אאחר",
-      "אח",
-      "אחי",
-      "אחייך",
-      "אחר"
-    ],
-    "difficulty": 0.000022358987832823907,
-    "achievableScore": 189
-  },
-  {
-    "letters": [
-      "ו",
-      "ז",
-      "מ",
-      "כ",
-      "י"
-    ],
-    "pangramWord": "זוכים",
-    "wordCount": 56,
-    "sampleWords": [
-      "וו",
-      "וי",
-      "ויי",
-      "זו",
-      "זוז"
-    ],
-    "difficulty": 0.000023492463345771766,
-    "achievableScore": 208
-  },
-  {
-    "letters": [
-      "ו",
-      "נ",
-      "ק",
-      "א",
-      "ח"
-    ],
-    "pangramWord": "אחנוק",
-    "wordCount": 45,
-    "sampleWords": [
-      "או",
-      "אוון",
-      "אוח",
-      "און",
-      "אח"
-    ],
-    "difficulty": 0.000023582312710964432,
-    "achievableScore": 141
-  },
-  {
-    "letters": [
-      "ת",
-      "ר",
-      "ז",
-      "כ",
-      "י"
-    ],
-    "pangramWord": "זכרתי",
-    "wordCount": 58,
-    "sampleWords": [
-      "זז",
-      "זזת",
-      "זזתי",
-      "זי",
-      "זית"
-    ],
-    "difficulty": 0.000023751486297308913,
-    "achievableScore": 265
-  },
-  {
-    "letters": [
-      "ר",
-      "צ",
-      "ו",
-      "א",
-      "ע"
-    ],
-    "pangramWord": "אעצור",
-    "wordCount": 52,
-    "sampleWords": [
-      "אאוץ",
-      "או",
-      "אוורור",
-      "אוצר",
-      "אור"
-    ],
-    "difficulty": 0.000023782773480688756,
-    "achievableScore": 162
-  },
-  {
-    "letters": [
-      "י",
-      "כ",
-      "ר",
-      "ו",
-      "ז"
-    ],
-    "pangramWord": "ריכוז",
-    "wordCount": 56,
-    "sampleWords": [
-      "וו",
-      "וי",
-      "ויי",
-      "זו",
-      "זוז"
-    ],
-    "difficulty": 0.00002421993527007964,
-    "achievableScore": 203
-  },
-  {
-    "letters": [
-      "ס",
-      "ל",
-      "י",
-      "ט",
-      "ר"
-    ],
-    "pangramWord": "סטרילי",
-    "wordCount": 47,
-    "sampleWords": [
-      "טי",
-      "טייל",
-      "טייס",
-      "טיל",
-      "טיס"
-    ],
-    "difficulty": 0.00002448914084401388,
-    "achievableScore": 172
-  },
-  {
-    "letters": [
-      "ס",
-      "ב",
-      "ה",
-      "כ",
-      "ת"
-    ],
-    "pangramWord": "הסתבכת",
-    "wordCount": 49,
-    "sampleWords": [
-      "בבה",
-      "בה",
-      "בהה",
-      "בך",
-      "בכה"
-    ],
-    "difficulty": 0.000024834682282287535,
-    "achievableScore": 171
-  },
-  {
-    "letters": [
-      "ג",
-      "א",
-      "ו",
-      "ב",
-      "ד"
-    ],
-    "pangramWord": "אבגוד",
-    "wordCount": 55,
-    "sampleWords": [
-      "אאבד",
-      "אב",
-      "אבא",
-      "אבגוד",
-      "אבד"
-    ],
-    "difficulty": 0.000024872286619666327,
-    "achievableScore": 162
-  },
-  {
-    "letters": [
-      "ל",
-      "ו",
-      "א",
-      "ט",
-      "ח"
-    ],
-    "pangramWord": "אלחוט",
-    "wordCount": 49,
-    "sampleWords": [
-      "או",
-      "אוח",
-      "אוטו",
-      "אח",
-      "אט"
-    ],
-    "difficulty": 0.00002505366496363389,
-    "achievableScore": 160
-  },
-  {
-    "letters": [
-      "ה",
-      "ו",
-      "ט",
-      "ב",
-      "ח"
-    ],
-    "pangramWord": "בטוחה",
-    "wordCount": 46,
-    "sampleWords": [
-      "בבה",
-      "בה",
-      "בהה",
-      "בו",
-      "בובה"
-    ],
-    "difficulty": 0.000025411518120521612,
-    "achievableScore": 172
-  },
-  {
-    "letters": [
-      "ד",
       "ע",
-      "ו",
-      "ב",
-      "א"
+      "ס"
     ],
-    "pangramWord": "אעבוד",
+    "pangramWord": "הסעתי",
     "wordCount": 48,
     "sampleWords": [
-      "אאבד",
-      "אב",
-      "אבא",
-      "אבד",
-      "אבדו"
+      "היה",
+      "היי",
+      "היית",
+      "הייתה",
+      "הייתי"
     ],
-    "difficulty": 0.000025456654801754656,
-    "achievableScore": 142
-  },
-  {
-    "letters": [
-      "ה",
-      "י",
-      "ו",
-      "ק",
-      "ג"
-    ],
-    "pangramWord": "גיהוק",
-    "wordCount": 39,
-    "sampleWords": [
-      "גג",
-      "גו",
-      "גווייה",
-      "גויה",
-      "גיהוק"
-    ],
-    "difficulty": 0.00002584103202829453,
-    "achievableScore": 137
+    "difficulty": 0.000010684513615945715,
+    "achievableScore": 185
   },
   {
     "letters": [
       "ת",
-      "ה",
+      "ל",
+      "ג",
       "פ",
-      "צ",
-      "ק"
+      "מ"
+    ],
+    "pangramWord": "מפלגת",
+    "wordCount": 55,
+    "sampleWords": [
+      "גג",
+      "גל",
+      "גלגל",
+      "גלם",
+      "גם"
+    ],
+    "difficulty": 0.000010769484681916485,
+    "achievableScore": 188
+  },
+  {
+    "letters": [
+      "ט",
+      "ש",
+      "ת",
+      "ק",
+      "ו"
+    ],
+    "pangramWord": "שקטות",
+    "wordCount": 56,
+    "sampleWords": [
+      "וו",
+      "ווק",
+      "וטו",
+      "ותק",
+      "טוטו"
+    ],
+    "difficulty": 0.000010901428051553563,
+    "achievableScore": 200
+  },
+  {
+    "letters": [
+      "ט",
+      "ת",
+      "ש",
+      "מ",
+      "פ"
+    ],
+    "pangramWord": "מתפשטת",
+    "wordCount": 56,
+    "sampleWords": [
+      "מט",
+      "מטפטף",
+      "ממש",
+      "מפטפט",
+      "מש"
+    ],
+    "difficulty": 0.000010962647470399787,
+    "achievableScore": 210
+  },
+  {
+    "letters": [
+      "פ",
+      "ק",
+      "ת",
+      "ה",
+      "צ"
     ],
     "pangramWord": "הקצפת",
-    "wordCount": 47,
+    "wordCount": 60,
     "sampleWords": [
       "הפצה",
       "הפצצה",
@@ -996,99 +376,479 @@
       "הפצת",
       "הפקה"
     ],
-    "difficulty": 0.000025871223152080066,
-    "achievableScore": 166
+    "difficulty": 0.000011319972311928706,
+    "achievableScore": 221
   },
   {
     "letters": [
-      "ו",
+      "פ",
+      "ע",
+      "ג",
+      "ת",
+      "ו"
+    ],
+    "pangramWord": "תפגעו",
+    "wordCount": 59,
+    "sampleWords": [
+      "גג",
+      "גגות",
+      "גו",
+      "גווע",
+      "גוועת"
+    ],
+    "difficulty": 0.00001133332470161128,
+    "achievableScore": 229
+  },
+  {
+    "letters": [
+      "י",
+      "מ",
       "ט",
+      "ח",
+      "פ"
+    ],
+    "pangramWord": "מחטיף",
+    "wordCount": 57,
+    "sampleWords": [
+      "חטיף",
+      "חטיפים",
+      "חטף",
+      "חי",
+      "חיטט"
+    ],
+    "difficulty": 0.000011343823889619397,
+    "achievableScore": 226
+  },
+  {
+    "letters": [
+      "ד",
       "א",
       "פ",
-      "ש"
+      "ו",
+      "ק"
     ],
-    "pangramWord": "אשטוף",
-    "wordCount": 48,
+    "pangramWord": "אדפוק",
+    "wordCount": 58,
     "sampleWords": [
-      "או",
-      "אוטו",
-      "אט",
-      "אף",
-      "אפו"
+      "אד",
+      "אדו",
+      "אדוק",
+      "אדפוק",
+      "או"
     ],
-    "difficulty": 0.000026821181692910845,
-    "achievableScore": 177
+    "difficulty": 0.000011367165390517933,
+    "achievableScore": 194
+  },
+  {
+    "letters": [
+      "פ",
+      "ח",
+      "נ",
+      "ס",
+      "ה"
+    ],
+    "pangramWord": "נסחפה",
+    "wordCount": 56,
+    "sampleWords": [
+      "ההן",
+      "הן",
+      "הנה",
+      "הנח",
+      "הנחה"
+    ],
+    "difficulty": 0.000011393812427125922,
+    "achievableScore": 176
+  },
+  {
+    "letters": [
+      "י",
+      "ג",
+      "ה",
+      "ע",
+      "פ"
+    ],
+    "pangramWord": "פגיעה",
+    "wordCount": 57,
+    "sampleWords": [
+      "גג",
+      "גע",
+      "הגה",
+      "הגהה",
+      "הגיע"
+    ],
+    "difficulty": 0.000011534486712019246,
+    "achievableScore": 235
+  },
+  {
+    "letters": [
+      "ת",
+      "ט",
+      "ה",
+      "ל",
+      "ח"
+    ],
+    "pangramWord": "החלטת",
+    "wordCount": 51,
+    "sampleWords": [
+      "החל",
+      "החלה",
+      "החלטה",
+      "החלטת",
+      "הטה"
+    ],
+    "difficulty": 0.000011747011084551123,
+    "achievableScore": 178
   },
   {
     "letters": [
       "ב",
+      "ת",
+      "ג",
+      "נ",
+      "א"
+    ],
+    "pangramWord": "אתגנב",
+    "wordCount": 52,
+    "sampleWords": [
+      "אב",
+      "אבא",
+      "אבן",
+      "אגב",
+      "אגן"
+    ],
+    "difficulty": 0.000012120947443723815,
+    "achievableScore": 145
+  },
+  {
+    "letters": [
+      "ע",
+      "ז",
+      "י",
       "ו",
+      "ת"
+    ],
+    "pangramWord": "זוועתי",
+    "wordCount": 58,
+    "sampleWords": [
+      "וו",
+      "וי",
+      "ויי",
+      "זו",
+      "זוויות"
+    ],
+    "difficulty": 0.000012213209202348748,
+    "achievableScore": 214
+  },
+  {
+    "letters": [
+      "ל",
+      "נ",
+      "ר",
+      "מ",
+      "ז"
+    ],
+    "pangramWord": "למזרן",
+    "wordCount": 57,
+    "sampleWords": [
+      "זז",
+      "זלמן",
+      "זמזם",
+      "זמם",
+      "זמן"
+    ],
+    "difficulty": 0.000012246125567626773,
+    "achievableScore": 206
+  },
+  {
+    "letters": [
+      "י",
+      "ג",
+      "ח",
+      "כ",
+      "ו"
+    ],
+    "pangramWord": "גיחוך",
+    "wordCount": 53,
+    "sampleWords": [
+      "גג",
+      "גו",
+      "גיחוך",
+      "וו",
+      "וי"
+    ],
+    "difficulty": 0.000012275915980405581,
+    "achievableScore": 190
+  },
+  {
+    "letters": [
+      "ל",
+      "ס",
+      "ק",
+      "ת",
+      "ע"
+    ],
+    "pangramWord": "לעסקת",
+    "wordCount": 53,
+    "sampleWords": [
+      "ללקק",
+      "לס",
+      "לסלק",
+      "לסת",
+      "לעס"
+    ],
+    "difficulty": 0.000012466789420198451,
+    "achievableScore": 180
+  },
+  {
+    "letters": [
+      "מ",
+      "ל",
+      "ט",
+      "ר",
+      "פ"
+    ],
+    "pangramWord": "לטרמפ",
+    "wordCount": 49,
+    "sampleWords": [
+      "טל",
+      "טפל",
+      "טרם",
+      "טרמפ",
+      "טרף"
+    ],
+    "difficulty": 0.00001254183060896891,
+    "achievableScore": 186
+  },
+  {
+    "letters": [
+      "ח",
+      "ז",
+      "ר",
+      "ו",
+      "נ"
+    ],
+    "pangramWord": "ונחזור",
+    "wordCount": 60,
+    "sampleWords": [
+      "וו",
+      "זו",
+      "זוז",
+      "זוזו",
+      "זורח"
+    ],
+    "difficulty": 0.000012627548836282266,
+    "achievableScore": 223
+  },
+  {
+    "letters": [
+      "ע",
       "י",
       "ק",
-      "ט"
+      "ת",
+      "ס"
     ],
-    "pangramWord": "בוטיק",
-    "wordCount": 41,
+    "pangramWord": "עסקית",
+    "wordCount": 49,
     "sampleWords": [
-      "בו",
-      "בוטיק",
-      "בי",
-      "ביב",
-      "ביוב"
+      "ייסע",
+      "יסייע",
+      "יסיע",
+      "יעסיק",
+      "יתעסק"
     ],
-    "difficulty": 0.00002684441857189316,
-    "achievableScore": 132
+    "difficulty": 0.000012638005145703476,
+    "achievableScore": 221
+  },
+  {
+    "letters": [
+      "פ",
+      "ג",
+      "י",
+      "ת",
+      "ע"
+    ],
+    "pangramWord": "תפגעי",
+    "wordCount": 52,
+    "sampleWords": [
+      "גג",
+      "גע",
+      "גת",
+      "יגיע",
+      "יגע"
+    ],
+    "difficulty": 0.000012793789399101546,
+    "achievableScore": 226
+  },
+  {
+    "letters": [
+      "ק",
+      "ר",
+      "ל",
+      "א",
+      "נ"
+    ],
+    "pangramWord": "לארנק",
+    "wordCount": 42,
+    "sampleWords": [
+      "אל",
+      "אלא",
+      "אן",
+      "אנא",
+      "אקל"
+    ],
+    "difficulty": 0.000012798296453379315,
+    "achievableScore": 123
+  },
+  {
+    "letters": [
+      "כ",
+      "ע",
+      "ס",
+      "ו",
+      "ה"
+    ],
+    "pangramWord": "הכועס",
+    "wordCount": 49,
+    "sampleWords": [
+      "הוו",
+      "הווה",
+      "הוכה",
+      "הכה",
+      "הכהה"
+    ],
+    "difficulty": 0.000012853070464834,
+    "achievableScore": 179
+  },
+  {
+    "letters": [
+      "פ",
+      "מ",
+      "ט",
+      "ח",
+      "ו"
+    ],
+    "pangramWord": "מטופח",
+    "wordCount": 50,
+    "sampleWords": [
+      "וו",
+      "וטו",
+      "חוו",
+      "חוט",
+      "חוטף"
+    ],
+    "difficulty": 0.000012999741407001815,
+    "achievableScore": 184
+  },
+  {
+    "letters": [
+      "א",
+      "ז",
+      "נ",
+      "ת",
+      "ה"
+    ],
+    "pangramWord": "האזנת",
+    "wordCount": 57,
+    "sampleWords": [
+      "אז",
+      "אזהה",
+      "אן",
+      "אנא",
+      "אנה"
+    ],
+    "difficulty": 0.000013069607531266712,
+    "achievableScore": 180
+  },
+  {
+    "letters": [
+      "ע",
+      "ת",
+      "ו",
+      "ס",
+      "ק"
+    ],
+    "pangramWord": "עסוקות",
+    "wordCount": 47,
+    "sampleWords": [
+      "וו",
+      "ווק",
+      "וסת",
+      "ותק",
+      "סוס"
+    ],
+    "difficulty": 0.000013247901293218202,
+    "achievableScore": 195
   },
   {
     "letters": [
       "ג",
-      "א",
-      "ח",
-      "ש",
-      "י"
-    ],
-    "pangramWord": "אשגיח",
-    "wordCount": 47,
-    "sampleWords": [
-      "אגיש",
-      "אגש",
-      "אח",
-      "אחי",
-      "אי"
-    ],
-    "difficulty": 0.000027400935340759206,
-    "achievableScore": 137
-  },
-  {
-    "letters": [
-      "נ",
-      "ט",
-      "ס",
       "ב",
-      "ו"
+      "נ",
+      "ד",
+      "ת"
     ],
-    "pangramWord": "בוסטון",
-    "wordCount": 45,
+    "pangramWord": "נבגדת",
+    "wordCount": 50,
     "sampleWords": [
-      "בבון",
-      "בו",
-      "בוטן",
-      "בונוס",
-      "בוס"
+      "בגד",
+      "בגדת",
+      "בד",
+      "בן",
+      "בת"
     ],
-    "difficulty": 0.00002812162461525557,
-    "achievableScore": 150
+    "difficulty": 0.000013280737024290853,
+    "achievableScore": 140
   },
   {
     "letters": [
-      "ק",
+      "ר",
+      "ס",
+      "ט",
+      "ל",
+      "פ"
+    ],
+    "pangramWord": "פלסטר",
+    "wordCount": 57,
+    "sampleWords": [
+      "טל",
+      "טס",
+      "טפל",
+      "טפס",
+      "טרף"
+    ],
+    "difficulty": 0.000013355427692063075,
+    "achievableScore": 192
+  },
+  {
+    "letters": [
+      "ר",
+      "ת",
+      "מ",
       "פ",
+      "ט"
+    ],
+    "pangramWord": "מתפטר",
+    "wordCount": 43,
+    "sampleWords": [
+      "טרם",
+      "טרמפ",
+      "טרף",
+      "מט",
+      "מטפטף"
+    ],
+    "difficulty": 0.00001389109590354495,
+    "achievableScore": 161
+  },
+  {
+    "letters": [
+      "א",
       "צ",
+      "פ",
       "ו",
-      "א"
+      "ק"
     ],
     "pangramWord": "אקפוץ",
-    "wordCount": 47,
+    "wordCount": 53,
     "sampleWords": [
       "אאוץ",
       "או",
@@ -1096,99 +856,279 @@
       "אף",
       "אפו"
     ],
-    "difficulty": 0.000028327263204679167,
-    "achievableScore": 160
-  },
-  {
-    "letters": [
-      "ח",
-      "ז",
-      "י",
-      "ק",
-      "ה"
-    ],
-    "pangramWord": "החזיקה",
-    "wordCount": 46,
-    "sampleWords": [
-      "הזה",
-      "הזז",
-      "הזיה",
-      "הזיז",
-      "הזיק"
-    ],
-    "difficulty": 0.000031088900886230555,
+    "difficulty": 0.000014026277885103858,
     "achievableScore": 180
   },
   {
     "letters": [
-      "א",
-      "ל",
-      "נ",
-      "ר",
-      "ס"
+      "ט",
+      "מ",
+      "ה",
+      "ע",
+      "פ"
     ],
-    "pangramWord": "ארסנל",
-    "wordCount": 34,
+    "pangramWord": "המעטפה",
+    "wordCount": 48,
     "sampleWords": [
-      "אל",
-      "אלא",
-      "אן",
-      "אנא",
-      "אננס"
+      "ההם",
+      "הטה",
+      "הטעם",
+      "הם",
+      "המה"
     ],
-    "difficulty": 0.0000317633750255625,
-    "achievableScore": 93
+    "difficulty": 0.000014161508203157813,
+    "achievableScore": 182
+  },
+  {
+    "letters": [
+      "ס",
+      "ה",
+      "ט",
+      "ש",
+      "ר"
+    ],
+    "pangramWord": "שהסרט",
+    "wordCount": 47,
+    "sampleWords": [
+      "הטה",
+      "הס",
+      "הסט",
+      "הסר",
+      "הסרט"
+    ],
+    "difficulty": 0.000014402054997220733,
+    "achievableScore": 142
+  },
+  {
+    "letters": [
+      "י",
+      "ר",
+      "א",
+      "ח",
+      "ז"
+    ],
+    "pangramWord": "אחזיר",
+    "wordCount": 55,
+    "sampleWords": [
+      "אאחר",
+      "אז",
+      "אזיז",
+      "אזרח",
+      "אזרחי"
+    ],
+    "difficulty": 0.000014626578392339439,
+    "achievableScore": 196
+  },
+  {
+    "letters": [
+      "נ",
+      "ע",
+      "ת",
+      "ס",
+      "ר"
+    ],
+    "pangramWord": "נסערת",
+    "wordCount": 40,
+    "sampleWords": [
+      "ננס",
+      "נס",
+      "נסע",
+      "נסער",
+      "נסערת"
+    ],
+    "difficulty": 0.00001466688708104338,
+    "achievableScore": 121
+  },
+  {
+    "letters": [
+      "ד",
+      "מ",
+      "ג",
+      "כ",
+      "נ"
+    ],
+    "pangramWord": "נגדכם",
+    "wordCount": 49,
+    "sampleWords": [
+      "גג",
+      "גם",
+      "גמד",
+      "גן",
+      "גנן"
+    ],
+    "difficulty": 0.000015021219886760537,
+    "achievableScore": 154
   },
   {
     "letters": [
       "ת",
       "ז",
+      "מ",
       "ע",
-      "ק",
-      "ו"
+      "ב"
     ],
-    "pangramWord": "זועקת",
-    "wordCount": 44,
+    "pangramWord": "עזבתם",
+    "wordCount": 51,
+    "sampleWords": [
+      "בז",
+      "בזבז",
+      "בזבזת",
+      "בם",
+      "בת"
+    ],
+    "difficulty": 0.000015217432232351576,
+    "achievableScore": 176
+  },
+  {
+    "letters": [
+      "ה",
+      "ד",
+      "ז",
+      "ק",
+      "נ"
+    ],
+    "pangramWord": "הזדקן",
+    "wordCount": 57,
+    "sampleWords": [
+      "דד",
+      "דהה",
+      "דן",
+      "דנה",
+      "דק"
+    ],
+    "difficulty": 0.00001539139483910525,
+    "achievableScore": 188
+  },
+  {
+    "letters": [
+      "א",
+      "ד",
+      "ג",
+      "נ",
+      "ת"
+    ],
+    "pangramWord": "אתנגד",
+    "wordCount": 43,
+    "sampleWords": [
+      "אגן",
+      "אד",
+      "אדאג",
+      "אדן",
+      "אן"
+    ],
+    "difficulty": 0.00001649276639170089,
+    "achievableScore": 114
+  },
+  {
+    "letters": [
+      "ח",
+      "מ",
+      "ע",
+      "פ",
+      "נ"
+    ],
+    "pangramWord": "מפענח",
+    "wordCount": 34,
+    "sampleWords": [
+      "חם",
+      "חן",
+      "חנפן",
+      "חף",
+      "מחמם"
+    ],
+    "difficulty": 0.00001776832989486167,
+    "achievableScore": 109
+  },
+  {
+    "letters": [
+      "ז",
+      "ק",
+      "ח",
+      "ו",
+      "ת"
+    ],
+    "pangramWord": "חזקות",
+    "wordCount": 45,
     "sampleWords": [
       "וו",
       "ווק",
       "ותק",
       "זו",
-      "זוועות"
+      "זוז"
     ],
-    "difficulty": 0.00003265775108327215,
-    "achievableScore": 160
+    "difficulty": 0.000018099660227081662,
+    "achievableScore": 148
   },
   {
     "letters": [
-      "ב",
-      "ז",
-      "ע",
-      "א",
-      "ו"
+      "ר",
+      "פ",
+      "ת",
+      "נ",
+      "ט"
     ],
-    "pangramWord": "אעזוב",
-    "wordCount": 42,
+    "pangramWord": "נפטרת",
+    "wordCount": 35,
     "sampleWords": [
-      "אב",
-      "אבא",
-      "אבו",
-      "אבוא",
-      "אבזבז"
+      "טרף",
+      "נפט",
+      "נפטר",
+      "נפטרת",
+      "נפנף"
     ],
-    "difficulty": 0.00003748053353285847,
-    "achievableScore": 130
+    "difficulty": 0.000018109228707727797,
+    "achievableScore": 112
+  },
+  {
+    "letters": [
+      "פ",
+      "ת",
+      "א",
+      "ק",
+      "ס"
+    ],
+    "pangramWord": "אסתפק",
+    "wordCount": 37,
+    "sampleWords": [
+      "אס",
+      "אסף",
+      "אספק",
+      "אספת",
+      "אסתפק"
+    ],
+    "difficulty": 0.00001909215455832202,
+    "achievableScore": 128
+  },
+  {
+    "letters": [
+      "כ",
+      "ז",
+      "ת",
+      "ר",
+      "ש"
+    ],
+    "pangramWord": "שזכרת",
+    "wordCount": 39,
+    "sampleWords": [
+      "זז",
+      "זזת",
+      "זכר",
+      "זכרת",
+      "זר"
+    ],
+    "difficulty": 0.000020720200339836434,
+    "achievableScore": 125
   },
   {
     "letters": [
       "ט",
-      "נ",
-      "ג",
       "ס",
-      "ר"
+      "ר",
+      "ג",
+      "נ"
     ],
     "pangramWord": "גנגסטר",
-    "wordCount": 36,
+    "wordCount": 38,
     "sampleWords": [
       "גג",
       "גט",
@@ -1196,7 +1136,67 @@
       "גנגסטר",
       "גנן"
     ],
-    "difficulty": 0.0000424433285011628,
-    "achievableScore": 112
+    "difficulty": 0.000022938383014666407,
+    "achievableScore": 119
+  },
+  {
+    "letters": [
+      "א",
+      "ר",
+      "ז",
+      "ג",
+      "ל"
+    ],
+    "pangramWord": "לארגז",
+    "wordCount": 39,
+    "sampleWords": [
+      "אגר",
+      "אז",
+      "אזל",
+      "אל",
+      "אלא"
+    ],
+    "difficulty": 0.00002433113723677595,
+    "achievableScore": 108
+  },
+  {
+    "letters": [
+      "פ",
+      "ת",
+      "מ",
+      "ט",
+      "ע"
+    ],
+    "pangramWord": "מעטפת",
+    "wordCount": 28,
+    "sampleWords": [
+      "טעם",
+      "טעמת",
+      "מט",
+      "מטע",
+      "מטעם"
+    ],
+    "difficulty": 0.000024555846425705656,
+    "achievableScore": 88
+  },
+  {
+    "letters": [
+      "נ",
+      "צ",
+      "ר",
+      "ט",
+      "פ"
+    ],
+    "pangramWord": "נצטרף",
+    "wordCount": 30,
+    "sampleWords": [
+      "טרף",
+      "נפט",
+      "נפטר",
+      "נפנף",
+      "נפץ"
+    ],
+    "difficulty": 0.000027630223656688626,
+    "achievableScore": 90
   }
 ]
