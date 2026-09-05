@@ -376,7 +376,7 @@ export default function GameScreen({
           </View>
         </View>
         <Text style={styles.levelLabel}>
-          שלב {level.index + 1} · {state.foundWords.length}/{level.wordCount} מילים
+          {state.foundWords.length}/{level.wordCount} מילים
         </Text>
 
         {/* תצוגת המילה תוך כדי גרירה, או הודעת פידבק אחרי שחרור.
