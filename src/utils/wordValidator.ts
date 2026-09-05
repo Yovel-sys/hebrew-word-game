@@ -20,13 +20,22 @@ export function normalizeWord(word: string): string {
 }
 
 /**
- * בודקת שכל אות במילה שייכת לאותיות הזמינות במעגל.
- * הערה עיצובית: בסגנון "Spelling Bee", כל אות מוצגת פעם אחת במעגל
- * אך ניתן להשתמש בה מספר פעמים בתוך אותה מילה (האותיות לא "נצרכות").
+ * בודקת שהמילה ניתנת להרכבה מהאותיות הזמינות במעגל, כאשר כל אריח
+ * נצרך פעם אחת: אם אות מסוימת מופיעה פעם אחת בגלגל, המילה לא יכולה
+ * להשתמש בה פעמיים (בניגוד לסגנון "Spelling Bee" הרגיל).
  */
 export function usesOnlyAvailableLetters(word: string, availableLetters: string[]): boolean {
-  const allowed = new Set(availableLetters);
-  return [...word].every((char) => allowed.has(normalizeFinalLetter(char)));
+  const remaining = new Map<string, number>();
+  for (const letter of availableLetters) {
+    remaining.set(letter, (remaining.get(letter) ?? 0) + 1);
+  }
+  for (const char of word) {
+    const normalized = normalizeFinalLetter(char);
+    const left = remaining.get(normalized) ?? 0;
+    if (left <= 0) return false;
+    remaining.set(normalized, left - 1);
+  }
+  return true;
 }
 
 /**
