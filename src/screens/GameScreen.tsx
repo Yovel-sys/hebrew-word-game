@@ -35,6 +35,8 @@ import {
   playLetterClickSound,
 } from '../utils/sound';
 import { GameState, Level } from '../types';
+import { useRemainingByLength } from '../hooks/useRemainingByLength';
+import RemainingByLength from '../components/RemainingByLength';
 import { submitToWeb3Forms } from '../utils/web3forms';
 
 // גודל אזור המעגל וכל אריח אות
@@ -349,6 +351,15 @@ export default function GameScreen({
     })
   ).current;
 
+  // רשימת המילים שנמצאו כמחרוזות בלבד - מזהה יציב לחישוב ה"נשארו",
+  // כדי שהוא לא ירוץ מחדש בכל רינדור של גרירה (foundWords הוא מערך חדש
+  // רק כשבאמת נמצאה מילה, אבל כאן זה מפורש).
+  const foundWordStrings = useMemo(
+    () => state.foundWords.map((fw) => fw.word),
+    [state.foundWords]
+  );
+  const remainingByLength = useRemainingByLength(level.letters, foundWordStrings);
+
   const liveWord = selectedPath.map((t) => t.char).join('');
   const selectedIndices = new Set(selectedPath.map((t) => t.index));
 
@@ -466,6 +477,12 @@ export default function GameScreen({
         <TouchableOpacity style={styles.shuffleButton} onPress={shuffleLetters} activeOpacity={0.7}>
           <Text style={styles.shuffleButtonText}>🔀 ערבוב אותיות</Text>
         </TouchableOpacity>
+
+        {/* רמז "כמה נשאר" - צמוד לפינה הימנית התחתונה של אזור הגלגל,
+            ממש מעל רשימת המילים שכבר נמצאו */}
+        <View style={styles.remainingWrap}>
+          <RemainingByLength groups={remainingByLength} />
+        </View>
       </View>
 
       {/* רשימת מילים שנמצאו - מוצמדת לתחתית המסך */}
@@ -635,6 +652,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#5B4A32',
     writingDirection: 'rtl',
+  },
+  remainingWrap: {
+    width: '100%',
+    marginBottom: 4,
   },
   line: {
     position: 'absolute',
