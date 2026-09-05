@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Animated,
+  Easing,
   KeyboardAvoidingView,
   Modal,
   PanResponder,
@@ -159,13 +160,35 @@ export default function GameScreen({
     tapHaptic();
     playClickSound();
     resetSelection();
-    setLetterOrder((prev) => {
-      const arr = [...prev];
-      for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-      return arr;
+
+    // מגרילים תמורה של המקומות (fromSlots[i] = מאיזה מקום הגיעה האות
+    // שיושבת עכשיו במקום i), כדי שנוכל להזיז כל אות מהמקום הישן לחדש.
+    const count = letterOrder.length;
+    const fromSlots = Array.from({ length: count }, (_, i) => i);
+    for (let i = count - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [fromSlots[i], fromSlots[j]] = [fromSlots[j], fromSlots[i]];
+    }
+
+    setLetterOrder((prev) => fromSlots.map((from) => prev[from]));
+
+    // האות מרונדרת מיד במקום החדש, ולכן מתחילים אותה מוזזת בהיסט של
+    // "המקום הישן פחות החדש" ומחזירים אותו ל-0: העין רואה תנועה מהמקום
+    // הישן לחדש. Easing.out => יוצאת מהר ונבלמת בהגעה.
+    fromSlots.forEach((from, to) => {
+      const offset = tileOffsets[to];
+      if (!offset) return;
+      offset.setValue({
+        x: positions[from].x - positions[to].x,
+        y: positions[from].y - positions[to].y,
+      });
+      Animated.timing(offset, {
+        toValue: { x: 0, y: 0 },
+        duration: 420,
+        delay: to * 20,
+        easing: Easing.out(Easing.cubic),
+        useNativeDriver: true,
+      }).start();
     });
   }
 
@@ -190,6 +213,14 @@ export default function GameScreen({
   if (tileScales.length !== tiles.length) {
     tileScales.length = 0;
     for (let i = 0; i < tiles.length; i++) tileScales.push(new Animated.Value(1));
+  }
+
+  // היסט (translate) לכל מקום במעגל - משמש לאנימציית הערבוב: האות מרונדרת
+  // כבר במקום החדש, וההיסט "מחזיר" אותה ויזואלית למקום הישן ומתאפס בהדרגה.
+  const tileOffsets = useRef<Animated.ValueXY[]>([]).current;
+  if (tileOffsets.length !== tiles.length) {
+    tileOffsets.length = 0;
+    for (let i = 0; i < tiles.length; i++) tileOffsets.push(new Animated.ValueXY({ x: 0, y: 0 }));
   }
 
   function pulseTile(index: number) {
@@ -462,7 +493,13 @@ export default function GameScreen({
                   styles.letterTile,
                   { left: tile.point.x - TILE_SIZE / 2, top: tile.point.y - TILE_SIZE / 2 },
                   isSelected && styles.letterTileSelected,
-                  { transform: [{ scale: tileScales[tile.index] }] },
+                  {
+                    transform: [
+                      { translateX: tileOffsets[tile.index].x },
+                      { translateY: tileOffsets[tile.index].y },
+                      { scale: tileScales[tile.index] },
+                    ],
+                  },
                 ]}
                 pointerEvents="none"
               >
