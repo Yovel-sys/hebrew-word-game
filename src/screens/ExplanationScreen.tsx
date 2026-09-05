@@ -20,10 +20,6 @@ export default function ExplanationScreen({ onDone }: Props) {
           ✋ ההגשה קורית אוטומטית ברגע שמרימים את האצבע - אין כפתור אישור.
         </Text>
         <Text style={styles.instructionText}>
-          🔁 אפשר לחזור על אותה אות יותר מפעם אחת באותה מילה - פשוט גררו
-          אליה שוב, גם אם זה אומר לחזור אחורה בנתיב.
-        </Text>
-        <Text style={styles.instructionText}>
           💎 כל מילה שווה נקודות לפי אורכה, ובונוס גדול למילה שמשתמשת
           בכל האותיות במעגל.
         </Text>

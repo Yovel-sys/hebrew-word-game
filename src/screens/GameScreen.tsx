@@ -17,7 +17,13 @@ import { computeCirclePositions, Point } from '../utils/circleLayout';
 import { computeLineStyle, distance } from '../utils/lineGeometry';
 import { buildDictionarySet } from '../utils/wordValidator';
 import { restoreState, submitWord } from '../utils/gameLogic';
-import { CONFIRMATION_DURATION_MS, HEADER_INSET, POINTS_ICON, headerIconStyles } from '../utils/ui';
+import {
+  ALLOW_REPEATED_TILE_IN_WORD,
+  CONFIRMATION_DURATION_MS,
+  HEADER_INSET,
+  POINTS_ICON,
+  headerIconStyles,
+} from '../utils/ui';
 import { toFinalFormAtEnd } from '../utils/hebrewLetters';
 import { errorHaptic, successHaptic, tapHaptic } from '../utils/haptics';
 import {
@@ -304,8 +310,10 @@ export default function GameScreen({
           if (!awayFromLastRef.current) {
             return; // עדיין נשען על אותה אות ברצף - לא מוסיפים שוב
           }
-          // האצבע עזבה את האות הזו וחזרה אליה - זו כוונה מפורשת לאות
-          // כפולה ברצף (כמו ב"עורר" או "וו")
+          // האצבע עזבה את האות הזו וחזרה אליה - כוונה מפורשת לחזור על האות.
+          // אבל כל אריח בגלגל הוא אות יחידה (ר' usesOnlyAvailableLetters),
+          // אז מילה כזו תמיד תיפסל - חוסמים כבר כאן במקום לתת ניסיון אבוד.
+          if (!ALLOW_REPEATED_TILE_IN_WORD) return;
         }
 
         if (!last) {
@@ -317,11 +325,18 @@ export default function GameScreen({
           return;
         }
 
-        // חשוב: אין כאן "ביטול בגרירה אחורה" בכוונה. מילים אמיתיות בעברית
-        // הרבה פעמים חוזרות על אותה אות (למשל "בלבל" = ב-ל-ב-ל), אז גרירה
-        // חזרה לאות קודמת חייבת להוסיף אותה מחדש למילה, לא לבטל אותה.
-        // אם המשתמש טעה בדרך, השחרור פשוט יגיש מילה לא תקינה והוא יתחיל
-        // שוב - אין "עלות" לטעות כי אין כפתור אישור נפרד.
+        // אותה סיבה כמו למעלה: אריח שכבר נבחר במילה (לא רק האחרון) לא יכול
+        // להתווסף שוב כשחזרה על אותיות חסומה.
+        if (!ALLOW_REPEATED_TILE_IN_WORD && path.some((t) => t.index === tile.index)) {
+          return;
+        }
+
+        // חשוב: כשחזרה על אותיות מותרת (ALLOW_REPEATED_TILE_IN_WORD), אין כאן
+        // "ביטול בגרירה אחורה" בכוונה. מילים אמיתיות בעברית הרבה פעמים חוזרות
+        // על אותה אות (למשל "בלבל" = ב-ל-ב-ל), אז גרירה חזרה לאות קודמת
+        // חייבת להוסיף אותה מחדש למילה, לא לבטל אותה. אם המשתמש טעה בדרך,
+        // השחרור פשוט יגיש מילה לא תקינה והוא יתחיל שוב - אין "עלות" לטעות
+        // כי אין כפתור אישור נפרד.
         const next = [...path, tile];
         selectedPathRef.current = next;
         setSelectedPath(next);
