@@ -3,6 +3,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { tapHaptic } from '../utils/haptics';
 import { playClickSound } from '../utils/sound';
 import { HEADER_INSET, HEADER_TOP, headerIconStyles } from '../utils/ui';
+import { FONTS } from '../utils/fonts';
 
 interface Props {
   onStart: () => void;
@@ -143,14 +144,20 @@ const styles = StyleSheet.create({
     height: 150,
   },
   title: {
-    fontSize: 32,
-    fontWeight: '800',
+    // Secular One כבר מגיע במשקל כבד, ולכן אין כאן fontWeight - הוספת
+    // משקל על פונט מותאם גורמת ל-Android לזייף הדגשה ולעוות את האותיות.
+    fontFamily: FONTS.display,
+    fontSize: 40,
     color: '#3A2E1F',
+    letterSpacing: 1,
+    lineHeight: 52,
     writingDirection: 'rtl',
     marginBottom: 12,
   },
   subtitle: {
+    fontFamily: FONTS.regular,
     fontSize: 16,
+    lineHeight: 24,
     color: '#7A6A52',
     writingDirection: 'rtl',
     textAlign: 'center',
@@ -163,8 +170,8 @@ const styles = StyleSheet.create({
     borderRadius: 28,
   },
   startButtonText: {
+    fontFamily: FONTS.bold,
     fontSize: 18,
-    fontWeight: '700',
     color: '#FFF8E7',
     writingDirection: 'rtl',
   },
