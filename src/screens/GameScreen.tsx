@@ -474,25 +474,24 @@ export default function GameScreen({
           })}
         </View>
 
-        {/* שורת הפקדים מתחת לגלגל: כפתור הערבוב נשאר במרכז המסך (ממוקם
-            כשכבת-על, כדי שרוחב הרמז לא יזיז אותו), והרמז "כמה נשאר"
-            יושב במקום הפנוי מימינו במקום להוסיף שורה משלו. */}
+        {/* שורת הפקדים מתחת לגלגל: הרמז "כמה נשאר" ממלא את השטח הפנוי
+            מימין לכפתור הערבוב, וה-spacer בצד שמאל שומר על הכפתור
+            במרכז המסך בלי תלות ברוחב הרמז. */}
         <View style={styles.controlsRow}>
           <View style={styles.remainingSlot}>
             <RemainingByLength groups={remainingByLength} />
           </View>
-          <View style={styles.shuffleCenter} pointerEvents="box-none">
-            <TouchableOpacity
-              style={styles.shuffleButton}
-              onPress={shuffleLetters}
-              activeOpacity={0.7}
-              accessibilityRole="button"
-              accessibilityLabel="ערבוב אותיות"
-              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-            >
-              <Text style={styles.shuffleButtonText}>🔀</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            style={styles.shuffleButton}
+            onPress={shuffleLetters}
+            activeOpacity={0.7}
+            accessibilityRole="button"
+            accessibilityLabel="ערבוב אותיות"
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          >
+            <Text style={styles.shuffleButtonText}>🔀</Text>
+          </TouchableOpacity>
+          <View style={styles.controlsSpacer} />
         </View>
       </View>
 
@@ -650,21 +649,24 @@ const styles = StyleSheet.create({
     position: 'relative',
     marginVertical: 16,
   },
-  // גובה השורה נקבע ע"י הגבוה מבין השניים (הרמז או הכפתור), כך שהרמז
-  // "מתמלא" לתוך המקום הפנוי לצד הכפתור במקום להאריך את המסך.
+  // גובה השורה נקבע ע"י הגבוה מבין הרמז לכפתור. הרמז עוטף לשורות בתוך
+  // חצי הרוחב הפנוי, כך שבפועל הוא כמעט תמיד נמוך מהכפתור ולא מוסיף
+  // שום גובה למסך.
   controlsRow: {
     width: '100%',
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
     minHeight: 44,
-    justifyContent: 'center',
     marginBottom: 8,
   },
   remainingSlot: {
-    alignSelf: 'flex-end',
+    flex: 1,
+    paddingLeft: 8,
   },
-  shuffleCenter: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
+  // תאום הרוחב של הרמז בצד השני של הכפתור - זה מה ששומר על הכפתור
+  // במרכז המסך.
+  controlsSpacer: {
+    flex: 1,
   },
   shuffleButton: {
     width: 44,

@@ -20,16 +20,11 @@ interface Props {
 export default function RemainingByLength({ groups }: Props) {
   if (groups.length === 0) return null;
 
-  // כל שורות הריבועים מקבלות את הרוחב של השורה הארוכה ביותר, כך שעמודת
-  // ה-×N מיושרת לאורך כל הבלוק במקום "לקפוץ" פנימה בכל שורה קצרה.
-  const maxLength = Math.max(...groups.map((g) => g.length));
-  const squaresWidth = maxLength * SQUARE_SIZE + (maxLength - 1) * SQUARE_GAP;
-
   return (
     <View style={styles.container}>
       {groups.map((group) => (
         <View key={group.length} style={styles.group}>
-          <View style={[styles.squares, { width: squaresWidth }]}>
+          <View style={styles.squares}>
             {Array.from({ length: group.length }, (_, i) => (
               <View key={i} style={styles.square} />
             ))}
@@ -42,11 +37,15 @@ export default function RemainingByLength({ groups }: Props) {
 }
 
 const styles = StyleSheet.create({
-  // עמודה: שורה אחת לכל אורך מילה, מהקצרה למעלה לארוכה למטה.
-  // הבלוק כולו נצמד לימין, כמו כיוון הקריאה של שאר המסך.
+  // הקבוצות נפרסות לרוחב, מהקצרה בימין לארוכה בשמאל (row-reverse, ככיוון
+  // הקריאה של שאר המסך), ועוטפות לשורה נוספת כשנגמר הרוחב שההורה נתן.
+  // כך הבלוק מתפרס לרוחב במקום להתארך למטה ולדחוף את רשימת המילים.
   container: {
-    alignSelf: 'flex-end',
-    alignItems: 'flex-end',
+    flexDirection: 'row-reverse',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    columnGap: 8,
     rowGap: 3,
   },
   group: {
@@ -54,8 +53,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 4,
   },
-  // row-reverse כאן מצמיד את הריבועים לימין בתוך הרוחב הקבוע, כך
-  // שכל השורות מתחילות מאותו קו ימני.
   squares: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
