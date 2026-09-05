@@ -69,7 +69,6 @@ export default function LevelSelectScreen({
             // המספר הנדרש + אייקון הנקודות. בלי "דורש X נקודות".
             return (
               <TouchableOpacity style={[styles.card, styles.cardLocked]} disabled activeOpacity={1}>
-                <Text style={styles.lockedLevelLabel}>{item.index + 1}</Text>
                 <Text style={styles.lockIconCentered}>🔒</Text>
                 <Text style={styles.lockedCost}>
                   {item.requiredScore} {POINTS_ICON}
@@ -89,7 +88,6 @@ export default function LevelSelectScreen({
               activeOpacity={0.7}
             >
               <View style={styles.cardRight}>
-                <Text style={styles.levelNumber}>{item.index + 1}</Text>
                 <View style={styles.letterRow}>
                   {item.letters.map((char, i) => (
                     <View key={i} style={styles.letterBadge}>
@@ -173,12 +171,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     minWidth: 48,
   },
-  levelNumber: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#3A2E1F',
-    writingDirection: 'rtl',
-  },
   letterRow: {
     flexDirection: 'row-reverse',
     marginTop: 6,
@@ -196,12 +188,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '700',
     color: '#3A2E1F',
-  },
-  lockedLevelLabel: {
-    fontSize: 13,
-    color: '#9C8B6F',
-    writingDirection: 'rtl',
-    marginBottom: 4,
   },
   lockIconCentered: {
     fontSize: 22,

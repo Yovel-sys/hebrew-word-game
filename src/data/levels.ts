@@ -33,7 +33,7 @@ function computeRequiredScores(puzzles: RawPuzzle[]): number[] {
   const required: number[] = [];
   let cumulativeAchievable = 0;
   for (let i = 0; i < puzzles.length; i++) {
-    required.push(i < FREE_LEVELS ? 0 : Math.round(cumulativeAchievable * UNLOCK_FRACTION));
+    required.push(i < FREE_LEVELS ? 0 : Math.floor((cumulativeAchievable * UNLOCK_FRACTION) / 10) * 10);
     cumulativeAchievable += puzzles[i].achievableScore;
   }
   return required;
