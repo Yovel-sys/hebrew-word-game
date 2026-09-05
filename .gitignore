@@ -42,3 +42,4 @@ yarn-error.*
 
 # local env
 .env
+scripts/hspell_expanded.txt
