@@ -360,6 +360,12 @@ export default function GameScreen({
   );
   const remainingByLength = useRemainingByLength(level.letters, foundWordStrings);
 
+  // תצוגת המילים שנמצאו לפי סדר הניחוש ההפוך - האחרונה שנוחשה מופיעה למעלה.
+  const foundWordsNewestFirst = useMemo(
+    () => [...state.foundWords].reverse(),
+    [state.foundWords]
+  );
+
   const liveWord = selectedPath.map((t) => t.char).join('');
   const selectedIndices = new Set(selectedPath.map((t) => t.index));
 
@@ -498,8 +504,8 @@ export default function GameScreen({
       {/* רשימת מילים שנמצאו - מוצמדת לתחתית המסך */}
       <View style={styles.foundListWrapper}>
         <ScrollView style={styles.foundList}>
-          {state.foundWords.map((fw, i) => (
-            <View key={i} style={styles.foundRow}>
+          {foundWordsNewestFirst.map((fw) => (
+            <View key={fw.word} style={styles.foundRow}>
               <Text style={styles.foundWordText}>
                 {fw.word} {fw.isPangram ? '⭐' : ''}
               </Text>
