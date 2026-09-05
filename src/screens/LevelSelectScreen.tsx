@@ -69,7 +69,7 @@ export default function LevelSelectScreen({
             // המספר הנדרש + אייקון הנקודות. בלי "דורש X נקודות".
             return (
               <TouchableOpacity style={[styles.card, styles.cardLocked]} disabled activeOpacity={1}>
-                <Text style={styles.lockedLevelLabel}>שלב {item.index + 1}</Text>
+                <Text style={styles.lockedLevelLabel}>{item.index + 1}</Text>
                 <Text style={styles.lockIconCentered}>🔒</Text>
                 <Text style={styles.lockedCost}>
                   {item.requiredScore} {POINTS_ICON}
@@ -89,7 +89,7 @@ export default function LevelSelectScreen({
               activeOpacity={0.7}
             >
               <View style={styles.cardRight}>
-                <Text style={styles.levelNumber}>שלב {item.index + 1}</Text>
+                <Text style={styles.levelNumber}>{item.index + 1}</Text>
                 <View style={styles.letterRow}>
                   {item.letters.map((char, i) => (
                     <View key={i} style={styles.letterBadge}>
