@@ -1,13 +1,22 @@
 /**
- * סקריפט build-time (לא רץ באפליקציה עצמה) שמעבד את hspell_simple.txt:
- *   1. מסנן מילים לא תקינות (תווים לא-עבריים, אורך קיצוני)
- *   2. מצליב מול רשימת תדירויות אמיתית (he_freq.txt - מבוססת קורפוס
+ * סקריפט build-time (לא רץ באפליקציה עצמה) שמעבד שני מקורות מילים גולמיים:
+ *   - hspell_simple.txt: צורות הבסיס של hspell (129,574 מילים)
+ *   - hspell_expanded.txt: אותו מילון אחרי הצמדת כל צירופי מילות היחס/חיבור
+ *     התקניים (ו-, ש-, כ-, ב-, ל-, מ-, ה- וכו') לכל מילה - כ-5.4 מיליון
+ *     צורות. הרבה מהצורות האלה (כמו "שאני", "ובבית", "לזה") הן בעצמן
+ *     מילים נפוצות שלא מופיעות בנפרד ב-hspell_simple, כי הן תמיד נכתבות
+ *     מוצמדות. הוספת המקור הזה היא שהופכת השלב הבא (הצלבת תדירויות) ליעיל
+ *     יותר - הוא יכול "לתפוס" גם מילים מוצמדות נפוצות, לא רק צורות בודדות.
+ *
+ * התהליך:
+ *   1. מאחדים את שני המקורות (עם דה-דופליקציה) ומסננים מילים לא תקינות
+ *      (תווים לא-עבריים, אורך קיצוני)
+ *   2. מצליבים מול רשימת תדירויות אמיתית (he_freq.txt - מבוססת קורפוס
  *      כתוביות אמיתי, 50,000 מילים) - נשארות רק מילים שבאמת בשימוש.
  *      זו הסיבה שהשיטה הזו עדיפה על ניחוש לשוני של סיומות: במקום לנחש
- *      איזו מילה היא "נטייה" של איזו, פשוט בודקים שימוש אמיתי. התוצאה:
- *      128,674 -> 23,242 מילים (82% פחות, אבל כולן מילים בשימוש אמיתי).
- *   3. שומר מילון נקי כ-JSON לטעינה מהירה באפליקציה
- *   4. מייצר רשימת "חידות מוכנות" - סטים של N אותיות (ברירת מחדל 5,
+ *      איזו מילה היא "נטייה" של איזו, פשוט בודקים שימוש אמיתי.
+ *   3. שומרים מילון נקי כ-JSON לטעינה מהירה באפליקציה
+ *   4. מייצרים רשימת "חידות מוכנות" - סטים של N אותיות (ברירת מחדל 5,
  *      ראו LETTER_COUNT) עם מספיק מילים אפשריות ולפחות פנגרם אחד
  *
  * הרצה: npx tsx scripts/generateDictionary.ts
@@ -38,6 +47,7 @@ function createRng(seed: number) {
 const rng = createRng(SEED);
 
 const RAW_PATH = path.join(__dirname, 'hspell_simple.txt');
+const EXPANDED_PATH = path.join(__dirname, 'hspell_expanded.txt');
 const FREQ_PATH = path.join(__dirname, 'he_freq.txt');
 const OUT_WORDS_PATH = path.join(__dirname, '..', 'src', 'data', 'words.json');
 
@@ -67,9 +77,15 @@ const HEBREW_ONLY = /^[\u05D0-\u05EA]+$/;
 const MIN_LEN = 2;
 const MAX_LEN = 12;
 
+function loadLines(filePath: string): string[] {
+  const raw = fs.readFileSync(filePath, 'utf-8');
+  return raw.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+}
+
 function loadAndCleanHspell(): string[] {
-  const raw = fs.readFileSync(RAW_PATH, 'utf-8');
-  const lines = raw.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+  // מאחדים את שני המקורות: צורות הבסיס + צורות מוצמדות-קידומת. הסדר לא
+  // משנה כי ה-Set למטה מדפלק ממילא.
+  const lines = [...loadLines(RAW_PATH), ...loadLines(EXPANDED_PATH)];
 
   const seen = new Set<string>();
   const cleaned: string[] = [];
@@ -225,7 +241,7 @@ function main() {
   console.log(`מילים אחרי הצלבה: ${words.length} (${hspellWords.length - words.length} הוסרו)`);
 
   fs.mkdirSync(path.dirname(OUT_WORDS_PATH), { recursive: true });
-  fs.writeFileSync(OUT_WORDS_PATH, JSON.stringify(words), 'utf-8');
+  fs.writeFileSync(OUT_WORDS_PATH, JSON.stringify(words, null, 2), 'utf-8');
   console.log(`נשמר: ${OUT_WORDS_PATH} (${(fs.statSync(OUT_WORDS_PATH).size / 1024 / 1024).toFixed(2)}MB)`);
 
   console.log(`מייצר חידות (${LETTER_COUNT} אותיות)...`);
