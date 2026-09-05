@@ -2,6 +2,7 @@ import React from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Level, StoredProgress } from '../types';
 import { getFoundWordsForLevel } from '../utils/progress';
+import { FONTS } from '../utils/fonts';
 import { isLevelUnlocked } from '../data/levels';
 import { HEADER_INSET, POINTS_ICON, headerIconStyles } from '../utils/ui';
 import { tapHaptic } from '../utils/haptics';
@@ -125,12 +126,13 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   title: {
+    fontFamily: FONTS.display,
     fontSize: 26,
-    fontWeight: '700',
     color: '#3A2E1F',
     writingDirection: 'rtl',
   },
   totalScore: {
+    fontFamily: FONTS.regular,
     fontSize: 16,
     color: '#7A6A52',
     writingDirection: 'rtl',
@@ -185,8 +187,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   letterBadgeText: {
+    fontFamily: FONTS.bold,
     fontSize: 14,
-    fontWeight: '700',
     color: '#3A2E1F',
   },
   lockIconCentered: {
@@ -194,15 +196,15 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   lockedCost: {
+    fontFamily: FONTS.medium,
     fontSize: 14,
-    fontWeight: '600',
     color: '#9C8B6F',
     writingDirection: 'rtl',
   },
   progressText: {
+    fontFamily: FONTS.medium,
     fontSize: 14,
     color: '#5B4A32',
-    fontWeight: '600',
   },
   completedBadge: {
     fontSize: 16,
